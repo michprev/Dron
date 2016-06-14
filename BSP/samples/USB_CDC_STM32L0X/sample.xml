@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<EmbeddedProjectSample xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>USB Communications Device</Name>
+  <Description>This is a basic USB CDC device based on the ST USB library</Description>
+  <ConfigurableProperties>
+    <PropertyGroups>
+      <PropertyGroup>
+        <Properties />
+        <CollapsedByDefault>false</CollapsedByDefault>
+      </PropertyGroup>
+    </PropertyGroups>
+  </ConfigurableProperties>
+  <MCUFilterRegex>STM32L0[56][23].*</MCUFilterRegex>
+  <DoNotUpgradeCToCpp>true</DoNotUpgradeCToCpp>
+  <RequiredFrameworks>
+    <string>com.sysprogs.arm.stm32.hal</string>
+    <string>com.sysprogs.arm.stm32.usbdev</string>
+  </RequiredFrameworks>
+  <AdditionalSourcesToCopy>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/STM32L0xxxx/CMSIS_HAL/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c</SourcePath>
+    </AdditionalSourceFile>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/STM32L0xxxx/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_conf_template.h</SourcePath>
+      <TargetFileName>stm32l0xx_hal_conf.h</TargetFileName>
+    </AdditionalSourceFile>
+  </AdditionalSourcesToCopy>
+</EmbeddedProjectSample>

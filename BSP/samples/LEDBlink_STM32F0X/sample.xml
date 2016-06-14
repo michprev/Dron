@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<EmbeddedProjectSample xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>LEDBlink (StdPeriph)</Name>
+  <Description>This project demonstrates a blinking LED using the older StdPeriph library.</Description>
+  <ConfigurableProperties>
+    <PropertyGroups>
+      <PropertyGroup>
+        <Properties>
+          <PropertyEntry xsi:type="Enumerated">
+            <Name>LED Port Group</Name>
+            <UniqueID>com.sysprogs.examples.ledblink.LEDPORT</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the port group where the LED is connected</Description>
+            <SuggestionList>
+              <Suggestion>
+                <InternalValue>GPIOA</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOB</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOC</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOD</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOE</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOF</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOG</InternalValue>
+              </Suggestion>
+            </SuggestionList>
+            <DefaultEntryIndex>2</DefaultEntryIndex>
+            <AllowFreeEntry>false</AllowFreeEntry>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>LED Port Number</Name>
+            <UniqueID>com.sysprogs.examples.ledblink.LEDBIT</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the port number of the LED port</Description>
+            <DefaultValue>6</DefaultValue>
+            <MinValue>0</MinValue>
+            <MaxValue>15</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>Delay cycles</Name>
+            <UniqueID>com.sysprogs.examples.ledblink.DELAYCYCLES</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the delay (in empty loop cycles) between LED toggling events</Description>
+            <DefaultValue>1000000</DefaultValue>
+            <MinValue>-2147483648</MinValue>
+            <MaxValue>2147483647</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+        </Properties>
+        <CollapsedByDefault>false</CollapsedByDefault>
+      </PropertyGroup>
+    </PropertyGroups>
+  </ConfigurableProperties>
+  <MCUFilterRegex>STM32F0.*</MCUFilterRegex>
+  <DoNotUpgradeCToCpp>false</DoNotUpgradeCToCpp>
+  <RequiredFrameworks>
+    <string>com.sysprogs.arm.stm32.f0_stdperiph</string>
+  </RequiredFrameworks>
+  <AdditionalSourcesToCopy>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/STM32F0xxxx/CMSIS_StdPeriph/Device/ST/STM32F0xx/Source/Templates/system_stm32f0xx.c</SourcePath>
+    </AdditionalSourceFile>
+  </AdditionalSourcesToCopy>
+</EmbeddedProjectSample>

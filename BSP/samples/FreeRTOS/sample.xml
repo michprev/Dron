@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<EmbeddedProjectSample xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>LEDBlink (FreeRTOS)</Name>
+  <Description>This sample demonstrates 2 threads controlling separate LEDs using FreeRTOS</Description>
+  <ConfigurableProperties>
+    <PropertyGroups>
+      <PropertyGroup>
+        <Properties>
+          <PropertyEntry xsi:type="Enumerated">
+            <Name>LED Port Group</Name>
+            <UniqueID>com.sysprogs.examples.stm32.LEDPORT</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the port group where the LED is connected</Description>
+            <SuggestionList>
+              <Suggestion>
+                <InternalValue>GPIOA</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOB</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOC</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOD</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOE</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOF</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <InternalValue>GPIOG</InternalValue>
+              </Suggestion>
+            </SuggestionList>
+            <DefaultEntryIndex>3</DefaultEntryIndex>
+            <AllowFreeEntry>false</AllowFreeEntry>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>LED1 Port Number</Name>
+            <UniqueID>com.sysprogs.examples.stm32.LED1BIT</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the port number of the LED1 port</Description>
+            <DefaultValue>12</DefaultValue>
+            <MinValue>0</MinValue>
+            <MaxValue>15</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>LED2 Port Number</Name>
+            <UniqueID>com.sysprogs.examples.stm32.LED2BIT</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the port number of the LED2 port</Description>
+            <DefaultValue>13</DefaultValue>
+            <MinValue>0</MinValue>
+            <MaxValue>15</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>FreeRTOS Heap Size (KB)</Name>
+            <UniqueID>com.sysprogs.examples.stm32.freertos.heap_size</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Specifies the total FreeRTOS heap size</Description>
+            <DefaultValue>15</DefaultValue>
+            <MinValue>0</MinValue>
+            <MaxValue>10240</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+        </Properties>
+        <CollapsedByDefault>false</CollapsedByDefault>
+      </PropertyGroup>
+    </PropertyGroups>
+  </ConfigurableProperties>
+  <MCUFilterRegex>STM32[^W].*</MCUFilterRegex>
+  <DoNotUpgradeCToCpp>true</DoNotUpgradeCToCpp>
+  <RequiredFrameworks>
+    <string>com.sysprogs.arm.stm32.hal</string>
+    <string>com.sysprogs.arm.stm32.freertos</string>
+  </RequiredFrameworks>
+  <AdditionalSourcesToCopy>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/$$com.sysprogs.bspoptions.stm32.hal_system_file$$</SourcePath>
+    </AdditionalSourceFile>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/$$com.sysprogs.bspoptions.stm32.hal_config_template_file$$</SourcePath>
+      <TargetFileName>$$com.sysprogs.stm32.hal_header_prefix$$_hal_conf.h</TargetFileName>
+    </AdditionalSourceFile>
+  </AdditionalSourcesToCopy>
+</EmbeddedProjectSample>

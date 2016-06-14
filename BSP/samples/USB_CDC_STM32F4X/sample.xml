@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<EmbeddedProjectSample xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>USB Communications Device</Name>
+  <Description>This is a basic USB CDC device based on the ST USB library</Description>
+  <ConfigurableProperties>
+    <PropertyGroups>
+      <PropertyGroup>
+        <Properties>
+          <PropertyEntry xsi:type="Integral">
+            <Name>PLL VCO Division Factor</Name>
+            <UniqueID>com.sysprogs.examples.stm32.PLLM</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Division factor for PLL VCO input clock</Description>
+            <DefaultValue>8</DefaultValue>
+            <MinValue>0</MinValue>
+            <MaxValue>63</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>PLL VCO Multiplication Factor</Name>
+            <UniqueID>com.sysprogs.examples.stm32.PLLN</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Multiplication factor for PLL VCO output clock</Description>
+            <DefaultValue>336</DefaultValue>
+            <MinValue>192</MinValue>
+            <MaxValue>432</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Enumerated">
+            <Name>PLL Division factor for main system clock</Name>
+            <UniqueID>com.sysprogs.examples.stm32.PLLP</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Division factor for main system clock (SYSCLK)</Description>
+            <SuggestionList>
+              <Suggestion>
+                <UserFriendlyName>2</UserFriendlyName>
+                <InternalValue>RCC_PLLP_DIV2</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <UserFriendlyName>4</UserFriendlyName>
+                <InternalValue>RCC_PLLP_DIV4</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <UserFriendlyName>6</UserFriendlyName>
+                <InternalValue>RCC_PLLP_DIV6</InternalValue>
+              </Suggestion>
+              <Suggestion>
+                <UserFriendlyName>8</UserFriendlyName>
+                <InternalValue>RCC_PLLP_DIV8</InternalValue>
+              </Suggestion>
+            </SuggestionList>
+            <DefaultEntryIndex>0</DefaultEntryIndex>
+            <AllowFreeEntry>false</AllowFreeEntry>
+          </PropertyEntry>
+          <PropertyEntry xsi:type="Integral">
+            <Name>PLL Division Factor for USB clock</Name>
+            <UniqueID>com.sysprogs.examples.stm32.PLLQ</UniqueID>
+            <OmitPrefixIfEmpty>false</OmitPrefixIfEmpty>
+            <Description>Division factor for OTG FS, SDIO and RNG clocks</Description>
+            <DefaultValue>7</DefaultValue>
+            <MinValue>4</MinValue>
+            <MaxValue>15</MaxValue>
+            <Increment>1</Increment>
+          </PropertyEntry>
+        </Properties>
+        <CollapsedByDefault>false</CollapsedByDefault>
+      </PropertyGroup>
+    </PropertyGroups>
+  </ConfigurableProperties>
+  <MCUFilterRegex>STM32F4.*</MCUFilterRegex>
+  <DoNotUpgradeCToCpp>true</DoNotUpgradeCToCpp>
+  <RequiredFrameworks>
+    <string>com.sysprogs.arm.stm32.hal</string>
+    <string>com.sysprogs.arm.stm32.usbdev</string>
+  </RequiredFrameworks>
+  <AdditionalSourcesToCopy>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/STM32F4xxxx/CMSIS_HAL/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c</SourcePath>
+    </AdditionalSourceFile>
+    <AdditionalSourceFile>
+      <SourcePath>$$SYS:BSP_ROOT$$/STM32F4xxxx/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_conf_template.h</SourcePath>
+      <TargetFileName>stm32f4xx_hal_conf.h</TargetFileName>
+    </AdditionalSourceFile>
+  </AdditionalSourcesToCopy>
+</EmbeddedProjectSample>
