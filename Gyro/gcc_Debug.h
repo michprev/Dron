@@ -92,6 +92,9 @@
 #ifndef __GCC_ATOMIC_CHAR_LOCK_FREE
 #define __GCC_ATOMIC_CHAR_LOCK_FREE 2
 #endif
+#ifndef USE_HAL_LEGACY
+#define USE_HAL_LEGACY 1
+#endif
 #ifndef __GCC_IEC_559
 #define __GCC_IEC_559 0
 #endif
@@ -450,6 +453,9 @@
 #ifndef __GXX_ABI_VERSION
 #define __GXX_ABI_VERSION 1009
 #endif
+#ifndef STM32F103xB
+#define STM32F103xB 1
+#endif
 #ifndef __UTA_FBIT__
 #define __UTA_FBIT__ 64
 #endif
@@ -594,6 +600,9 @@
 #ifndef __UDQ_FBIT__
 #define __UDQ_FBIT__ 64
 #endif
+#ifndef DEBUG
+#define DEBUG 1
+#endif
 #ifndef __INT8_TYPE__
 #define __INT8_TYPE__ signed char
 #endif
@@ -635,6 +644,9 @@
 #endif
 #ifndef __SIZEOF_PTRDIFF_T__
 #define __SIZEOF_PTRDIFF_T__ 4
+#endif
+#ifndef stm32_flash_layout
+#define stm32_flash_layout 1
 #endif
 #ifndef __LACCUM_EPSILON__
 #define __LACCUM_EPSILON__ 0x1P-31LK
@@ -1062,42 +1074,30 @@
 #ifndef __ATOMIC_RELEASE
 #define __ATOMIC_RELEASE 3
 #endif
-#ifndef DEBUG
-#define DEBUG 1
-#endif
-#ifndef stm32_flash_layout
-#define stm32_flash_layout 
-#endif
-#ifndef STM32F103xB
-#define STM32F103xB 
-#endif
-#ifndef USE_HAL_LEGACY 
-#define USE_HAL_LEGACY  
-#endif
 #endif
 
 // --- Include directories begin --- //
 //.
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/arm-eabi/thumb/cortex_m3
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/backward
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/include
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/include-fixed
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/sys-include
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include
 //$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc
 //$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc/Legacy
 //$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Device/ST/STM32F1xx/Include
 //$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Include
 //$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/RTOS/Template
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/arm-eabi/thumb/cortex_m3
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/backward
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/include
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/include-fixed
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/sys-include
+//$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include
 // --- Include directories end --- //
 
 
 // --- Library directories begin --- //
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/thumb/cortex_m3/
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/thumb/cortex_m3/
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/
+//$(ARM_TOOLCHAIN_ROOT)/bin/../lib/gcc/arm-eabi/5.3.0/thumb/cortex_m3/
+//$(ARM_TOOLCHAIN_ROOT)/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/thumb/cortex_m3/
+//$(ARM_TOOLCHAIN_ROOT)/bin/../lib/gcc/arm-eabi/5.3.0/
+//$(ARM_TOOLCHAIN_ROOT)/bin/../lib/gcc/
+//$(ARM_TOOLCHAIN_ROOT)/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/
 // --- Library directories begin --- //
 

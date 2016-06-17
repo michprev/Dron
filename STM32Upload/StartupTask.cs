@@ -62,7 +62,7 @@ namespace STM32Upload
 
                 await MassErase();
 
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///ESP8266flasher.bin"));
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Gyro.bin"));
                 var buffer = await FileIO.ReadBufferAsync(file);
 
                 Queue<byte> data = new Queue<byte>();
@@ -125,7 +125,7 @@ namespace STM32Upload
                     while (true)
                     {
                         await serialReader.LoadAsync(1);
-                        Debug.Write((char)serialReader.ReadByte());
+                        Debug.Write((int)serialReader.ReadByte());
                     }
                 });
 
