@@ -13,7 +13,8 @@
 
 #ifndef _HEADING_FROM_GYRO_H_
 #define _HEADING_FROM_GYRO_H_
-#include "mltypes.h"
+
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

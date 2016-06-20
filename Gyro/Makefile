@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := $(BSP_ROOT)/STM32F1xxxx/StartupFiles/startup_stm32f103xb.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cec.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_crc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_eth.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_hcd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2s.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_irda.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_iwdg.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nand.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pccard.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_smartcard.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_wwdg.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c I2C.cpp main.cpp MPU6050.cpp system_stm32f1xx.c
+SOURCEFILES := $(BSP_ROOT)/STM32F1xxxx/StartupFiles/startup_stm32f103xb.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_adc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_can.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cec.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_crc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dac_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_eth.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_hcd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2s.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_irda.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_iwdg.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nand.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pccard.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pcd_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rtc_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sd.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_smartcard.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_sram.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_usart.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_wwdg.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_fsmc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_sdmmc.c $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c invensense/data_builder.c invensense/eMPL_outputs.c invensense/hal_outputs.c invensense/i2c.c invensense/inv_mpu.c invensense/inv_mpu_dmp_motion_driver.c invensense/message_layer.c invensense/mlmath.c invensense/ml_math_func.c invensense/mpl.c invensense/results_holder.c invensense/start_manager.c invensense/storage_manager.c main.cpp MPU6050.cpp system_stm32f1xx.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
@@ -354,5 +354,57 @@ $(BINARYDIR)/stm32f1xx_ll_sdmmc.o : $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver
 
 
 $(BINARYDIR)/stm32f1xx_ll_usb.o : $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Src/stm32f1xx_ll_usb.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/data_builder.o : invensense/data_builder.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/eMPL_outputs.o : invensense/eMPL_outputs.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/hal_outputs.o : invensense/hal_outputs.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/i2c.o : invensense/i2c.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/inv_mpu.o : invensense/inv_mpu.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/inv_mpu_dmp_motion_driver.o : invensense/inv_mpu_dmp_motion_driver.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/message_layer.o : invensense/message_layer.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/mlmath.o : invensense/mlmath.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/ml_math_func.o : invensense/ml_math_func.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/mpl.o : invensense/mpl.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/results_holder.o : invensense/results_holder.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/start_manager.o : invensense/start_manager.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/storage_manager.o : invensense/storage_manager.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 

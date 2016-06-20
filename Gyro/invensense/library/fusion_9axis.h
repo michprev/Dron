@@ -14,7 +14,7 @@
 #ifndef MLDMP_FUSION9AXIS_H__
 #define MLDMP_FUSION9AXIS_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

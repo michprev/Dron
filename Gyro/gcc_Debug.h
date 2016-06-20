@@ -20,6 +20,9 @@
 #ifndef __ATOMIC_ACQUIRE
 #define __ATOMIC_ACQUIRE 2
 #endif
+#ifndef MPL_LOG_NDEBUG
+#define MPL_LOG_NDEBUG 1
+#endif
 #ifndef __SFRACT_IBIT__
 #define __SFRACT_IBIT__ 0
 #endif
@@ -124,6 +127,9 @@
 #endif
 #ifndef __DBL_MIN_10_EXP__
 #define __DBL_MIN_10_EXP__ (-307)
+#endif
+#ifndef MPU6050
+#define MPU6050 1
 #endif
 #ifndef __FINITE_MATH_ONLY__
 #define __FINITE_MATH_ONLY__ 0
@@ -320,6 +326,9 @@
 #ifndef __ULACCUM_IBIT__
 #define __ULACCUM_IBIT__ 32
 #endif
+#ifndef EMPL
+#define EMPL 1
+#endif
 #ifndef __UACCUM_EPSILON__
 #define __UACCUM_EPSILON__ 0x1P-16UK
 #endif
@@ -346,6 +355,9 @@
 #endif
 #ifndef __DBL_MAX__
 #define __DBL_MAX__ double(1.7976931348623157e+308L)
+#endif
+#ifndef EMPL_TARGET_STM32F4
+#define EMPL_TARGET_STM32F4 1
 #endif
 #ifndef __ULFRACT_IBIT__
 #define __ULFRACT_IBIT__ 0
@@ -729,6 +741,9 @@
 #ifndef __INT_LEAST8_TYPE__
 #define __INT_LEAST8_TYPE__ signed char
 #endif
+#ifndef USE_DMP
+#define USE_DMP 1
+#endif
 #ifndef __SQ_FBIT__
 #define __SQ_FBIT__ 31
 #endif
@@ -1078,11 +1093,11 @@
 
 // --- Include directories begin --- //
 //.
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc/Legacy
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Device/ST/STM32F1xx/Include
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Include
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/RTOS/Template
+//..\BSP/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc
+//..\BSP/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc/Legacy
+//..\BSP/STM32F1xxxx/CMSIS_HAL/Device/ST/STM32F1xx/Include
+//..\BSP/STM32F1xxxx/CMSIS_HAL/Include
+//..\BSP/STM32F1xxxx/CMSIS_HAL/RTOS/Template
 //$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0
 //$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/arm-eabi/thumb/cortex_m3
 //$(ARM_TOOLCHAIN_ROOT)\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/backward

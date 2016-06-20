@@ -14,7 +14,7 @@
 #ifndef MLDMP_ACCEL_AUTO_CALIBRATION_H__
 #define MLDMP_ACCEL_AUTO_CALIBRATION_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

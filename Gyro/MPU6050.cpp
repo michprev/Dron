@@ -1,34 +1,6 @@
 #include "MPU6050.h"
 
-void MPU6050::GPIO_Init() {
-	if (__GPIOB_IS_CLK_DISABLED())
-		__GPIOB_CLK_ENABLE();
-
-	if (__I2C1_IS_CLK_DISABLED())
-		__I2C1_CLK_ENABLE();
-
-	GPIO_InitTypeDef gpio;
-	gpio.Pin = GPIO_PIN_6 | GPIO_PIN_7;
-	gpio.Mode = GPIO_MODE_AF_OD;
-	gpio.Speed = GPIO_SPEED_MEDIUM;
-	gpio.Pull = GPIO_PULLUP;
-
-	HAL_GPIO_Init(GPIOB, &gpio);
-
-	I2C_Handle.Instance = I2C1;
-	I2C_Handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	I2C_Handle.Init.ClockSpeed = 100000;
-	I2C_Handle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-	I2C_Handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
-	I2C_Handle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-	I2C_Handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-	I2C_Handle.Init.OwnAddress1 = 0;
-	I2C_Handle.Init.OwnAddress2 = 0;
-
-	HAL_I2C_Init(&I2C_Handle);
-}
-
-void MPU6050::IT_Init() {
+void cMPU6050::IT_Init() {
 	if (__GPIOA_IS_CLK_DISABLED())
 		__GPIOA_CLK_ENABLE();
 
@@ -43,36 +15,54 @@ void MPU6050::IT_Init() {
 	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 }
 
-HAL_StatusTypeDef MPU6050::SetGyroRange(GyroRange range) {
-	uint8_t buffer = range << 3;
-
-	return I2C_Write(&I2C_Handle, MPU6050_ADDRESS, R_GYRO_CONFIG, &buffer, 1);
-}
-
-HAL_StatusTypeDef MPU6050::SetAccelRange(AccelRange range) {
-	uint8_t buffer = range << 3;
-
-	return I2C_Write(&I2C_Handle, MPU6050_ADDRESS, R_ACCEL_CONFIG, &buffer, 1);
-}
-
-HAL_StatusTypeDef MPU6050::Init() {
-	GPIO_Init();
+HAL_StatusTypeDef cMPU6050::Init() {
+	I2cMaster_Init();
 	IT_Init();
 
-	uint8_t buffer;
+	int result;
+	struct int_param_s int_param;
+	unsigned char accel_fsr, new_temp = 0;
+	unsigned short gyro_rate, gyro_fsr;
 
-
-	buffer = 0b10000000;
-	// reset device
-	if (I2C_Write(&I2C_Handle, MPU6050_ADDRESS, R_POWER_MANAGEMENT_1, &buffer, 1) != HAL_OK)
+	if (result = mpu_init(&int_param))
 		return HAL_ERROR;
 
-	HAL_Delay(100);
-
-	buffer = 0b00000000;
-	// wake up chip
-	if (I2C_Write(&I2C_Handle, MPU6050_ADDRESS, R_POWER_MANAGEMENT_1, &buffer, 1) != HAL_OK)
+	if (result = inv_init_mpl())
 		return HAL_ERROR;
+
+	/* Compute 6-axis and 9-axis quaternions. */
+	inv_enable_quaternion();
+	inv_enable_9x_sensor_fusion();
+
+	/* Update gyro biases when not in motion.
+	* WARNING: These algorithms are mutually exclusive.
+	*/
+	inv_enable_fast_nomot();
+	/* inv_enable_motion_no_motion(); */
+	/* inv_set_no_motion_time(1000); */
+
+	/* Update gyro biases when temperature changes. */
+	inv_enable_gyro_tc();
+
+	/* Allows use of the MPL APIs in read_from_mpl. */
+	inv_enable_eMPL_outputs();
+
+	if (result = inv_start_mpl())
+		return HAL_ERROR;
+
+	mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+	mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL);
+	mpu_set_sample_rate(20);
+
+	/* Read back configuration in case it was set improperly. */
+	mpu_get_sample_rate(&gyro_rate);
+	mpu_get_gyro_fsr(&gyro_fsr);
+	mpu_get_accel_fsr(&accel_fsr);
+
+	/* Sync driver configuration with MPL. */
+	/* Sample rate expected in microseconds. */
+	inv_set_gyro_sample_rate(1000000L / gyro_rate);
+	inv_set_accel_sample_rate(1000000L / gyro_rate);
 }
 
 extern "C" void EXTI4_IRQHandler(void)

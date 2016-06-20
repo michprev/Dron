@@ -8,7 +8,7 @@
 #ifndef MLDMP_MAGDISTURB_H__
 #define MLDMP_MAGDISTURB_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

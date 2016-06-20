@@ -14,7 +14,7 @@
 #ifndef COMPASS_ONLY_CAL_H__
 #define COMPASS_ONLY_CAL_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

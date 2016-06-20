@@ -7,7 +7,7 @@
 #ifndef INV_MOTION_NO_MOTION_H__
 #define INV_MOTION_NO_MOTION_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

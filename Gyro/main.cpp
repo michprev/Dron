@@ -13,10 +13,12 @@ void UART1_Init();
 
 UART_HandleTypeDef UART1_Handle;
 
+unsigned char *mpl_key = (unsigned char*)"eMPL 5.1";
+
 int main(void)
 {
 	HAL_Init();
-	MPU6050 mpu;
+	cMPU6050 mpu;
 	__GPIOA_CLK_ENABLE();
 	__GPIOB_CLK_ENABLE();
 	__USART1_CLK_ENABLE();
@@ -24,10 +26,7 @@ int main(void)
 	GPIO_Init();
 	UART1_Init();
 
-	HAL_Delay(500);
-
 	mpu.Init();
-
 
 	while (true)
 	{

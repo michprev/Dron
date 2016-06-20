@@ -14,7 +14,7 @@
 #ifndef MLDMP_FAST_NO_MOTION_H__
 #define MLDMP_FAST_NO_MOTION_H__
 
-#include "mltypes.h"
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

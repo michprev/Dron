@@ -7,8 +7,7 @@
 #ifndef INV_QUATERNION_SUPERVISOR_H__
 #define INV_QUATERNION_SUPERVISOR_H__
 
-#include "mltypes.h"
-
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -14,7 +14,8 @@
 
 #ifndef MLDMP_NOGYROFUSION_H__
 #define MLDMP_NOGYROFUSION_H__
-#include "mltypes.h"
+
+#include "../mltypes.h"
 
 #ifdef __cplusplus
 extern "C" {
