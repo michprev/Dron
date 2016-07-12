@@ -6,7 +6,7 @@
 #VisualGDB provides BSP_ROOT and TOOLCHAIN_ROOT via environment when running Make. The line below will only be active if GNU Make is started manually.
 BSP_ROOT ?= ../BSP
 EFP_BASE ?= $(LOCALAPPDATA)/VisualGDB/EmbeddedEFPs
-TOOLCHAIN_ROOT ?= $(ARM_TOOLCHAIN_ROOT)
+TOOLCHAIN_ROOT ?= C:/SysGCC/arm-eabi
 
 #Embedded toolchain
 CC := $(TOOLCHAIN_ROOT)/bin/arm-eabi-gcc.exe
@@ -16,8 +16,8 @@ AR := $(TOOLCHAIN_ROOT)/bin/arm-eabi-ar.exe
 OBJCOPY := $(TOOLCHAIN_ROOT)/bin/arm-eabi-objcopy.exe
 
 #Additional flags
-PREPROCESSOR_MACROS += ARM_MATH_CM3 STM32F103C8 stm32_flash_layout STM32F103xB USE_HAL_LEGACY 
-INCLUDE_DIRS += . $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc $(BSP_ROOT)/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc/Legacy $(BSP_ROOT)/STM32F1xxxx/CMSIS_HAL/Device/ST/STM32F1xx/Include $(BSP_ROOT)/STM32F1xxxx/CMSIS_HAL/Include $(BSP_ROOT)/STM32F1xxxx/CMSIS_HAL/RTOS/Template
+PREPROCESSOR_MACROS += ARM_MATH_CM4 STM32F446RE stm32_flash_layout STM32F446xx
+INCLUDE_DIRS += . $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Inc $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Inc/Legacy $(BSP_ROOT)/STM32F4xxxx/CMSIS_HAL/Device/ST/STM32F4xx/Include $(BSP_ROOT)/STM32F4xxxx/CMSIS_HAL/Include $(BSP_ROOT)/STM32F4xxxx/CMSIS_HAL/RTOS/Template
 LIBRARY_DIRS += 
 LIBRARY_NAMES += compactcpp
 ADDITIONAL_LINKER_INPUTS += 
@@ -26,8 +26,8 @@ LINUX_PACKAGES +=
 
 CFLAGS += 
 CXXFLAGS += 
-ASFLAGS += 
+ASFLAGS += -mfpu=fpv4-sp-d16
 LDFLAGS +=  
-COMMONFLAGS += -mcpu=cortex-m3 -mthumb
-LINKER_SCRIPT := $(BSP_ROOT)/STM32F1xxxx/LinkerScripts/STM32F103C8_flash.lds
+COMMONFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=hard
+LINKER_SCRIPT := $(BSP_ROOT)/STM32F4xxxx/LinkerScripts/STM32F446RE_flash.lds
 

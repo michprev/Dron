@@ -18,7 +18,7 @@ void __attribute__ ((weak)) NMI_Handler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void NMI_Handler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) HardFault_Handler() 
 {
@@ -26,7 +26,7 @@ void __attribute__ ((weak)) HardFault_Handler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void HardFault_Handler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) SVC_Handler() 
 {
@@ -34,7 +34,7 @@ void __attribute__ ((weak)) SVC_Handler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void SVC_Handler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) PendSV_Handler() 
 {
@@ -42,7 +42,7 @@ void __attribute__ ((weak)) PendSV_Handler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void PendSV_Handler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) SysTick_Handler() 
 {
@@ -50,7 +50,7 @@ void __attribute__ ((weak)) SysTick_Handler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void SysTick_Handler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) WWDG_IRQHandler() 
 {
@@ -58,7 +58,7 @@ void __attribute__ ((weak)) WWDG_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void WWDG_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) PVD_IRQHandler() 
 {
@@ -66,7 +66,7 @@ void __attribute__ ((weak)) PVD_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void PVD_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) RTC_IRQHandler() 
 {
@@ -74,7 +74,7 @@ void __attribute__ ((weak)) RTC_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void RTC_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) FLASH_IRQHandler() 
 {
@@ -82,7 +82,7 @@ void __attribute__ ((weak)) FLASH_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void FLASH_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) RCC_IRQHandler() 
 {
@@ -90,7 +90,7 @@ void __attribute__ ((weak)) RCC_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void RCC_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) EXTI0_1_IRQHandler() 
 {
@@ -98,7 +98,7 @@ void __attribute__ ((weak)) EXTI0_1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void EXTI0_1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) EXTI2_3_IRQHandler() 
 {
@@ -106,7 +106,7 @@ void __attribute__ ((weak)) EXTI2_3_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void EXTI2_3_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) EXTI4_15_IRQHandler() 
 {
@@ -114,7 +114,7 @@ void __attribute__ ((weak)) EXTI4_15_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void EXTI4_15_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) DMA1_Channel1_IRQHandler() 
 {
@@ -122,7 +122,7 @@ void __attribute__ ((weak)) DMA1_Channel1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void DMA1_Channel1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) DMA1_Channel2_3_IRQHandler() 
 {
@@ -130,7 +130,7 @@ void __attribute__ ((weak)) DMA1_Channel2_3_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void DMA1_Channel2_3_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) DMA1_Channel4_5_6_7_IRQHandler() 
 {
@@ -138,7 +138,7 @@ void __attribute__ ((weak)) DMA1_Channel4_5_6_7_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void DMA1_Channel4_5_6_7_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) ADC1_COMP_IRQHandler() 
 {
@@ -146,7 +146,7 @@ void __attribute__ ((weak)) ADC1_COMP_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void ADC1_COMP_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) LPTIM1_IRQHandler() 
 {
@@ -154,7 +154,7 @@ void __attribute__ ((weak)) LPTIM1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void LPTIM1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) TIM2_IRQHandler() 
 {
@@ -162,7 +162,7 @@ void __attribute__ ((weak)) TIM2_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void TIM2_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) TIM21_IRQHandler() 
 {
@@ -170,7 +170,7 @@ void __attribute__ ((weak)) TIM21_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void TIM21_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) TIM22_IRQHandler() 
 {
@@ -178,7 +178,7 @@ void __attribute__ ((weak)) TIM22_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void TIM22_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) I2C1_IRQHandler() 
 {
@@ -186,7 +186,7 @@ void __attribute__ ((weak)) I2C1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void I2C1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) SPI1_IRQHandler() 
 {
@@ -194,7 +194,7 @@ void __attribute__ ((weak)) SPI1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void SPI1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) USART2_IRQHandler() 
 {
@@ -202,7 +202,7 @@ void __attribute__ ((weak)) USART2_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void USART2_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 void __attribute__ ((weak)) LPUART1_IRQHandler() 
 {
@@ -210,7 +210,7 @@ void __attribute__ ((weak)) LPUART1_IRQHandler()
 	//Define the following function in your code to handle it:
 	//	extern "C" void LPUART1_IRQHandler();
 	asm("bkpt 255");
-};
+}
 
 #else
 void NMI_Handler()                     __attribute__ ((weak, alias ("Default_Handler")));
@@ -302,8 +302,10 @@ extern void *_sbss, *_ebss;
 void __attribute__((naked, noreturn)) Reset_Handler()
 {
 	//Normally the CPU should will setup the based on the value from the first entry in the vector table.
-	//If you encounter problems with accessing stack variables during initialization, ensure 
-	//asm ("ldr sp, =_estack");
+	//If you encounter problems with accessing stack variables during initialization, ensure the line below is enabled.
+	#ifdef sram_layout
+	asm ("ldr sp, =_estack");
+	#endif
 
 	void **pSource, **pDest;
 	for (pSource = &_sidata, pDest = &_sdata; pDest != &_edata; pSource++, pDest++)

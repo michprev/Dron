@@ -121,6 +121,7 @@ int mpu_write_mem(unsigned short mem_addr, unsigned short length,
     unsigned char *data);
 int mpu_read_mem(unsigned short mem_addr, unsigned short length,
     unsigned char *data);
+#include <stm32f4xx_hal.h>
 int mpu_load_firmware(unsigned short length, const unsigned char *firmware,
     unsigned short start_addr, unsigned short sample_rate);
 

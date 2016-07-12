@@ -3,7 +3,7 @@
 
 extern "C" {
 
-#include <stm32f1xx_hal.h>
+#include <stm32f4xx_hal.h>
 #include "invensense\inv_mpu.h"
 #include "invensense\inv_mpu_dmp_motion_driver.h"
 #include "invensense\mltypes.h"
@@ -29,7 +29,7 @@ private:
 	void IT_Init();
 
 public:
-	HAL_StatusTypeDef Init();
+	uint8_t Init();
 };
 
 #endif

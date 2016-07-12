@@ -39,7 +39,7 @@
 #if defined EMPL_TARGET_STM32F4
 #include "i2c.h"   
 #include "log.h"
-#include <stm32f1xx_hal.h>
+#include <stm32f4xx_hal.h>
    
 #define i2c_write   Sensors_I2C_WriteRegister
 #define i2c_read    Sensors_I2C_ReadRegister 
@@ -2831,7 +2831,7 @@ int mpu_read_mem(unsigned short mem_addr, unsigned short length,
         return -1;
     return 0;
 }
-
+#include "main.h" // TODO
 /**
  *  @brief      Load and verify DMP image.
  *  @param[in]  length      Length of DMP image.
@@ -2841,39 +2841,38 @@ int mpu_read_mem(unsigned short mem_addr, unsigned short length,
  *  @return     0 if successful.
  */
 int mpu_load_firmware(unsigned short length, const unsigned char *firmware,
-    unsigned short start_addr, unsigned short sample_rate)
+	unsigned short start_addr, unsigned short sample_rate)
 {
-    unsigned short ii;
-    unsigned short this_write;
-    /* Must divide evenly into st.hw->bank_size to avoid bank crossings. */
+	unsigned short ii;
+	unsigned short this_write;
+	/* Must divide evenly into st.hw->bank_size to avoid bank crossings. */
 #define LOAD_CHUNK  (16)
-    unsigned char cur[LOAD_CHUNK], tmp[2];
+	unsigned char cur[LOAD_CHUNK], tmp[2];
 
-    if (st.chip_cfg.dmp_loaded)
-        /* DMP should only be loaded once. */
-        return -1;
+	if (st.chip_cfg.dmp_loaded)
+		/* DMP should only be loaded once. */
+		return -1;
+	if (!firmware)
+		return -1;
+	for (ii = 0; ii < length; ii += this_write) {
+		this_write = min(LOAD_CHUNK, length - ii);
+		if (mpu_write_mem(ii, this_write, (unsigned char*)&firmware[ii]))
+			return -1;
+		if (mpu_read_mem(ii, this_write, cur))
+			return -1;
+		if (memcmp(firmware + ii, cur, this_write))
+			return -2;
+	}
+	
+	/* Set program start address. */
+	tmp[0] = start_addr >> 8;
+	tmp[1] = start_addr & 0xFF;
+	if (i2c_write(st.hw->addr, st.reg->prgm_start_h, 2, tmp))
+		return -1;
 
-    if (!firmware)
-        return -1;
-    for (ii = 0; ii < length; ii += this_write) {
-        this_write = min(LOAD_CHUNK, length - ii);
-        if (mpu_write_mem(ii, this_write, (unsigned char*)&firmware[ii]))
-            return -1;
-        if (mpu_read_mem(ii, this_write, cur))
-            return -1;
-        if (memcmp(firmware+ii, cur, this_write))
-            return -2;
-    }
-
-    /* Set program start address. */
-    tmp[0] = start_addr >> 8;
-    tmp[1] = start_addr & 0xFF;
-    if (i2c_write(st.hw->addr, st.reg->prgm_start_h, 2, tmp))
-        return -1;
-
-    st.chip_cfg.dmp_loaded = 1;
-    st.chip_cfg.dmp_sample_rate = sample_rate;
-    return 0;
+	st.chip_cfg.dmp_loaded = 1;
+	st.chip_cfg.dmp_sample_rate = sample_rate;
+	return 0;
 }
 
 /**

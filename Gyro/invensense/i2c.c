@@ -4,19 +4,25 @@ Purpose : I2c 3 to communicate with the sensors
 Author  :
 ********************************** Includes ***********************************/
 #include "i2c.h"
-#include <stm32f1xx_hal.h>
 
 /********************************* Defines ************************************/
 
 
 
 /********************************* Globals ************************************/
-
 I2C_HandleTypeDef MPU6050_Handle;
 
 /********************************* Prototypes *********************************/
-unsigned long ST_Sensors_I2C_WriteRegister(unsigned char Address, unsigned char RegisterAddr, unsigned short RegisterLen, const unsigned char *RegisterValue);
-unsigned long ST_Sensors_I2C_ReadRegister(unsigned char Address, unsigned char RegisterAddr, unsigned short RegisterLen, unsigned char *RegisterValue);
+int Sensors_I2C_WriteRegister(unsigned char slave_addr,
+	unsigned char reg_addr,
+	unsigned short len,
+	const unsigned char *data_ptr);
+int Sensors_I2C_ReadRegister(unsigned char slave_addr,
+	unsigned char reg_addr,
+	unsigned short len,
+	unsigned char *data_ptr);
+//unsigned long ST_Sensors_I2C_WriteRegister(unsigned char Address, unsigned char RegisterAddr, unsigned short RegisterLen, const unsigned char *RegisterValue);
+//unsigned long ST_Sensors_I2C_ReadRegister(unsigned char Address, unsigned char RegisterAddr, unsigned short RegisterLen, unsigned char *RegisterValue);
 /*******************************  Function ************************************/
 
 void I2cMaster_Init(void)
@@ -28,10 +34,11 @@ void I2cMaster_Init(void)
 		__I2C1_CLK_ENABLE();
 
 	GPIO_InitTypeDef gpio;
-	gpio.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+	gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
 	gpio.Mode = GPIO_MODE_AF_OD;
 	gpio.Speed = GPIO_SPEED_MEDIUM;
 	gpio.Pull = GPIO_PULLUP;
+	gpio.Alternate = GPIO_AF4_I2C1;
 
 	HAL_GPIO_Init(GPIOB, &gpio);
 
@@ -86,7 +93,8 @@ int Sensors_I2C_WriteRegister(unsigned char slave_addr,
 
 tryWriteAgain:
 	ret = 0;
-	ret = HAL_I2C_Mem_Write(&MPU6050_Handle, slave_addr >> 1, reg_addr, len == 1 ? I2C_MEMADD_SIZE_8BIT : I2C_MEMADD_SIZE_16BIT, data_ptr, len, HAL_MAX_DELAY);
+	
+	ret = HAL_I2C_Mem_Write(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, HAL_MAX_DELAY);
 	if (ret)
 		I2C_Reset();
 
@@ -112,7 +120,13 @@ int Sensors_I2C_ReadRegister(unsigned char slave_addr,
 
 tryReadAgain:
 	ret = 0;
-	ret = HAL_I2C_Mem_Read(&MPU6050_Handle, slave_addr >> 1, reg_addr, len == 1 ? I2C_MEMADD_SIZE_8BIT : I2C_MEMADD_SIZE_16BIT, data_ptr, len, HAL_MAX_DELAY);
+	/*if ((reg_addr == 0x06 || reg_addr == 0x08 || reg_addr == 0x0A || reg_addr == 0x13 || reg_addr == 0x15 ||
+		reg_addr == 0x17 || reg_addr == 0x3B || reg_addr == 0x3D || reg_addr == 0x3F || reg_addr == 0x41 ||
+		reg_addr == 0x43 || reg_addr == 0x45 || reg_addr == 0x47 || reg_addr == 0x70 || reg_addr == 0x72) &&
+		len == 2) {
+
+	}*/
+	ret = HAL_I2C_Mem_Read(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, HAL_MAX_DELAY);
 	if (ret)
 		I2C_Reset();
 

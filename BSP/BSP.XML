@@ -2,7 +2,7 @@
 <BoardSupportPackage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <PackageID>com.sysprogs.arm.stm32</PackageID>
   <PackageDescription>STM32 Devices</PackageDescription>
-  <PackageVersion>3.5</PackageVersion>
+  <PackageVersion>3.6</PackageVersion>
   <GNUTargetID>arm-eabi</GNUTargetID>
   <GeneratedMakFileName>stm32.mak</GeneratedMakFileName>
   <FirstCompatibleVersion>3.0</FirstCompatibleVersion>
@@ -20849,6 +20849,9 @@
     <string>samples\HTTP_Netconn_STM32F4X</string>
     <string>samples\HTTP_Netconn_STM32F7X</string>
   </Examples>
+  <TestExamples>
+    <string>samples\UnitTests\TestHAL</string>
+  </TestExamples>
   <IntelliSenseSetupFile>stm32_compat.h</IntelliSenseSetupFile>
   <FileConditions>
     <FileCondition>
@@ -21828,5 +21831,5 @@
       <FilePath>$$SYS:BSP_ROOT$$/STM32F7xxxx/BSP/STM32756G_EVAL/stm32756g_eval_ts.h</FilePath>
     </FileCondition>
   </FileConditions>
-  <MinimumEngineVersion>5.0</MinimumEngineVersion>
+  <MinimumEngineVersion>5.1</MinimumEngineVersion>
 </BoardSupportPackage>

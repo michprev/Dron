@@ -125,7 +125,7 @@ namespace STM32Upload
                     while (true)
                     {
                         await serialReader.LoadAsync(1);
-                        Debug.Write((int)serialReader.ReadByte());
+                        Debug.WriteLine((int)serialReader.ReadByte());
                     }
                 });
 
