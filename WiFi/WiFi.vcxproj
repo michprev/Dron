@@ -131,7 +131,7 @@
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_fsmc.c" />
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_sdmmc.c" />
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c" />
-    <ClCompile Include="Buffer.cpp" />
+    <ClCompile Include="ESP8266.cpp" />
     <ClCompile Include="http_parser.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="system_stm32f4xx.c" />
@@ -238,7 +238,7 @@
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_fsmc.h" />
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_sdmmc.h" />
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h" />
-    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="ESP8266.h" />
     <ClInclude Include="http_parser.h" />
     <ClInclude Include="stm32f4xx_hal_conf.h" />
   </ItemGroup>

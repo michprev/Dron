@@ -1,8 +1,8 @@
-#include "Buffer.h"
+#include "ESP8266.h"
 
 
 // free to write
-uint32_t Buffer::getFreeSize()
+uint32_t ESP8266::getFreeSize()
 {
 	uint32_t read = this->readPos;
 	uint32_t write = this->writePos;
@@ -17,7 +17,7 @@ uint32_t Buffer::getFreeSize()
 		return (this->size - write + read);
 }
 
-uint32_t Buffer::getFullSize()
+uint32_t ESP8266::getFullSize()
 {
 	uint32_t read = this->readPos;
 	uint32_t write = this->writePos;
@@ -51,7 +51,7 @@ uint32_t Buffer::getFullSize()
 //	return -1;
 //}
 
-uint32_t Buffer::findString(char * str)
+uint32_t ESP8266::findString(char * str)
 {
 	uint32_t length = strlen(str);
 	uint32_t size = getFullSize();
@@ -107,7 +107,7 @@ uint32_t Buffer::findString(char * str)
 //	return false;
 //}
 
-uint8_t Buffer::readData(char *data, uint8_t count)
+uint8_t ESP8266::readData(char *data, uint8_t count)
 {
 	uint32_t fullSize = getFullSize();
 
@@ -139,7 +139,7 @@ uint8_t Buffer::readData(char *data, uint8_t count)
 	}
 }
 
-void Buffer::processData()
+void ESP8266::processData()
 {
 	const uint16_t TMP_BUFFER_SIZE = 256;
 	char buffer[256];
@@ -300,7 +300,7 @@ void Buffer::processData()
 	}
 }
 
-HAL_StatusTypeDef Buffer::Send(char *str, bool wait)
+HAL_StatusTypeDef ESP8266::Send(char *str, bool wait)
 {
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)str, strlen(str), 1000);
 
@@ -318,7 +318,7 @@ HAL_StatusTypeDef Buffer::Send(char *str, bool wait)
 	}
 }
 
-HAL_StatusTypeDef Buffer::Send(char * data, uint16_t count, bool wait)
+HAL_StatusTypeDef ESP8266::Send(char * data, uint16_t count, bool wait)
 {
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)data, count, 1000);
 
@@ -336,7 +336,7 @@ HAL_StatusTypeDef Buffer::Send(char * data, uint16_t count, bool wait)
 	}
 }
 
-Buffer::Buffer(UART_HandleTypeDef *huart, uint32_t size)
+ESP8266::ESP8266(UART_HandleTypeDef *huart, uint32_t size)
 {
 	this->readPos = 0;
 	this->writePos = 0;
@@ -351,7 +351,7 @@ Buffer::Buffer(UART_HandleTypeDef *huart, uint32_t size)
 	this->busy_s = false;
 }
 
-void Buffer::WriteByte(uint8_t * data)
+void ESP8266::WriteByte(uint8_t * data)
 {
 	if (*data != '\0') {
 		this->data[writePos] = *data;
@@ -362,7 +362,7 @@ void Buffer::WriteByte(uint8_t * data)
 	}
 }
 
-HAL_StatusTypeDef Buffer::WaitReady(uint16_t delay)
+HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay)
 {
 	this->waitFlag = WAIT_AT;
 	uint32_t tick = HAL_GetTick();
@@ -382,7 +382,7 @@ HAL_StatusTypeDef Buffer::WaitReady(uint16_t delay)
 	return HAL_OK;
 }
 
-void Buffer::Init()
+void ESP8266::Init()
 {
 	//Send("AT+GMR\r\n");
 	Send("ATE0\r\n");

@@ -8,7 +8,7 @@
 
 enum WaitFlag {WAIT_AT, WAIT_OK, WAIT_ERROR};
 
-class Buffer
+class ESP8266
 {
 private:
 	char IPD_Data[1024];
@@ -25,7 +25,7 @@ private:
 	void processData();
 
 public:
-	Buffer(UART_HandleTypeDef *huart, uint32_t size);
+	ESP8266(UART_HandleTypeDef *huart, uint32_t size);
 
 	uint32_t readPos;
 	uint32_t writePos;
