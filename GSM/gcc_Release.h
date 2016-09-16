@@ -131,9 +131,6 @@
 #ifndef __ARM_FEATURE_UNALIGNED
 #define __ARM_FEATURE_UNALIGNED 1
 #endif
-#ifndef __ARM_ARCH_7M__
-#define __ARM_ARCH_7M__ 1
-#endif
 #ifndef __LFRACT_IBIT__
 #define __LFRACT_IBIT__ 0
 #endif
@@ -172,6 +169,9 @@
 #endif
 #ifndef __UFRACT_FBIT__
 #define __UFRACT_FBIT__ 16
+#endif
+#ifndef __ARM_FP
+#define __ARM_FP 4
 #endif
 #ifndef __UFRACT_MIN__
 #define __UFRACT_MIN__ 0.0UR
@@ -238,9 +238,6 @@
 #endif
 #ifndef __GCC_ATOMIC_CHAR16_T_LOCK_FREE
 #define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
-#endif
-#ifndef STM32F103C8
-#define STM32F103C8 1
 #endif
 #ifndef __USACCUM_IBIT__
 #define __USACCUM_IBIT__ 8
@@ -311,6 +308,9 @@
 #ifndef __ULFRACT_MIN__
 #define __ULFRACT_MIN__ 0.0ULR
 #endif
+#ifndef __ARM_PCS_VFP
+#define __ARM_PCS_VFP 1
+#endif
 #ifndef __LDBL_HAS_QUIET_NAN__
 #define __LDBL_HAS_QUIET_NAN__ 1
 #endif
@@ -319,6 +319,9 @@
 #endif
 #ifndef __UACCUM_EPSILON__
 #define __UACCUM_EPSILON__ 0x1P-16UK
+#endif
+#ifndef STM32F446RE
+#define STM32F446RE 1
 #endif
 #ifndef __GNUC__
 #define __GNUC__ 5
@@ -387,9 +390,6 @@
 #ifndef __INT_LEAST32_MAX__
 #define __INT_LEAST32_MAX__ 0x7fffffffL
 #endif
-#ifndef __ARM_PCS
-#define __ARM_PCS 1
-#endif
 #ifndef __DEC32_MIN__
 #define __DEC32_MIN__ 1E-95DF
 #endif
@@ -453,9 +453,6 @@
 #ifndef __UTA_FBIT__
 #define __UTA_FBIT__ 64
 #endif
-#ifndef __SOFTFP__
-#define __SOFTFP__ 1
-#endif
 #ifndef __FLT_MIN_EXP__
 #define __FLT_MIN_EXP__ (-125)
 #endif
@@ -470,6 +467,9 @@
 #endif
 #ifndef __INT_FAST64_TYPE__
 #define __INT_FAST64_TYPE__ long long int
+#endif
+#ifndef __FP_FAST_FMAF
+#define __FP_FAST_FMAF 1
 #endif
 #ifndef __DBL_MIN__
 #define __DBL_MIN__ double(2.2250738585072014e-308L)
@@ -545,6 +545,9 @@
 #endif
 #ifndef __LLACCUM_EPSILON__
 #define __LLACCUM_EPSILON__ 0x1P-31LLK
+#endif
+#ifndef __ARM_FEATURE_FMA
+#define __ARM_FEATURE_FMA 1
 #endif
 #ifndef __GCC_ATOMIC_INT_LOCK_FREE
 #define __GCC_ATOMIC_INT_LOCK_FREE 2
@@ -795,8 +798,8 @@
 #ifndef __INT_MAX__
 #define __INT_MAX__ 0x7fffffff
 #endif
-#ifndef ARM_MATH_CM3
-#define ARM_MATH_CM3 1
+#ifndef ARM_MATH_CM4
+#define ARM_MATH_CM4 1
 #endif
 #ifndef __LACCUM_FBIT__
 #define __LACCUM_FBIT__ 31
@@ -863,6 +866,12 @@
 #endif
 #ifndef __DBL_EPSILON__
 #define __DBL_EPSILON__ double(2.2204460492503131e-16L)
+#endif
+#ifndef __ARM_ARCH_7EM__
+#define __ARM_ARCH_7EM__ 1
+#endif
+#ifndef __ARM_FEATURE_SIMD32
+#define __ARM_FEATURE_SIMD32 1
 #endif
 #ifndef __INT_LEAST32_TYPE__
 #define __INT_LEAST32_TYPE__ long int
@@ -1053,6 +1062,9 @@
 #ifndef __ULACCUM_FBIT__
 #define __ULACCUM_FBIT__ 32
 #endif
+#ifndef __ARM_FEATURE_DSP
+#define __ARM_FEATURE_DSP 1
+#endif
 #ifndef __QQ_IBIT__
 #define __QQ_IBIT__ 0
 #endif
@@ -1062,40 +1074,40 @@
 #ifndef __ATOMIC_RELEASE
 #define __ATOMIC_RELEASE 3
 #endif
-#ifndef DEBUG
-#define DEBUG 1
+#ifndef NDEBUG
+#define NDEBUG 1
+#endif
+#ifndef RELEASE
+#define RELEASE 1
 #endif
 #ifndef stm32_flash_layout
 #define stm32_flash_layout 
 #endif
-#ifndef STM32F103xB
-#define STM32F103xB 
-#endif
-#ifndef USE_HAL_LEGACY 
-#define USE_HAL_LEGACY  
+#ifndef STM32F446xx
+#define STM32F446xx 
 #endif
 #endif
 
 // --- Include directories begin --- //
 //.
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0
-//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/arm-eabi/thumb/cortex_m3
+//c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/arm-eabi/thumb/fpu/cortex_m4
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include/c++/5.3.0/backward
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/include
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/include-fixed
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/sys-include
 //c:\sysgcc\arm-eabi\bin\../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/include
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/STM32F1xx_HAL_Driver/Inc/Legacy
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Device/ST/STM32F1xx/Include
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/Include
-//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F1xxxx/CMSIS_HAL/RTOS/Template
+//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F4xxxx/STM32F4xx_HAL_Driver/Inc
+//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F4xxxx/STM32F4xx_HAL_Driver/Inc/Legacy
+//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F4xxxx/CMSIS_HAL/Device/ST/STM32F4xx/Include
+//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F4xxxx/CMSIS_HAL/Include
+//$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32/STM32F4xxxx/CMSIS_HAL/RTOS/Template
 // --- Include directories end --- //
 
 
 // --- Library directories begin --- //
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/thumb/cortex_m3/
-//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/thumb/cortex_m3/
+//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/thumb/fpu/cortex_m4/
+//c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/thumb/fpu/cortex_m4/
 //c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/
 //c:/sysgcc/arm-eabi/bin/../lib/gcc/
 //c:/sysgcc/arm-eabi/bin/../lib/gcc/arm-eabi/5.3.0/../../../../arm-eabi/lib/
