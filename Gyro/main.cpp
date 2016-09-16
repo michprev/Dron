@@ -83,13 +83,21 @@ int main(void)
 	
 	uint t = 0;
 	unsigned long next_temp_ms = 0;
+	unsigned long next_compass_ms = 0;
 	bool new_temp = false;
+	bool new_compass = false;
 	unsigned long timestamp;
 
 	while (true)
 	{
 		bool new_data = false;
+		unsigned long sensor_timestamp;
 		get_tick_count(&timestamp);
+
+		if ((timestamp > next_compass_ms) && dataReady) {
+			next_compass_ms = timestamp + 100;
+			new_compass = 1;
+		}
 
 		if (timestamp > next_temp_ms) {
 			next_temp_ms = timestamp + 500;
@@ -100,7 +108,6 @@ int main(void)
 			short gyro[3], accel_short[3], sensors;
 			unsigned char more;
 			long accel[3], quat[4], temperature;
-			unsigned long sensor_timestamp;
 
 			dmp_read_fifo(gyro, accel_short, quat, &sensor_timestamp, &sensors, &more);
 
@@ -128,6 +135,26 @@ int main(void)
 				inv_build_quat(quat, 0, sensor_timestamp);
 				new_data = true;
 			}
+		}
+		if (new_compass) {
+			short compass_short[3];
+			long compass[3];
+			new_compass = 0;
+			/* For any MPU device with an AKM on the auxiliary I2C bus, the raw
+			* magnetometer registers are copied to special gyro registers.
+			*/
+			if (!mpu_get_compass_reg(compass_short, &sensor_timestamp)) {
+				compass[0] = (long)compass_short[0];
+				compass[1] = (long)compass_short[1];
+				compass[2] = (long)compass_short[2];
+				/* NOTE: If using a third-party compass calibration library,
+				* pass in the compass data in uT * 2^16 and set the second
+				* parameter to INV_CALIBRATED | acc, where acc is the
+				* accuracy from 0 to 3.
+				*/
+				inv_build_compass(compass, 0, sensor_timestamp);
+			}
+			new_data = 1;
 		}
 
 		if (new_data) {

@@ -143,19 +143,7 @@
   </Debug>
   <CustomBuild>
     <PreBuildActions />
-    <PostBuildActions>
-      <CustomActionBase xsi:type="FileTransferAction">
-        <SkipWhenRunningCommandList>false</SkipWhenRunningCommandList>
-        <SourceHost>
-          <Transport>None</Transport>
-        </SourceHost>
-        <DestinationHost>
-          <Transport>None</Transport>
-        </DestinationHost>
-        <SourceFilePath>$(ProjectDir)\Debug\Gyro.bin</SourceFilePath>
-        <DestinationFilePath>C:\Users\michp\OneDrive\Projects\Dron\STM32Upload\Gyro.bin</DestinationFilePath>
-      </CustomActionBase>
-    </PostBuildActions>
+    <PostBuildActions />
     <PreCleanActions />
     <PostCleanActions />
   </CustomBuild>

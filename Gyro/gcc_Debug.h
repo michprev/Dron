@@ -849,6 +849,9 @@
 #ifndef __INT_LEAST64_MAX__
 #define __INT_LEAST64_MAX__ 0x7fffffffffffffffLL
 #endif
+#ifndef HMC5983
+#define HMC5983 1
+#endif
 #ifndef __DEC64_MIN__
 #define __DEC64_MIN__ 1E-383DD
 #endif
