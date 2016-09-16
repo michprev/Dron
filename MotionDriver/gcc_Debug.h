@@ -326,6 +326,9 @@
 #ifndef __UACCUM_EPSILON__
 #define __UACCUM_EPSILON__ 0x1P-16UK
 #endif
+#ifndef AK8963_SECONDARY
+#define AK8963_SECONDARY 1
+#endif
 #ifndef __GNUC__
 #define __GNUC__ 5
 #endif
