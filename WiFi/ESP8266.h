@@ -14,15 +14,15 @@ private:
 	char IPD_Data[1024];
 	WaitFlag waitFlag;
 	bool inIPD;
+	char *lastCommand;
+	char *error;
 	UART_HandleTypeDef *huart;
 	
 	uint32_t getFreeSize();
 	uint32_t getFullSize();
-	//uint32_t findLineFeed();
 	uint32_t findString(char *str);
-	bool checkInputSymbol();
 	uint8_t readData(char *data, uint8_t count);
-	void processData();
+	void processData(bool printError);
 
 public:
 	ESP8266(UART_HandleTypeDef *huart, uint32_t size);
@@ -34,13 +34,12 @@ public:
 	char LinkID;
 	bool ready;
 	bool output;
-	bool busy_s;
 	void(*IPD_Callback)(char *data);
 
-	HAL_StatusTypeDef Send(char *str, bool wait = true);
-	HAL_StatusTypeDef Send(char *data, uint16_t count, bool wait = true);
+	HAL_StatusTypeDef Send(char *str, bool wait = true, bool printError = true);
+	HAL_StatusTypeDef Send(char *data, uint16_t count, bool wait = true, bool printError = true);
 	void WriteByte(uint8_t *data);
-	HAL_StatusTypeDef WaitReady(uint16_t delay = 5000);
+	HAL_StatusTypeDef WaitReady(uint16_t delay = 5000, bool printError = true);
 	void Init();
 };
 

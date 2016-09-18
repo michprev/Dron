@@ -139,7 +139,7 @@ uint8_t ESP8266::readData(char *data, uint8_t count)
 	}
 }
 
-void ESP8266::processData()
+void ESP8266::processData(bool printError)
 {
 	const uint16_t TMP_BUFFER_SIZE = 256;
 	char buffer[256];
@@ -150,10 +150,10 @@ void ESP8266::processData()
 	if (fullSize == 0)	// buffer empty
 		return;
 
-	if (freeSize != 0 &&				// buffer is not full
-		findString("\n") == -1 &&			// there is no \n
-		fullSize < TMP_BUFFER_SIZE)
-		return;
+	//if (freeSize != 0 &&				// buffer is not full
+	//	findString("\n") == -1 &&			// there is no \n
+	//	fullSize < TMP_BUFFER_SIZE)
+	//	return;
 
 	if (findString("+IPD") == 0) {
 		this->inIPD = true;
@@ -202,26 +202,27 @@ void ESP8266::processData()
 		}
 		else if (strcmp("ERROR\r\n", buffer) == 0) {
 			uint32_t tmpPos = this->readPos;
-			char tmp[100];
+			char tmp[101];
 			
-			if (tmpPos < 100) {
-				uint8_t firstPart = 99 - tmpPos;
+			if (tmpPos < 99) {
+				uint8_t firstPart = 100 - tmpPos;
 				strncpy(tmp, (char*)(this->data + this->size - firstPart), firstPart);
 				strncpy(tmp + firstPart, (char*)this->data, tmpPos);
 			}
 			else {
-				strncpy(tmp, (char*)(data + readPos - 99), 99);
+				strncpy(tmp, (char*)(data + readPos - 100), 100);
 			}
 
 			tmp[100] = 0;
+			this->error = tmp;
+			/*if (printError)
+				printf("error: %s\n", tmp);*/
 
-			printf("error: %s\n", tmp);
 			this->waitFlag = WAIT_ERROR;
+
+			return;
 		}
 		else if (strcmp("OK\r\n", buffer) == 0) {
-			if (this->busy_s)
-				printf("OK\n");
-			this->busy_s = false;
 			this->waitFlag = WAIT_OK;
 		}
 		else if (strcmp("SEND OK\r\n", buffer) == 0) {
@@ -232,10 +233,6 @@ void ESP8266::processData()
 		}
 		else if (strncmp("Recv", buffer, 4) == 0) {
 
-		}
-		else if (strcmp("busy s...\r\n", buffer) == 0) {
-			this->busy_s = true;
-			this->output = true;
 		}
 		else if (this->output)
 			printf("Msg: %s\n",	buffer);
@@ -300,39 +297,43 @@ void ESP8266::processData()
 	}
 }
 
-HAL_StatusTypeDef ESP8266::Send(char *str, bool wait)
+HAL_StatusTypeDef ESP8266::Send(char *str, bool wait, bool printError)
 {
+	this->lastCommand = str;
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)str, strlen(str), 1000);
 
 	if (s != HAL_OK)
 		printf("UART error\n");
 
 	if (wait) {
-		if (WaitReady() != HAL_OK)
-			printf("wait not OK\n");
+		HAL_StatusTypeDef status = WaitReady(5000, printError);
 
-		while (this->busy_s) {
-			printf("still busy\n");
-			WaitReady();
-		}
+		if (status == HAL_ERROR && printError)
+			printf("error on: %s\n", this->error);
+		else if (status == HAL_TIMEOUT && printError)
+			printf("timed out: %s\n");
+
+		return status;
 	}
 }
 
-HAL_StatusTypeDef ESP8266::Send(char * data, uint16_t count, bool wait)
+HAL_StatusTypeDef ESP8266::Send(char * data, uint16_t count, bool wait, bool printError)
 {
+	this->lastCommand = data;
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)data, count, 1000);
 
 	if (s != HAL_OK)
 		printf("UART error\n");
 
 	if (wait) {
-		if (WaitReady() != HAL_OK)
-			printf("wait not OK\n");
+		HAL_StatusTypeDef status = WaitReady(5000, printError);
 
-		while (this->busy_s) {
-			printf("still busy\n");
-			WaitReady();
-		}
+		if (status == HAL_ERROR && printError)
+			printf("error on: %s\n", this->error);
+		else if (status == HAL_TIMEOUT && printError)
+			printf("timed out: %s\n");
+
+		return status;
 	}
 }
 
@@ -348,7 +349,6 @@ ESP8266::ESP8266(UART_HandleTypeDef *huart, uint32_t size)
 	this->huart = huart;
 	this->IPD_Callback = NULL;
 	this->LinkID = -1;
-	this->busy_s = false;
 }
 
 void ESP8266::WriteByte(uint8_t * data)
@@ -362,16 +362,15 @@ void ESP8266::WriteByte(uint8_t * data)
 	}
 }
 
-HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay)
+HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay, bool printError)
 {
 	this->waitFlag = WAIT_AT;
 	uint32_t tick = HAL_GetTick();
 
 	while (this->waitFlag == WAIT_AT) {
-		processData();
+		processData(printError);
 
 		if (HAL_GetTick() - tick > delay) {
-			//printf("timed out\n");
 			return HAL_TIMEOUT;
 		}
 	}
