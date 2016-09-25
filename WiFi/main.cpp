@@ -321,8 +321,6 @@ int on_url_callback(http_parser *parser, const char *at, size_t length) {
 }
 
 void IPD_Callback(char *data) {
-	//printf(data);
-
 	uint16_t parsed = http_parser_execute(&parser, &settings, data, strlen(data));
 
 	if (parsed != strlen(data)) {
@@ -336,6 +334,11 @@ extern "C" void USART1_IRQHandler(void)
 	uint8_t data = huart.Instance->DR & (uint8_t)0x00FF;
 
 	esp8266.WriteByte(&data);
+}
+
+extern "C" void HardFault_Handler(void)
+{
+	printf("hard fault\n");
 }
 
 int main(void)
@@ -410,164 +413,33 @@ int main(void)
 			HAL_Delay(20);
 			HAL_IWDG_Refresh(&hiwdg);
 
-			uint8_t status = HAL_OK;
-
 			if (strcmp(url[urlRead], "/") == 0) {
 				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var chart = new SmoothieChart(); var line = new TimeSeries(); chart.addTimeSeries(line, { lineWidth: 2, strokeStyle: '#00ff00' }); chart.streamTo(document.getElementById(\"mycanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { console.log(this.responseText); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); /*line.append(new Date().getTime(), Math.random());*/ }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"mycanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
-				char httpMsg[200] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
+				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
 
-				itoa(strlen(body), httpMsg + strlen(httpMsg), 10);
-				strcat(httpMsg, "\r\n\r\n");
-				strcat(httpMsg, body);
-
-				char msg[50] = "AT+CIPSENDBUF=0,";
-				msg[14] = esp8266.LinkID;
-				itoa(strlen(httpMsg), msg + strlen(msg), 10);
-				strcat(msg, "\r\n");
-
-				if (esp8266.LinkID != -1) {
-					do {
-						HAL_Delay(20);
-
-						status = esp8266.Send(msg, true, false);
-					} while (status != HAL_OK);
-
-					if (esp8266.WaitReady() != HAL_OK)
-						printf("e\n");
-					esp8266.Send(httpMsg, false);
-				}
-				else {
-					printf("Disconnected\n");
-				}
-
-				printf("s\n");
-
-				urlRead++;
-				if (urlRead == 10)
-					urlRead = 0;
+				esp8266.SendFile(header, body, strlen(body));
 			}
 			else if (strcmp(url[urlRead], "/smoothie.js") == 0) {
-				char httpMsg[2048] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: application/javascript\r\nContent-Encoding: gzip\r\nContent-Length: 8907\r\n\r\n";
-				char msg[] = "AT+CIPSENDBUF=0,2048\r\n";
+				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: application/javascript\r\nContent-Encoding: gzip\r\nContent-Length: ";
 
-				uint16_t len = strlen(httpMsg);
-				uint16_t copied = 2048 - len;
-				memcpy(httpMsg + len, smoothie, sizeof(char) * copied);
-
-				if (esp8266.LinkID != -1) {
-					do {
-						HAL_Delay(20);
-
-						status = esp8266.Send(msg, true, false);
-					} while (status == HAL_ERROR);
-
-					if (esp8266.WaitReady() != HAL_OK)
-						printf("e\n");
-					esp8266.Send(httpMsg, 2048, false, false);
-				}
-				else {
-					printf("Disconnected\n");
-				}
-
-				for (uint8_t i = 0; i < (smoothie_size - copied) / 2048; i++) {
-					char command[] = "AT+CIPSENDBUF=0,2048\r\n";
-					command[14] = esp8266.LinkID;
-
-					if (esp8266.LinkID != -1) {
-						do {
-							HAL_Delay(20);
-
-							status = esp8266.Send(command, true, false);
-						} while (status == HAL_ERROR);
-
-						if (esp8266.WaitReady() != HAL_OK)
-							printf("e\n");
-						esp8266.Send(smoothie + (copied + i * 2048), 2048, false, true);
-					}
-					else {
-						printf("Disconnected\n");
-					}
-				}
-
-				if ((smoothie_size - copied) % 2048 != 0) {
-					uint16_t length = (smoothie_size - copied) % 2048;
-
-					char msg[50] = "AT+CIPSENDBUF=0,";
-					msg[14] = esp8266.LinkID;
-					itoa(length, msg + strlen(msg), 10);
-					strcat(msg, "\r\n");
-
-					do {
-						HAL_Delay(20);
-
-						status = esp8266.Send(msg);
-					} while (status == HAL_ERROR);
-
-					if (esp8266.WaitReady() != HAL_OK)
-						printf("e\n");
-					esp8266.Send(smoothie + smoothie_size - length, length, false);
-				}
-
-				urlRead++;
-				if (urlRead == 10)
-					urlRead = 0;
+				esp8266.SendFile(header, smoothie, smoothie_size);
 			}
 			else if (strcmp(url[urlRead], "/favicon.ico") == 0) {
-				char httpMsg[200] = "HTTP/1.1 404 Not Found\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: 0\r\n\r\n";
+				char header[] = "HTTP/1.1 404 Not Found\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
 
-				char msg[50] = "AT+CIPSEND=0,";
-				msg[11] = esp8266.LinkID;
-				itoa(strlen(httpMsg), msg + strlen(msg), 10);
-				strcat(msg, "\r\n");
-
-				if (esp8266.LinkID != -1) {
-					esp8266.Send(msg);
-					esp8266.Send(httpMsg);
-				}
-				else {
-					printf("Disconnected\n");
-				}
-
-				urlRead++;
-				if (urlRead == 10)
-					urlRead = 0;
+				esp8266.SendFile(header, NULL, 0);
 			}
 			else if (strcmp(url[urlRead], "/getData") == 0) {
-				char httpMsg[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/plain\r\nContent-Length: 4\r\n\r\nAhoj";
-
-				char msg[50] = "AT+CIPSENDBUF=0,";
-				msg[14] = esp8266.LinkID;
-				itoa(strlen(httpMsg), msg + strlen(msg), 10);
-				strcat(msg, "\r\n");
-
-				if (esp8266.LinkID != -1) {
-					do {
-						HAL_Delay(20);
-
-						status = esp8266.Send(msg, true, false);
-					} while (status != HAL_OK);
-
-					if (esp8266.WaitReady() != HAL_OK)
-						printf("e\n");
-					esp8266.Send(httpMsg, false);
-				}
-				else {
-					printf("Disconnected\n");
-				}
-				
-				urlRead++;
-				if (urlRead == 10)
-					urlRead = 0;
+				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/plain\r\nContent-Length: ";
 			}
 			else {
 				printf("Unhandled URL: %s\n", url[urlRead]);
-
-				urlRead++;
-				if (urlRead == 10)
-					urlRead = 0;
 			}
-		}
 
+			urlRead++;
+			if (urlRead == 10)
+				urlRead = 0;
+		}
 			
 
 		esp8266.WaitReady(50);

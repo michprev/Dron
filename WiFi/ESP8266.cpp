@@ -139,9 +139,8 @@ uint8_t ESP8266::readData(char *data, uint8_t count)
 	}
 }
 
-void ESP8266::processData(bool printError)
+void ESP8266::processData()
 {
-	const uint16_t TMP_BUFFER_SIZE = 256;
 	char buffer[256];
 
 	uint32_t fullSize = getFullSize();
@@ -149,11 +148,6 @@ void ESP8266::processData(bool printError)
 
 	if (fullSize == 0)	// buffer empty
 		return;
-
-	//if (freeSize != 0 &&				// buffer is not full
-	//	findString("\n") == -1 &&			// there is no \n
-	//	fullSize < TMP_BUFFER_SIZE)
-	//	return;
 
 	if (findString("+IPD") == 0) {
 		this->inIPD = true;
@@ -191,6 +185,8 @@ void ESP8266::processData(bool printError)
 		buffer[i] = '\0';
 
 
+		char *commaPos = strchr(buffer, ',');
+
 		if (strcmp("ready\r\n", buffer) == 0) {
 			this->ready = true;
 		}
@@ -201,23 +197,6 @@ void ESP8266::processData(bool printError)
 			this->LinkID = -1;
 		}
 		else if (strcmp("ERROR\r\n", buffer) == 0) {
-			uint32_t tmpPos = this->readPos;
-			char tmp[101];
-			
-			if (tmpPos < 99) {
-				uint8_t firstPart = 100 - tmpPos;
-				strncpy(tmp, (char*)(this->data + this->size - firstPart), firstPart);
-				strncpy(tmp + firstPart, (char*)this->data, tmpPos);
-			}
-			else {
-				strncpy(tmp, (char*)(data + readPos - 100), 100);
-			}
-
-			tmp[100] = 0;
-			this->error = tmp;
-			/*if (printError)
-				printf("error: %s\n", tmp);*/
-
 			this->waitFlag = WAIT_ERROR;
 
 			return;
@@ -234,6 +213,24 @@ void ESP8266::processData(bool printError)
 		else if (strncmp("Recv", buffer, 4) == 0) {
 
 		}
+		else if (strcmp(this->expectedResponse, buffer) == 0) {
+			this->expectedResponse[0] = '\0';
+			this->waitFlag = WAIT_OK;
+		}
+		else if (commaPos != NULL && commaPos != buffer && commaPos != (buffer + strlen(buffer) - 1)) {
+			uint32_t currentSegment = strtoul(buffer, NULL, 10);
+
+			if (currentSegment != 0) {
+				uint32_t previousSegment = strtoul(commaPos + 1, NULL, 10);
+
+				if (previousSegment != 0) {
+					sprintf(this->expectedResponse, "%c,%d,SEND OK\r\n", this->LinkID, currentSegment);
+				}
+				else if (previousSegment == 0 && currentSegment == 1) {
+					sprintf(this->expectedResponse, "%c,%d,SEND OK\r\n", this->LinkID, currentSegment);
+				}
+			}
+		}
 		else if (this->output)
 			printf("Msg: %s\n",	buffer);
 	}
@@ -244,8 +241,6 @@ void ESP8266::processData(bool printError)
 		char c;
 		uint8_t readCount;
 		uint8_t commaCount = 0;
-
-		uint32_t tick = HAL_GetTick();
 
 		do {
 			readCount = readData(&c, 1);
@@ -259,7 +254,7 @@ void ESP8266::processData(bool printError)
 				if (c == ',')
 					commaCount++;
 			}
-		} while (c != ':' && HAL_GetTick() - tick < 7000);
+		} while (c != ':');
 
 		if (c != ':')
 			printf("IPD header timed out\n");
@@ -268,9 +263,7 @@ void ESP8266::processData(bool printError)
 		int dataRead = 0;
 		int IPD_Pos = 0;
 
-		tick = HAL_GetTick();
-
-		while (dataRead != IPD_Length && HAL_GetTick() - tick < 7000) {
+		while (dataRead != IPD_Length) {
 			readCount = readData(&c, 1);
 
 			if (readCount == 1) {
@@ -286,18 +279,65 @@ void ESP8266::processData(bool printError)
 		this->IPD_Data[IPD_Pos] = '\0';
 
 		this->inIPD = false;
-
-		//printf("IPD\n");
-
+		
 		if (this->IPD_Callback != NULL) {
 			this->IPD_Callback(this->IPD_Data);
 		}
-
-		//printf("IPD returned\n");
 	}
 }
 
-HAL_StatusTypeDef ESP8266::Send(char *str, bool wait, bool printError)
+void ESP8266::sendPacket(char * command, char *data, uint16_t dataSize)
+{
+	HAL_StatusTypeDef status;
+	uint32_t tick = HAL_GetTick();
+
+	do {
+		HAL_Delay(20);
+		if (HAL_GetTick() - tick > 7000) {
+			printf("time out\n");
+		}
+
+		status = send(command);
+	} while (status != HAL_OK);
+
+	WaitReady();
+
+	send(data, dataSize);
+}
+
+void ESP8266::SendFile(char * header, char * body, uint16_t bodySize)
+{
+	uint16_t copied = 0;
+	char command[30];
+	sprintf(this->sendBuffer, "%s%d\r\n\r\n", header, bodySize);
+
+	uint16_t headerSize = strlen(this->sendBuffer);
+
+	if (bodySize != 0) {
+		copied += (2048 - headerSize < bodySize ? 2048 - headerSize : bodySize);
+		memcpy(this->sendBuffer + headerSize, body, copied);
+	}
+
+	sprintf(command, "AT+CIPSENDBUF=%c,%d\r\n", this->LinkID, headerSize + copied);
+	this->sendPacket(command, this->sendBuffer, headerSize + copied);
+
+	while (bodySize - copied >= 2048) {
+		sprintf(command, "AT+CIPSENDBUF=%c,2048\r\n", this->LinkID);
+		memcpy(this->sendBuffer, body + copied, 2048);
+
+		this->sendPacket(command, this->sendBuffer, 2048);
+		copied += 2048;
+	}
+
+	if (bodySize - copied != 0) {
+		sprintf(command, "AT+CIPSENDBUF=%c,%d\r\n", this->LinkID, bodySize - copied);
+		memcpy(this->sendBuffer, body + copied, bodySize - copied);
+
+		this->sendPacket(command, this->sendBuffer, bodySize - copied);
+	}
+}
+
+HAL_StatusTypeDef ESP8266::send(char *str)
 {
 	this->lastCommand = str;
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)str, strlen(str), 1000);
@@ -305,19 +345,17 @@ HAL_StatusTypeDef ESP8266::Send(char *str, bool wait, bool printError)
 	if (s != HAL_OK)
 		printf("UART error\n");
 
-	if (wait) {
-		HAL_StatusTypeDef status = WaitReady(5000, printError);
+	HAL_StatusTypeDef status = WaitReady(5000);
 
-		if (status == HAL_ERROR && printError)
-			printf("error on: %s\n", this->error);
-		else if (status == HAL_TIMEOUT && printError)
-			printf("timed out: %s\n");
+	if (status == HAL_ERROR)
+		printf("error\n");
+	else if (status == HAL_TIMEOUT)
+		printf("timed out\n");
 
-		return status;
-	}
+	return status;
 }
 
-HAL_StatusTypeDef ESP8266::Send(char * data, uint16_t count, bool wait, bool printError)
+HAL_StatusTypeDef ESP8266::send(char * data, uint16_t count)
 {
 	this->lastCommand = data;
 	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)data, count, 1000);
@@ -325,16 +363,14 @@ HAL_StatusTypeDef ESP8266::Send(char * data, uint16_t count, bool wait, bool pri
 	if (s != HAL_OK)
 		printf("UART error\n");
 
-	if (wait) {
-		HAL_StatusTypeDef status = WaitReady(5000, printError);
+	HAL_StatusTypeDef status = WaitReady(5000);
 
-		if (status == HAL_ERROR && printError)
-			printf("error on: %s\n", this->error);
-		else if (status == HAL_TIMEOUT && printError)
-			printf("timed out: %s\n");
+	if (status == HAL_ERROR)
+		printf("error\n");
+	else if (status == HAL_TIMEOUT)
+		printf("timed out\n");
 
-		return status;
-	}
+	return status;
 }
 
 ESP8266::ESP8266(UART_HandleTypeDef *huart, uint32_t size)
@@ -362,13 +398,13 @@ void ESP8266::WriteByte(uint8_t * data)
 	}
 }
 
-HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay, bool printError)
+HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay)
 {
 	this->waitFlag = WAIT_AT;
 	uint32_t tick = HAL_GetTick();
 
 	while (this->waitFlag == WAIT_AT) {
-		processData(printError);
+		processData();
 
 		if (HAL_GetTick() - tick > delay) {
 			return HAL_TIMEOUT;
@@ -384,11 +420,11 @@ HAL_StatusTypeDef ESP8266::WaitReady(uint16_t delay, bool printError)
 void ESP8266::Init()
 {
 	//Send("AT+GMR\r\n");
-	Send("ATE0\r\n");
-	Send("AT+CWMODE_CUR=2\r\n");
-	Send("AT+CWSAP_CUR=\"DRON_WIFI\",\"123456789\",5,3,1,0\r\n");
-	Send("AT+CWDHCP_CUR=0,1\r\n");
+	send("ATE0\r\n");
+	send("AT+CWMODE_CUR=2\r\n");
+	send("AT+CWSAP_CUR=\"DRON_WIFI\",\"123456789\",5,3,1,0\r\n");
+	send("AT+CWDHCP_CUR=0,1\r\n");
 	//Send("AT+CIFSR\r\n");
-	Send("AT+CIPMUX=1\r\n");
-	Send("AT+CIPSERVER=1,80\r\n");
+	send("AT+CIPMUX=1\r\n");
+	send("AT+CIPSERVER=1,80\r\n");
 }
