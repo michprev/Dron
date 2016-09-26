@@ -414,7 +414,7 @@ int main(void)
 			HAL_IWDG_Refresh(&hiwdg);
 
 			if (strcmp(url[urlRead], "/") == 0) {
-				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var chart = new SmoothieChart(); var line = new TimeSeries(); chart.addTimeSeries(line, { lineWidth: 2, strokeStyle: '#00ff00' }); chart.streamTo(document.getElementById(\"mycanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { console.log(this.responseText); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); /*line.append(new Date().getTime(), Math.random());*/ }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"mycanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
+				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var chart = new SmoothieChart(); var line = new TimeSeries(); chart.addTimeSeries(line, { lineWidth: 2, strokeStyle: '#00ff00' }); chart.streamTo(document.getElementById(\"mycanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { var data = JSON.parse(this.responseText); line.append(new Date().getTime(), data.d1); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"mycanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
 				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
 
 				esp8266.SendFile(header, body, strlen(body));
@@ -430,7 +430,12 @@ int main(void)
 				esp8266.SendFile(header, NULL, 0);
 			}
 			else if (strcmp(url[urlRead], "/getData") == 0) {
-				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/plain\r\nContent-Length: ";
+				esp8266.canTimeout = true;
+				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: application/json\r\nContent-Length: ";
+				char body[30];
+
+				sprintf(body, "{\r\n\"d1\": %d\r\n}", rand() % 100);
+				esp8266.SendFile(header, body, strlen(body));
 			}
 			else {
 				printf("Unhandled URL: %s\n", url[urlRead]);

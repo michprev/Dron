@@ -32,25 +32,6 @@ uint32_t ESP8266::getFullSize()
 		return (this->size - read + write);	
 }
 
-//uint32_t Buffer::findLineFeed()
-//{
-//	uint32_t readPos = this->readPos;
-//	uint32_t length = getFullSize();
-//
-//	while (length > 0) {
-//		if (readPos >= this->size)
-//			readPos = 0;
-//
-//		if (this->data[readPos] == '\n')
-//			return readPos;
-//
-//		length--;
-//		readPos++;
-//	}
-//
-//	return -1;
-//}
-
 uint32_t ESP8266::findString(char * str)
 {
 	uint32_t length = strlen(str);
@@ -88,24 +69,6 @@ uint32_t ESP8266::findString(char * str)
 
 	return -1;
 }
-
-//bool Buffer::checkInputSymbol()
-//{
-//	uint32_t size = getFullSize();
-//
-//	if (size >= 2) {
-//		if (this->readPos + 1 == this->size) {
-//			if (this->data[this->readPos] == '>' && this->data[0] == ' ')
-//				return true;
-//		}
-//		else {
-//			if (this->data[this->readPos] == '>' && this->data[this->readPos + 1] == ' ')
-//				return true;
-//		}
-//	}
-//
-//	return false;
-//}
 
 uint8_t ESP8266::readData(char *data, uint8_t count)
 {
@@ -349,7 +312,7 @@ HAL_StatusTypeDef ESP8266::send(char *str)
 
 	if (status == HAL_ERROR)
 		printf("error\n");
-	else if (status == HAL_TIMEOUT)
+	else if (status == HAL_TIMEOUT && !this->canTimeout)
 		printf("timed out\n");
 
 	return status;
@@ -367,7 +330,7 @@ HAL_StatusTypeDef ESP8266::send(char * data, uint16_t count)
 
 	if (status == HAL_ERROR)
 		printf("error\n");
-	else if (status == HAL_TIMEOUT)
+	else if (status == HAL_TIMEOUT && !this->canTimeout)
 		printf("timed out\n");
 
 	return status;
@@ -385,6 +348,7 @@ ESP8266::ESP8266(UART_HandleTypeDef *huart, uint32_t size)
 	this->huart = huart;
 	this->IPD_Callback = NULL;
 	this->LinkID = -1;
+	this->canTimeout = false;
 }
 
 void ESP8266::WriteByte(uint8_t * data)

@@ -21,6 +21,7 @@ private:
 	uint32_t readPos;
 	uint32_t writePos;
 	UART_HandleTypeDef *huart;
+	int8_t LinkID;
 	
 	uint32_t getFreeSize();
 	uint32_t getFullSize();
@@ -34,8 +35,8 @@ private:
 public:
 	uint32_t size;
 	uint8_t *data;
-	int8_t LinkID;
 	bool ready;
+	bool canTimeout;
 	void(*IPD_Callback)(char *data);
 
 	ESP8266(UART_HandleTypeDef *huart, uint32_t size);
