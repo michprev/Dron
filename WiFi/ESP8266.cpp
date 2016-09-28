@@ -151,6 +151,9 @@ void ESP8266::processData()
 		char *commaPos = strchr(buffer, ',');
 
 		if (strcmp("ready\r\n", buffer) == 0) {
+			if (this->ready)
+				printf("restarted\n");
+
 			this->ready = true;
 		}
 		else if (strcmp(",CONNECT\r\n", buffer + 1) == 0) {
@@ -251,21 +254,23 @@ void ESP8266::processData()
 
 void ESP8266::sendPacket(char * command, char *data, uint16_t dataSize)
 {
-	HAL_StatusTypeDef status;
-	uint32_t tick = HAL_GetTick();
+	if (this->LinkID != -1) {
+		HAL_StatusTypeDef status;
+		uint32_t tick = HAL_GetTick();
 
-	do {
-		HAL_Delay(20);
-		if (HAL_GetTick() - tick > 7000) {
-			printf("time out\n");
-		}
+		do {
+			HAL_Delay(20);
+			if (HAL_GetTick() - tick > 7000) {
+				printf("time out\n");
+			}
 
-		status = send(command);
-	} while (status != HAL_OK);
+			status = send(command);
+		} while (status != HAL_OK);
 
-	WaitReady();
+		WaitReady();
 
-	send(data, dataSize);
+		send(data, dataSize);
+	}
 }
 
 void ESP8266::SendFile(char * header, char * body, uint16_t bodySize)
