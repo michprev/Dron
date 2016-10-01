@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>DronUI</title>
+	<meta charset="utf-8" />
+    <script type="text/javascript" src="smoothie.js"></script>
+    <script>
+        function init() {
+            var tempChart = new SmoothieChart({ interpolation: 'linear' });
+            var tempLine = new TimeSeries();
+            tempChart.addTimeSeries(tempLine, { lineWidth: 2, strokeStyle: '#00ff00' });
+            tempChart.streamTo(document.getElementById("tempCanvas"), 1000);
+
+            var pressChart = new SmoothieChart({ interpolation: 'linear' });
+            var pressLine = new TimeSeries();
+            pressChart.addTimeSeries(pressLine, { lineWidth: 2, strokeStyle: '#00ff00' });
+            pressChart.streamTo(document.getElementById("pressCanvas"), 1000);
+
+            setInterval(function () {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var data = JSON.parse(this.responseText);
+
+                        tempLine.append(new Date().getTime(), data.temp);
+                        pressLine.append(new Date().getTime(), data.press);
+                    }
+                };
+                xhttp.open("GET", "getData", true);
+                xhttp.send();
+            }, 1000);
+        }
+    </script>
+</head>
+<body onload="init()">
+    <h2>Ultrasonic sensor</h2>
+    <canvas id="tempCanvas" width="900" height="100"></canvas>
+    <canvas id="pressCanvas" width="900" height="100"></canvas>
+</body>
+</html>
