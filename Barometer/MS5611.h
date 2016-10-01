@@ -7,15 +7,15 @@
 class MS5611
 {
 public:
-	MS5611(I2C_HandleTypeDef *hi2c);
 	HAL_StatusTypeDef Reset();
 	HAL_StatusTypeDef Init();
 	HAL_StatusTypeDef GetData(int32_t *temperature, int32_t *pressure);
 private:
 	const uint8_t ADDRESS = 0xEE;
 	uint16_t C[6];
+	I2C_HandleTypeDef hi2c;
 
-	I2C_HandleTypeDef *hi2c;
+	HAL_StatusTypeDef I2C_Init();
 };
 
 #endif

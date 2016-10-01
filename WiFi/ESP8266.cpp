@@ -1,6 +1,46 @@
 #include "ESP8266.h"
 
 
+HAL_StatusTypeDef ESP8266::UART_Init()
+{
+	if (__GPIOA_IS_CLK_DISABLED())
+		__GPIOA_CLK_ENABLE();
+
+	if (__USART1_IS_CLK_DISABLED())
+		__USART1_CLK_ENABLE();
+
+	GPIO_InitTypeDef rst;
+	rst.Pin = GPIO_PIN_5;
+	rst.Mode = GPIO_MODE_OUTPUT_PP;
+	rst.Pull = GPIO_PULLUP;;
+	rst.Speed = GPIO_SPEED_HIGH;
+	HAL_GPIO_Init(GPIOA, &rst);
+
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+	GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+	this->huart.Instance = USART1;
+	this->huart.Init.BaudRate = 115200;
+	this->huart.Init.WordLength = UART_WORDLENGTH_8B;
+	this->huart.Init.StopBits = UART_STOPBITS_1;
+	this->huart.Init.Parity = UART_PARITY_NONE;
+	this->huart.Init.Mode = UART_MODE_TX_RX;
+	this->huart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	this->huart.Init.OverSampling = UART_OVERSAMPLING_8;
+	HAL_UART_Init(&this->huart);
+
+	__HAL_UART_ENABLE_IT(&this->huart, UART_IT_RXNE);
+
+	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
+}
+
 // free to write
 uint32_t ESP8266::getFreeSize()
 {
@@ -308,7 +348,7 @@ void ESP8266::SendFile(char * header, char * body, uint16_t bodySize)
 HAL_StatusTypeDef ESP8266::send(char *str)
 {
 	this->lastCommand = str;
-	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)str, strlen(str), 1000);
+	HAL_StatusTypeDef s = HAL_UART_Transmit(&this->huart, (uint8_t*)str, strlen(str), 1000);
 
 	if (s != HAL_OK)
 		printf("UART error\n");
@@ -326,7 +366,7 @@ HAL_StatusTypeDef ESP8266::send(char *str)
 HAL_StatusTypeDef ESP8266::send(char * data, uint16_t count)
 {
 	this->lastCommand = data;
-	HAL_StatusTypeDef s = HAL_UART_Transmit(this->huart, (uint8_t*)data, count, 1000);
+	HAL_StatusTypeDef s = HAL_UART_Transmit(&this->huart, (uint8_t*)data, count, 1000);
 
 	if (s != HAL_OK)
 		printf("UART error\n");
@@ -341,8 +381,10 @@ HAL_StatusTypeDef ESP8266::send(char * data, uint16_t count)
 	return status;
 }
 
-ESP8266::ESP8266(UART_HandleTypeDef *huart, uint32_t size)
+ESP8266::ESP8266(uint32_t size)
 {
+	UART_Init();
+
 	this->readPos = 0;
 	this->writePos = 0;
 	this->size = size;

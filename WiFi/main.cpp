@@ -298,11 +298,9 @@ extern "C" void SysTick_Handler(void)
 
 
 const uint32_t UART_BUFFER_SIZE = 2048;
-RTC_HandleTypeDef hrtc;
-UART_HandleTypeDef huart;
 http_parser parser;
 http_parser_settings settings;
-ESP8266 esp8266 = ESP8266(&huart, UART_BUFFER_SIZE);
+ESP8266 esp8266 = ESP8266(UART_BUFFER_SIZE);
 IWDG_HandleTypeDef hiwdg;
 
 char url[10][20];
@@ -331,7 +329,7 @@ void IPD_Callback(char *data) {
 
 extern "C" void USART1_IRQHandler(void)
 {
-	uint8_t data = huart.Instance->DR & (uint8_t)0x00FF;
+	uint8_t data = esp8266.huart.Instance->DR & (uint8_t)0x00FF;
 
 	esp8266.WriteByte(&data);
 }
@@ -359,38 +357,6 @@ int main(void)
 		printf("Could not start watchdog\n");
 	}
 
-	GPIO_InitTypeDef rst;
-	rst.Pin = GPIO_PIN_5;
-	rst.Mode = GPIO_MODE_OUTPUT_PP;
-	rst.Pull = GPIO_PULLUP;;
-	rst.Speed = GPIO_SPEED_HIGH;
-	HAL_GPIO_Init(GPIOA, &rst);
-
-
-	GPIO_InitTypeDef GPIO_InitStruct;
-
-	GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-	huart.Instance = USART1;
-	huart.Init.BaudRate = 115200;
-	huart.Init.WordLength = UART_WORDLENGTH_8B;
-	huart.Init.StopBits = UART_STOPBITS_1;
-	huart.Init.Parity = UART_PARITY_NONE;
-	huart.Init.Mode = UART_MODE_TX_RX;
-	huart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart.Init.OverSampling = UART_OVERSAMPLING_8;
-	HAL_UART_Init(&huart);
-
-	__HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
-
-	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(USART1_IRQn);
-
 	// reset module
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
 	HAL_Delay(250);
@@ -414,7 +380,7 @@ int main(void)
 			HAL_IWDG_Refresh(&hiwdg);
 
 			if (strcmp(url[urlRead], "/") == 0) {
-				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var chart = new SmoothieChart({ interpolation: 'linear' }); var line = new TimeSeries(); chart.addTimeSeries(line, { lineWidth: 2, strokeStyle: '#00ff00' }); chart.streamTo(document.getElementById(\"mycanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { var data = JSON.parse(this.responseText); line.append(new Date().getTime(), data.d1); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"mycanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
+				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var tempChart = new SmoothieChart({ interpolation: 'linear' }); var tempLine = new TimeSeries(); tempChart.addTimeSeries(tempLine, { lineWidth: 2, strokeStyle: '#00ff00' }); tempChart.streamTo(document.getElementById(\"tempCanvas\"), 1000); var pressChart = new SmoothieChart({ interpolation: 'linear' }); var pressLine = new TimeSeries(); pressChart.addTimeSeries(pressLine, { lineWidth: 2, strokeStyle: '#00ff00' }); pressChart.streamTo(document.getElementById(\"pressCanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { var data = JSON.parse(this.responseText); tempLine.append(new Date().getTime(), data.temp); pressLine.append(new Date().getTime(), data.press); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"tempCanvas\" width=\"900\" height=\"100\"></canvas> <canvas id=\"pressCanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
 				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
 
 				esp8266.SendFile(header, body, strlen(body));

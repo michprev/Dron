@@ -4,13 +4,10 @@
 #include "../WiFi/http_parser.h"
 #include "../WiFi/ESP8266.h"
 
-I2C_HandleTypeDef hi2c;
 const uint32_t UART_BUFFER_SIZE = 2048;
-UART_HandleTypeDef huart;
 http_parser parser;
 http_parser_settings settings;
-ESP8266 esp8266 = ESP8266(&huart, UART_BUFFER_SIZE);
-IWDG_HandleTypeDef hiwdg;
+ESP8266 esp8266 = ESP8266(UART_BUFFER_SIZE);
 
 char url[10][20];
 uint8_t urlRead = 0;
@@ -24,7 +21,7 @@ extern "C" void SysTick_Handler(void)
 
 extern "C" void USART1_IRQHandler(void)
 {
-	uint8_t data = huart.Instance->DR & (uint8_t)0x00FF;
+	uint8_t data = esp8266.huart.Instance->DR & (uint8_t)0x00FF;
 
 	esp8266.WriteByte(&data);
 }
@@ -54,81 +51,13 @@ void IPD_Callback(char *data) {
 	}
 }
 
-void I2cMaster_Init()
-{
-	if (__GPIOB_IS_CLK_DISABLED())
-		__GPIOB_CLK_ENABLE();
-
-	if (__I2C1_IS_CLK_DISABLED())
-		__I2C1_CLK_ENABLE();
-
-	GPIO_InitTypeDef gpio;
-	gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-	gpio.Mode = GPIO_MODE_AF_OD;
-	gpio.Speed = GPIO_SPEED_MEDIUM;
-	gpio.Pull = GPIO_PULLUP;
-	gpio.Alternate = GPIO_AF4_I2C1;
-
-	HAL_GPIO_Init(GPIOB, &gpio);
-
-	hi2c.Instance = I2C1;
-	hi2c.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	hi2c.Init.ClockSpeed = 100000;
-	hi2c.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-	hi2c.Init.DutyCycle = I2C_DUTYCYCLE_2;
-	hi2c.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-	hi2c.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-	hi2c.Init.OwnAddress1 = 0;
-	hi2c.Init.OwnAddress2 = 0;
-
-	HAL_I2C_Init(&hi2c);
-}
-
-void UART_Init() {
-	if (__GPIOA_IS_CLK_DISABLED())
-		__GPIOA_CLK_ENABLE();
-
-	if (__USART1_IS_CLK_DISABLED())
-		__USART1_CLK_ENABLE();
-
-	GPIO_InitTypeDef rst;
-	rst.Pin = GPIO_PIN_5;
-	rst.Mode = GPIO_MODE_OUTPUT_PP;
-	rst.Pull = GPIO_PULLUP;;
-	rst.Speed = GPIO_SPEED_HIGH;
-	HAL_GPIO_Init(GPIOA, &rst);
-
-	GPIO_InitTypeDef GPIO_InitStruct;
-
-	GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-	huart.Instance = USART1;
-	huart.Init.BaudRate = 115200;
-	huart.Init.WordLength = UART_WORDLENGTH_8B;
-	huart.Init.StopBits = UART_STOPBITS_1;
-	huart.Init.Parity = UART_PARITY_NONE;
-	huart.Init.Mode = UART_MODE_TX_RX;
-	huart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart.Init.OverSampling = UART_OVERSAMPLING_8;
-	HAL_UART_Init(&huart);
-
-	__HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
-
-	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(USART1_IRQn);
-}
-
 int main(void)
 {
 	HAL_Init();
 
 	printf("init\n");
 
+	IWDG_HandleTypeDef hiwdg;
 	hiwdg.Instance = IWDG;
 	hiwdg.Init.Prescaler = IWDG_PRESCALER_256;
 	hiwdg.Init.Reload = 2047;
@@ -138,11 +67,8 @@ int main(void)
 		printf("Could not start watchdog\n");
 	}
 
-	I2cMaster_Init();
-	UART_Init();
-
 	// reset barometer
-	MS5611 ms5611 = MS5611(&hi2c);
+	MS5611 ms5611;
 	ms5611.Init();
 
 	// reset ESP8266
@@ -165,8 +91,7 @@ int main(void)
 	while (true) {
 		HAL_IWDG_Refresh(&hiwdg);
 
-		while (urlRead != urlWrite) {
-			HAL_Delay(20);
+		if (urlRead != urlWrite) {
 			HAL_IWDG_Refresh(&hiwdg);
 
 			if (strcmp(url[urlRead], "/") == 0) {
@@ -188,7 +113,7 @@ int main(void)
 			else if (strcmp(url[urlRead], "/getData") == 0) {
 				esp8266.canTimeout = true;
 				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: application/json\r\nContent-Length: ";
-				char body[30];
+				char body[50];
 
 				ms5611.GetData(&temp, &press);
 
@@ -206,7 +131,5 @@ int main(void)
 
 
 		esp8266.WaitReady(50);
-
-		HAL_Delay(100);
 	}
 }

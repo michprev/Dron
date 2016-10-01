@@ -1,5 +1,5 @@
-#ifndef __BUFFER_H
-#define __BUFFER_H
+#ifndef __ESP8266_H
+#define __ESP8266_H
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -20,9 +20,11 @@ private:
 	bool output;
 	uint32_t readPos;
 	uint32_t writePos;
-	UART_HandleTypeDef *huart;
 	int8_t LinkID;
-	
+	uint8_t *data;
+	uint32_t size;
+
+	HAL_StatusTypeDef UART_Init();
 	uint32_t getFreeSize();
 	uint32_t getFullSize();
 	uint32_t findString(char *str);
@@ -33,17 +35,16 @@ private:
 	void sendPacket(char *command, char *data, uint16_t dataSize);
 
 public:
-	uint32_t size;
-	uint8_t *data;
+	UART_HandleTypeDef huart;
 	bool ready;
 	bool canTimeout;
 	void(*IPD_Callback)(char *data);
 
-	ESP8266(UART_HandleTypeDef *huart, uint32_t size);
+	ESP8266(uint32_t size);
 	void SendFile(char *header, char *body, uint16_t bodySize);
 	void WriteByte(uint8_t *data);
 	HAL_StatusTypeDef WaitReady(uint16_t delay = 5000);
 	void Init();
 };
 
-#endif // !__BUFFER_H
+#endif

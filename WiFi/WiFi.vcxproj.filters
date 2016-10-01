@@ -44,9 +44,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="http_parser.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c">
       <Filter>Source files\Device-specific files\HAL</Filter>
     </ClCompile>
@@ -249,6 +246,9 @@
       <Filter>Source files\Device-specific files\HAL</Filter>
     </ClCompile>
     <ClCompile Include="ESP8266.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="http_parser.c">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

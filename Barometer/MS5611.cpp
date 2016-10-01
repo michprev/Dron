@@ -2,15 +2,10 @@
 
 
 
-MS5611::MS5611(I2C_HandleTypeDef *hi2c)
-{
-	this->hi2c = hi2c;
-}
-
 HAL_StatusTypeDef MS5611::Reset()
 {
 	uint8_t reset = 0x1E;
-	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(this->hi2c, this->ADDRESS, &reset, 1, HAL_MAX_DELAY);
+	HAL_StatusTypeDef status = HAL_I2C_Master_Transmit(&this->hi2c, this->ADDRESS, &reset, 1, HAL_MAX_DELAY);
 
 	HAL_Delay(20);
 
@@ -19,11 +14,13 @@ HAL_StatusTypeDef MS5611::Reset()
 
 HAL_StatusTypeDef MS5611::Init()
 {
+	I2C_Init();
+
 	HAL_StatusTypeDef status;
 	uint8_t data[2];
 
 	for (uint8_t i = 0; i < 6; i++) {
-		status = HAL_I2C_Mem_Read(this->hi2c, this->ADDRESS, 0xA2 + i * 2, I2C_MEMADD_SIZE_8BIT, data, 2, HAL_MAX_DELAY);
+		status = HAL_I2C_Mem_Read(&this->hi2c, this->ADDRESS, 0xA2 + i * 2, I2C_MEMADD_SIZE_8BIT, data, 2, HAL_MAX_DELAY);
 
 		if (status != HAL_OK)
 			return status;
@@ -44,21 +41,21 @@ HAL_StatusTypeDef MS5611::GetData(int32_t * temperature, int32_t * pressure)
 	uint8_t conversionData[3];
 
 	uint8_t convertD1 = 0x48;
-	status = HAL_I2C_Master_Transmit(this->hi2c, this->ADDRESS, &convertD1, 1, HAL_MAX_DELAY);
+	status = HAL_I2C_Master_Transmit(&this->hi2c, this->ADDRESS, &convertD1, 1, HAL_MAX_DELAY);
 
 	HAL_Delay(10);
 
-	status = HAL_I2C_Mem_Read(this->hi2c, this->ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, conversionData, 3, HAL_MAX_DELAY);
+	status = HAL_I2C_Mem_Read(&this->hi2c, this->ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, conversionData, 3, HAL_MAX_DELAY);
 	D1 = conversionData[0] << 16;
 	D1 |= conversionData[1] << 8;
 	D1 |= conversionData[2];
 
 	uint8_t convertD2 = 0x58;
-	status = HAL_I2C_Master_Transmit(this->hi2c, this->ADDRESS, &convertD2, 1, HAL_MAX_DELAY);
+	status = HAL_I2C_Master_Transmit(&this->hi2c, this->ADDRESS, &convertD2, 1, HAL_MAX_DELAY);
 
 	HAL_Delay(10);
 
-	status = HAL_I2C_Mem_Read(this->hi2c, this->ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, conversionData, 3, HAL_MAX_DELAY);
+	status = HAL_I2C_Mem_Read(&this->hi2c, this->ADDRESS, 0x00, I2C_MEMADD_SIZE_8BIT, conversionData, 3, HAL_MAX_DELAY);
 	D2 = conversionData[0] << 16;
 	D2 |= conversionData[1] << 8;
 	D2 |= conversionData[2];
@@ -92,6 +89,36 @@ HAL_StatusTypeDef MS5611::GetData(int32_t * temperature, int32_t * pressure)
 	*pressure = P;
 
 	return HAL_OK;
+}
+
+HAL_StatusTypeDef MS5611::I2C_Init()
+{
+	if (__GPIOB_IS_CLK_DISABLED())
+		__GPIOB_CLK_ENABLE();
+
+	if (__I2C1_IS_CLK_DISABLED())
+		__I2C1_CLK_ENABLE();
+
+	GPIO_InitTypeDef gpio;
+	gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+	gpio.Mode = GPIO_MODE_AF_OD;
+	gpio.Speed = GPIO_SPEED_MEDIUM;
+	gpio.Pull = GPIO_PULLUP;
+	gpio.Alternate = GPIO_AF4_I2C1;
+
+	HAL_GPIO_Init(GPIOB, &gpio);
+
+	this->hi2c.Instance = I2C1;
+	this->hi2c.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+	this->hi2c.Init.ClockSpeed = 100000;
+	this->hi2c.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+	this->hi2c.Init.DutyCycle = I2C_DUTYCYCLE_2;
+	this->hi2c.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	this->hi2c.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+	this->hi2c.Init.OwnAddress1 = 0;
+	this->hi2c.Init.OwnAddress2 = 0;
+
+	return HAL_I2C_Init(&this->hi2c);
 }
 
 
