@@ -37,9 +37,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeIncludeSearchPath>.;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\arm-eabi\thumb\fpu\cortex_m4;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\backward;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include-fixed;c:\sysgcc\arm-eabi\arm-eabi\sys-include;c:\sysgcc\arm-eabi\arm-eabi\include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\Legacy;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include\t;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>.;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\Legacy;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include\t;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\arm-eabi\thumb\fpu\cortex_m4;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\backward;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include-fixed;c:\sysgcc\arm-eabi\arm-eabi\sys-include;c:\sysgcc\arm-eabi\arm-eabi\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes>$(ProjectDir)\gcc_Debug.h;$(VISUALGDB_DIR)\gcc_compat.h;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\stm32_compat.h;$(NMakeForcedIncludes)</NMakeForcedIncludes>
-    <NMakePreprocessorDefinitions>__VisualGDB_CFG_Debug;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
     <NMakeBuildCommandLine>"$(VISUALGDB_DIR)\VisualGDB.exe" /build "$(ProjectPath)" "/solution:$(SolutionPath)" "/config:$(Configuration)" "/platform:$(Platform)"</NMakeBuildCommandLine>
     <NMakeCleanCommandLine>"$(VISUALGDB_DIR)\VisualGDB.exe" /clean "$(ProjectPath)" "/solution:$(SolutionPath)" "/config:$(Configuration)" "/platform:$(Platform)"</NMakeCleanCommandLine>
     <NMakeReBuildCommandLine>"$(VISUALGDB_DIR)\VisualGDB.exe" /rebuild "$(ProjectPath)" "/solution:$(SolutionPath)" "/config:$(Configuration)" "/platform:$(Platform)"</NMakeReBuildCommandLine>
@@ -47,6 +46,7 @@
     <IncludePath />
     <ReferencePath />
     <LibraryPath />
+    <NMakePreprocessorDefinitions>__VisualGDB_CFG_Debug;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakeIncludeSearchPath>.;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\arm-eabi\thumb\fpu\cortex_m4;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\backward;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include-fixed;c:\sysgcc\arm-eabi\arm-eabi\sys-include;c:\sysgcc\arm-eabi\arm-eabi\include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\Legacy;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include\t;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
@@ -132,6 +132,20 @@
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_sdmmc.c" />
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Src\stm32f4xx_ll_usb.c" />
     <ClCompile Include="..\Barometer\MS5611.cpp" />
+    <ClCompile Include="..\Gyro\invensense\data_builder.c" />
+    <ClCompile Include="..\Gyro\invensense\eMPL_outputs.c" />
+    <ClCompile Include="..\Gyro\invensense\hal_outputs.c" />
+    <ClCompile Include="..\Gyro\invensense\i2c.c" />
+    <ClCompile Include="..\Gyro\invensense\inv_mpu.c" />
+    <ClCompile Include="..\Gyro\invensense\inv_mpu_dmp_motion_driver.c" />
+    <ClCompile Include="..\Gyro\invensense\message_layer.c" />
+    <ClCompile Include="..\Gyro\invensense\mlmath.c" />
+    <ClCompile Include="..\Gyro\invensense\ml_math_func.c" />
+    <ClCompile Include="..\Gyro\invensense\mpl.c" />
+    <ClCompile Include="..\Gyro\invensense\results_holder.c" />
+    <ClCompile Include="..\Gyro\invensense\start_manager.c" />
+    <ClCompile Include="..\Gyro\invensense\storage_manager.c" />
+    <ClCompile Include="..\Gyro\MPU6050.cpp" />
     <ClCompile Include="..\WiFi\ESP8266.cpp" />
     <ClCompile Include="..\WiFi\http_parser.c" />
     <ClCompile Include="main.cpp" />
@@ -240,6 +254,42 @@
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_sdmmc.h" />
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\stm32f4xx_ll_usb.h" />
     <ClInclude Include="..\Barometer\MS5611.h" />
+    <ClInclude Include="..\Gyro\invensense\data_builder.h" />
+    <ClInclude Include="..\Gyro\invensense\dmpKey.h" />
+    <ClInclude Include="..\Gyro\invensense\dmpmap.h" />
+    <ClInclude Include="..\Gyro\invensense\eMPL_outputs.h" />
+    <ClInclude Include="..\Gyro\invensense\hal_outputs.h" />
+    <ClInclude Include="..\Gyro\invensense\i2c.h" />
+    <ClInclude Include="..\Gyro\invensense\invensense.h" />
+    <ClInclude Include="..\Gyro\invensense\inv_mpu.h" />
+    <ClInclude Include="..\Gyro\invensense\inv_mpu_dmp_motion_driver.h" />
+    <ClInclude Include="..\Gyro\invensense\library\accel_auto_cal.h" />
+    <ClInclude Include="..\Gyro\invensense\library\compass_vec_cal.h" />
+    <ClInclude Include="..\Gyro\invensense\library\fast_no_motion.h" />
+    <ClInclude Include="..\Gyro\invensense\library\fusion_9axis.h" />
+    <ClInclude Include="..\Gyro\invensense\library\gyro_tc.h" />
+    <ClInclude Include="..\Gyro\invensense\library\heading_from_gyro.h" />
+    <ClInclude Include="..\Gyro\invensense\library\invensense_adv.h" />
+    <ClInclude Include="..\Gyro\invensense\library\inv_math.h" />
+    <ClInclude Include="..\Gyro\invensense\library\mag_disturb.h" />
+    <ClInclude Include="..\Gyro\invensense\library\motion_no_motion.h" />
+    <ClInclude Include="..\Gyro\invensense\library\no_gyro_fusion.h" />
+    <ClInclude Include="..\Gyro\invensense\library\quaternion_supervisor.h" />
+    <ClInclude Include="..\Gyro\invensense\log.h" />
+    <ClInclude Include="..\Gyro\invensense\message_layer.h" />
+    <ClInclude Include="..\Gyro\invensense\mlinclude.h" />
+    <ClInclude Include="..\Gyro\invensense\mlmath.h" />
+    <ClInclude Include="..\Gyro\invensense\mlos.h" />
+    <ClInclude Include="..\Gyro\invensense\mltypes.h" />
+    <ClInclude Include="..\Gyro\invensense\ml_math_func.h" />
+    <ClInclude Include="..\Gyro\invensense\mpl.h" />
+    <ClInclude Include="..\Gyro\invensense\mpu.h" />
+    <ClInclude Include="..\Gyro\invensense\packet.h" />
+    <ClInclude Include="..\Gyro\invensense\results_holder.h" />
+    <ClInclude Include="..\Gyro\invensense\start_manager.h" />
+    <ClInclude Include="..\Gyro\invensense\stdint_invensense.h" />
+    <ClInclude Include="..\Gyro\invensense\storage_manager.h" />
+    <ClInclude Include="..\Gyro\MPU6050.h" />
     <ClInclude Include="..\WiFi\ESP8266.h" />
     <ClInclude Include="..\WiFi\http_parser.h" />
     <ClInclude Include="Smoothie.h" />

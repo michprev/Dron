@@ -33,6 +33,15 @@
     <Filter Include="Header files\Device-specific files\HAL">
       <UniqueIdentifier>{5a8db7f7-5c33-4214-a719-cfc47ed33d2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\invensense">
+      <UniqueIdentifier>{4ad18459-144b-4687-a326-394c7b568319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\invensense">
+      <UniqueIdentifier>{68a9ac04-fea7-43ef-9de5-0709109f874d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\invensense\library">
+      <UniqueIdentifier>{767d5140-9b28-4daa-a0d2-342b384d01a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="system_stm32f4xx.c">
@@ -253,6 +262,48 @@
     </ClCompile>
     <ClCompile Include="..\Barometer\MS5611.cpp">
       <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\MPU6050.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\data_builder.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\eMPL_outputs.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\hal_outputs.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\i2c.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\inv_mpu.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\inv_mpu_dmp_motion_driver.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\message_layer.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\ml_math_func.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\mlmath.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\mpl.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\results_holder.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\start_manager.c">
+      <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gyro\invensense\storage_manager.c">
+      <Filter>Source files\invensense</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -573,6 +624,114 @@
     </ClInclude>
     <ClInclude Include="..\WiFi\http_parser.h">
       <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\MPU6050.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\data_builder.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\dmpKey.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\dmpmap.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\eMPL_outputs.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\hal_outputs.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\i2c.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\inv_mpu.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\inv_mpu_dmp_motion_driver.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\invensense.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\log.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\message_layer.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\ml_math_func.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mlinclude.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mlmath.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mlos.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mltypes.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mpl.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\mpu.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\packet.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\results_holder.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\start_manager.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\stdint_invensense.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\storage_manager.h">
+      <Filter>Header files\invensense</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\accel_auto_cal.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\compass_vec_cal.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\fast_no_motion.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\fusion_9axis.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\gyro_tc.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\heading_from_gyro.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\inv_math.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\invensense_adv.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\mag_disturb.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\motion_no_motion.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\no_gyro_fusion.h">
+      <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gyro\invensense\library\quaternion_supervisor.h">
+      <Filter>Header files\invensense\library</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

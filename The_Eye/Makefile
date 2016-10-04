@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f446xx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dfsdm.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dsi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_irda.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nor.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pccard.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sdram.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smartcard.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spdifrx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sram.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c ../Barometer/MS5611.cpp ../WiFi/ESP8266.cpp ../WiFi/http_parser.c main.cpp system_stm32f4xx.c
+SOURCEFILES := $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f446xx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cec.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_crc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cryp_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dac_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dcmi_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dfsdm.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma2d.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dsi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_eth.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_fmpi2c_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hash_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2s_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_irda.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_iwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_lptim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_ltdc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nand.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_nor.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pccard.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_qspi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rng.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rtc_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sai_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sd.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sdram.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_smartcard.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spdifrx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_sram.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_usart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_wwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_fsmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_sdmmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c ../Barometer/MS5611.cpp ../Gyro/invensense/data_builder.c ../Gyro/invensense/eMPL_outputs.c ../Gyro/invensense/hal_outputs.c ../Gyro/invensense/i2c.c ../Gyro/invensense/inv_mpu.c ../Gyro/invensense/inv_mpu_dmp_motion_driver.c ../Gyro/invensense/message_layer.c ../Gyro/invensense/mlmath.c ../Gyro/invensense/ml_math_func.c ../Gyro/invensense/mpl.c ../Gyro/invensense/results_holder.c ../Gyro/invensense/start_manager.c ../Gyro/invensense/storage_manager.c ../Gyro/MPU6050.cpp ../WiFi/ESP8266.cpp ../WiFi/http_parser.c main.cpp system_stm32f4xx.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
@@ -454,6 +454,62 @@ $(BINARYDIR)/stm32f4xx_ll_usb.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_HAL_Driver/S
 
 
 $(BINARYDIR)/MS5611.o : ../Barometer/MS5611.cpp $(all_make_files) |$(BINARYDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/data_builder.o : ../Gyro/invensense/data_builder.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/eMPL_outputs.o : ../Gyro/invensense/eMPL_outputs.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/hal_outputs.o : ../Gyro/invensense/hal_outputs.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/i2c.o : ../Gyro/invensense/i2c.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/inv_mpu.o : ../Gyro/invensense/inv_mpu.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/inv_mpu_dmp_motion_driver.o : ../Gyro/invensense/inv_mpu_dmp_motion_driver.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/message_layer.o : ../Gyro/invensense/message_layer.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/mlmath.o : ../Gyro/invensense/mlmath.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/ml_math_func.o : ../Gyro/invensense/ml_math_func.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/mpl.o : ../Gyro/invensense/mpl.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/results_holder.o : ../Gyro/invensense/results_holder.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/start_manager.o : ../Gyro/invensense/start_manager.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/storage_manager.o : ../Gyro/invensense/storage_manager.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
+$(BINARYDIR)/MPU6050.o : ../Gyro/MPU6050.cpp $(all_make_files) |$(BINARYDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 

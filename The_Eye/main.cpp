@@ -3,11 +3,14 @@
 #include "../Barometer/MS5611.h"
 #include "../WiFi/http_parser.h"
 #include "../WiFi/ESP8266.h"
+#include "../Gyro/MPU6050.h"
 
 const uint32_t UART_BUFFER_SIZE = 2048;
 http_parser parser;
 http_parser_settings settings;
 ESP8266 esp8266 = ESP8266(UART_BUFFER_SIZE);
+unsigned char *mpl_key = (unsigned char*)"eMPL 5.1";
+MPU6050 mpu;
 
 char url[10][20];
 uint8_t urlRead = 0;
@@ -17,6 +20,10 @@ extern "C" void SysTick_Handler(void)
 {
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
+}
+
+extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	mpu.dataReady = true;
 }
 
 extern "C" void USART1_IRQHandler(void)
@@ -67,6 +74,14 @@ int main(void)
 		printf("Could not start watchdog\n");
 	}
 
+	// reset gyro
+	uint8_t result;
+	if (result = mpu.Init()) {
+		printf("Error %d\n", result);
+	}
+	else
+		printf("Everything ok..\n");
+
 	// reset barometer
 	MS5611 ms5611;
 	ms5611.Init();
@@ -87,15 +102,19 @@ int main(void)
 	
 
 	int32_t press, temp;
+	long data[3];
+	uint8_t accuracy;
 
 	while (true) {
 		HAL_IWDG_Refresh(&hiwdg);
+
+		mpu.CheckNewData(data, &accuracy);
 
 		if (urlRead != urlWrite) {
 			HAL_IWDG_Refresh(&hiwdg);
 
 			if (strcmp(url[urlRead], "/") == 0) {
-				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var tempChart = new SmoothieChart({ interpolation: 'linear' }); var tempLine = new TimeSeries(); tempChart.addTimeSeries(tempLine, { lineWidth: 2, strokeStyle: '#00ff00' }); tempChart.streamTo(document.getElementById(\"tempCanvas\"), 1000); var pressChart = new SmoothieChart({ interpolation: 'linear' }); var pressLine = new TimeSeries(); pressChart.addTimeSeries(pressLine, { lineWidth: 2, strokeStyle: '#00ff00' }); pressChart.streamTo(document.getElementById(\"pressCanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { var data = JSON.parse(this.responseText); tempLine.append(new Date().getTime(), data.temp); pressLine.append(new Date().getTime(), data.press); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); }, 1000); } </script> </head> <body onload=\"init()\"> <h2>Ultrasonic sensor</h2> <canvas id=\"tempCanvas\" width=\"900\" height=\"100\"></canvas> <canvas id=\"pressCanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
+				char body[] = "<!DOCTYPE html> <html> <head> <title>DronUI</title> <meta charset=\"utf-8\" /> <script type=\"text/javascript\" src=\"smoothie.js\"></script> <script> function init() { var pitchChart = new SmoothieChart({ interpolation: 'linear', maxValue: 190, minValue: -190 }); var pitchLine = new TimeSeries(); pitchChart.addTimeSeries(pitchLine, { lineWidth: 2, strokeStyle: '#00ff00' }); pitchChart.streamTo(document.getElementById(\"pitchCanvas\"), 1000); var rollChart = new SmoothieChart({ interpolation: 'linear', maxValue: 100, minValue: -100 }); var rollLine = new TimeSeries(); rollChart.addTimeSeries(rollLine, { lineWidth: 2, strokeStyle: '#00ff00' }); rollChart.streamTo(document.getElementById(\"rollCanvas\"), 1000); var tempChart = new SmoothieChart({ interpolation: 'linear' }); var tempLine = new TimeSeries(); tempChart.addTimeSeries(tempLine, { lineWidth: 2, strokeStyle: '#00ff00' }); tempChart.streamTo(document.getElementById(\"tempCanvas\"), 1000); var pressChart = new SmoothieChart({ interpolation: 'linear' }); var pressLine = new TimeSeries(); pressChart.addTimeSeries(pressLine, { lineWidth: 2, strokeStyle: '#00ff00' }); pressChart.streamTo(document.getElementById(\"pressCanvas\"), 1000); setInterval(function () { var xhttp = new XMLHttpRequest(); xhttp.onreadystatechange = function () { if (this.readyState == 4 && this.status == 200) { var data = JSON.parse(this.responseText); pitchLine.append(new Date().getTime(), data.pitch); rollLine.append(new Date().getTime(), data.roll); tempLine.append(new Date().getTime(), data.temp / 100); pressLine.append(new Date().getTime(), data.press / 100); } }; xhttp.open(\"GET\", \"getData\", true); xhttp.send(); }, 1000); } </script> </head> <body onload=\"init()\"> <h4>Pitch</h4> <canvas id=\"pitchCanvas\" width=\"900\" height=\"100\"></canvas> <h4>Roll</h4> <canvas id=\"rollCanvas\" width=\"900\" height=\"100\"></canvas> <h4>Temperature in °C</h4> <canvas id=\"tempCanvas\" width=\"900\" height=\"100\"></canvas> <h4>Pressure in mBar</h4> <canvas id=\"pressCanvas\" width=\"900\" height=\"100\"></canvas> </body> </html>";
 				char header[] = "HTTP/1.1 200 OK\r\nConnection: keep-alive\r\nContent-Type: text/html\r\nContent-Length: ";
 
 				esp8266.SendFile(header, body, strlen(body));
@@ -117,7 +136,7 @@ int main(void)
 
 				ms5611.GetData(&temp, &press);
 
-				sprintf(body, "{\r\n\"temp\": %d,\r\n\"press\": %d\r\n}", temp, press);
+				sprintf(body, "{\r\n\"temp\": %d,\r\n\"press\": %d,\r\n\"pitch\": %d,\r\n\"roll\": %d\r\n}", temp, press, data[0], data[1]);
 				esp8266.SendFile(header, body, strlen(body));
 			}
 			else {
