@@ -4,6 +4,7 @@
 extern "C" {
 
 #include <stm32f4xx_hal.h>
+#include "main.h"
 #include "invensense\inv_mpu.h"
 #include "invensense\inv_mpu_dmp_motion_driver.h"
 #include "invensense\mltypes.h"
@@ -25,11 +26,17 @@ private:
 		0, 1, 0,
 		0, 0, 1 }
 	};
+	unsigned long next_temp_ms = 0;
+	bool new_temp = false;
+	unsigned long timestamp;
 
 	void IT_Init();
 
 public:
+	bool dataReady;
+
 	uint8_t Init();
+	bool CheckNewData(long *euler, uint8_t *accur);
 };
 
 #endif

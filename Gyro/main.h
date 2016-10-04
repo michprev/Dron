@@ -5,4 +5,9 @@
 
 extern I2C_HandleTypeDef MPU6050_Handle;
 
+#ifdef __cplusplus
+extern "C" int get_tick_count(unsigned long *count);
+#else
+int get_tick_count(unsigned long *count);
+#endif
 #endif

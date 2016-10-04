@@ -48,9 +48,9 @@
 #define DMP_FEATURE_SEND_CAL_GYRO   (0x100)
 
 #define INV_WXYZ_QUAT       (0x100)
-#include <stm32f4xx_hal.h>
+
 /* Set up functions. */
-int dmp_load_motion_driver_firmware();
+int dmp_load_motion_driver_firmware(void);
 int dmp_set_fifo_rate(unsigned short rate);
 int dmp_get_fifo_rate(unsigned short *rate);
 int dmp_enable_feature(unsigned short mask);

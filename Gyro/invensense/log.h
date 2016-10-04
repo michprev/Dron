@@ -302,7 +302,7 @@ extern "C" {
 	pr_debug(MPL_##priority tag fmt, ##__VA_ARGS__)
 #else
 #define MPL_LOG_PRI(priority, tag, fmt, ...) \
-	//_MLPrintLog(MPL_##priority, tag, fmt, ##__VA_ARGS__)
+	_MLPrintLog(MPL_##priority, tag, fmt, ##__VA_ARGS__)
 #endif
 #endif
 
@@ -340,7 +340,7 @@ static inline void __print_result_location(int result,
 					   const char *file,
 					   const char *func, int line)
 {
-	MPL_LOGE("%s|%s|%d returning %d\n", file, func, line, result);
+	//TODO MPL_LOGE("%s|%s|%d returning %d\n", file, func, line, result);
 }
 
 #ifdef _WIN32

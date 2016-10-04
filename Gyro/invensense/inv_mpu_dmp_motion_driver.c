@@ -34,8 +34,7 @@
  */
 #if defined EMPL_TARGET_STM32F4
 #include "i2c.h"   
-//#include "main.h"
-//#include "board-st_discovery.h"
+#include "main.h"
    
 #define i2c_write   Sensors_I2C_WriteRegister
 #define i2c_read    Sensors_I2C_ReadRegister
@@ -506,7 +505,7 @@ static struct dmp_s dmp = {
  *  @brief  Load the DMP with this image.
  *  @return 0 if successful.
  */
-int dmp_load_motion_driver_firmware()
+int dmp_load_motion_driver_firmware(void)
 {
     return mpu_load_firmware(DMP_CODE_SIZE, dmp_memory, sStartAddress,
         DMP_SAMPLE_RATE);

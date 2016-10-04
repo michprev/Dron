@@ -27,22 +27,31 @@ int Sensors_I2C_ReadRegister(unsigned char slave_addr,
 
 void I2cMaster_Init(void)
 {
+	if (__GPIOA_IS_CLK_DISABLED())
+		__GPIOA_CLK_ENABLE();
+
 	if (__GPIOB_IS_CLK_DISABLED())
 		__GPIOB_CLK_ENABLE();
 
-	if (__I2C1_IS_CLK_DISABLED())
-		__I2C1_CLK_ENABLE();
+	if (__I2C3_IS_CLK_DISABLED())
+		__I2C3_CLK_ENABLE();
 
-	GPIO_InitTypeDef gpio;
-	gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-	gpio.Mode = GPIO_MODE_AF_OD;
-	gpio.Speed = GPIO_SPEED_MEDIUM;
-	gpio.Pull = GPIO_PULLUP;
-	gpio.Alternate = GPIO_AF4_I2C1;
+	GPIO_InitTypeDef GPIO_InitStruct;
+	GPIO_InitStruct.Pin = GPIO_PIN_8;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	HAL_GPIO_Init(GPIOB, &gpio);
+	GPIO_InitStruct.Pin = GPIO_PIN_4;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	GPIO_InitStruct.Alternate = GPIO_AF4_I2C3;
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	MPU6050_Handle.Instance = I2C1;
+	MPU6050_Handle.Instance = I2C3;
 	MPU6050_Handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
 	MPU6050_Handle.Init.ClockSpeed = 100000;
 	MPU6050_Handle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
