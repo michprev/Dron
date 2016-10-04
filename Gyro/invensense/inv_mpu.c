@@ -37,10 +37,17 @@
  * min(int a, int b)
  */
 #if defined EMPL_TARGET_STM32F4
+#include <stm32f4xx_hal.h>
 #include "i2c.h"   
-#include "main.h"
 #include "log.h"
-   
+  
+
+int get_tick_count(unsigned long *count)
+{
+	count[0] = HAL_GetTick();
+	return 0;
+}
+
 #define i2c_write   Sensors_I2C_WriteRegister
 #define i2c_read    Sensors_I2C_ReadRegister 
 #define delay_ms    HAL_Delay

@@ -271,7 +271,6 @@
     <ClInclude Include="invensense\start_manager.h" />
     <ClInclude Include="invensense\stdint_invensense.h" />
     <ClInclude Include="invensense\storage_manager.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="MPU6050.h" />
     <ClInclude Include="stm32f4xx_hal_conf.h" />
   </ItemGroup>

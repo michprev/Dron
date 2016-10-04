@@ -126,7 +126,7 @@
 #define __DBL_MIN_10_EXP__ (-307)
 #endif
 #ifndef MPU6050
-#define MPU6050 1
+#define MPU6050 MPU6050
 #endif
 #ifndef __FINITE_MATH_ONLY__
 #define __FINITE_MATH_ONLY__ 0

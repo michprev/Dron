@@ -6,7 +6,7 @@ Purpose :
 #define __I2C_H__
 /****************************** Includes *****************************/
 /****************************** Defines *******************************/
-#include "main.h"
+#include <stm32f4xx_hal.h>
 
 void I2cMaster_Init(void);
 void Set_I2C_Retry(unsigned short ml_sec);

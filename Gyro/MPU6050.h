@@ -1,10 +1,11 @@
 #ifndef __MPU6050_H
 #define __MPU6050_H
 
-extern "C" {
 
 #include <stm32f4xx_hal.h>
-#include "main.h"
+
+extern "C" {
+
 #include "invensense\inv_mpu.h"
 #include "invensense\inv_mpu_dmp_motion_driver.h"
 #include "invensense\mltypes.h"
@@ -16,7 +17,7 @@ extern "C" {
 
 }
 
-class cMPU6050 {
+class MPU6050 {
 private:
 	struct platform_data_s {
 		signed char orientation[9];

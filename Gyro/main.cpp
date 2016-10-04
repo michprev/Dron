@@ -1,4 +1,4 @@
-#include "main.h"
+#include <stm32f4xx_hal.h>
 #include "MPU6050.h"
 
 extern "C" void SysTick_Handler(void)
@@ -7,14 +7,8 @@ extern "C" void SysTick_Handler(void)
 	HAL_SYSTICK_IRQHandler();
 }
 
-extern "C" int get_tick_count(unsigned long *count)
-{
-	count[0] = HAL_GetTick();
-	return 0;
-}
-
 unsigned char *mpl_key = (unsigned char*)"eMPL 5.1";
-cMPU6050 mpu;
+MPU6050 mpu;
 
 extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	mpu.dataReady = true;
@@ -48,7 +42,7 @@ int main(void)
 	{
 		HAL_IWDG_Refresh(&hiwdg);
 
-
-		mpu.CheckNewData(data, &accuracy);
+		if (mpu.CheckNewData(data, &accuracy))
+			printf("Accuracy: %d, data: %d %d %d\n", accuracy, data[0], data[1], data[2]);
 	}
 }

@@ -1,6 +1,6 @@
 #include "MPU6050.h"
 
-void cMPU6050::IT_Init() {
+void MPU6050::IT_Init() {
 	if (__GPIOA_IS_CLK_DISABLED())
 		__GPIOA_CLK_ENABLE();
 
@@ -15,7 +15,7 @@ void cMPU6050::IT_Init() {
 	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 }
 
-uint8_t cMPU6050::Init() {
+uint8_t MPU6050::Init() {
 	I2cMaster_Init();
 	IT_Init();
 	printf("I2C init OK\n");
@@ -105,11 +105,11 @@ uint8_t cMPU6050::Init() {
 	return 0;
 }
 
-bool cMPU6050::CheckNewData(long *euler, uint8_t *accur)
+bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 {
 	bool new_data = false;
 	unsigned long sensor_timestamp;
-	get_tick_count(&timestamp);
+	timestamp = HAL_GetTick();
 
 	if (timestamp > next_temp_ms) {
 		next_temp_ms = timestamp + 500;
@@ -156,9 +156,17 @@ bool cMPU6050::CheckNewData(long *euler, uint8_t *accur)
 		int8_t accuracy;
 		unsigned long timestamp;
 
-		if (inv_get_sensor_type_euler(data, &accuracy, (inv_time_t*)&timestamp) && accuracy != 0)
-			printf("Data: %d %d %d, accuracy: %d\n", data[0] / 65536, data[1] / 65536, data[2] / 65536, accuracy);
+		if (inv_get_sensor_type_euler(data, &accuracy, (inv_time_t*)&timestamp)) {
+			euler[0] = data[0] / 65536;
+			euler[1] = data[1] / 65536;
+			euler[2] = data[2] / 65536;
+			(*accur) = accuracy;
+		}
+
+		return true;
 	}
+
+	return false;
 }
 
 extern "C" void EXTI4_IRQHandler(void)
