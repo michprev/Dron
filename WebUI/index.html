@@ -6,6 +6,16 @@
     <script type="text/javascript" src="smoothie.js"></script>
     <script>
         function init() {
+            var pitchChart = new SmoothieChart({ interpolation: 'linear', maxValue: 190, minValue: -190 });
+            var pitchLine = new TimeSeries();
+            pitchChart.addTimeSeries(pitchLine, { lineWidth: 2, strokeStyle: '#00ff00' });
+            pitchChart.streamTo(document.getElementById("pitchCanvas"), 1000);
+
+            var rollChart = new SmoothieChart({ interpolation: 'linear', maxValue: 100, minValue: -100 });
+            var rollLine = new TimeSeries();
+            rollChart.addTimeSeries(rollLine, { lineWidth: 2, strokeStyle: '#00ff00' });
+            rollChart.streamTo(document.getElementById("rollCanvas"), 1000);
+
             var tempChart = new SmoothieChart({ interpolation: 'linear' });
             var tempLine = new TimeSeries();
             tempChart.addTimeSeries(tempLine, { lineWidth: 2, strokeStyle: '#00ff00' });
@@ -22,8 +32,10 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var data = JSON.parse(this.responseText);
 
-                        tempLine.append(new Date().getTime(), data.temp);
-                        pressLine.append(new Date().getTime(), data.press);
+                        pitchLine.append(new Date().getTime(), data.pitch);
+                        rollLine.append(new Date().getTime(), data.roll);
+                        tempLine.append(new Date().getTime(), data.temp / 100);
+                        pressLine.append(new Date().getTime(), data.press / 100);
                     }
                 };
                 xhttp.open("GET", "getData", true);
@@ -33,8 +45,13 @@
     </script>
 </head>
 <body onload="init()">
-    <h2>Ultrasonic sensor</h2>
+    <h4>Pitch</h4>
+    <canvas id="pitchCanvas" width="900" height="100"></canvas>
+    <h4>Roll</h4>
+    <canvas id="rollCanvas" width="900" height="100"></canvas>
+    <h4>Temperature in °C</h4>
     <canvas id="tempCanvas" width="900" height="100"></canvas>
+    <h4>Pressure in mBar</h4>
     <canvas id="pressCanvas" width="900" height="100"></canvas>
 </body>
 </html>
