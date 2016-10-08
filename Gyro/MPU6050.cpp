@@ -11,8 +11,8 @@ void MPU6050::IT_Init() {
 	exti.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(GPIOA, &exti);
 
-	HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+	HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
 uint8_t MPU6050::Init() {
@@ -169,7 +169,7 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 	return false;
 }
 
-extern "C" void EXTI4_IRQHandler(void)
+extern "C" void EXTI9_5_IRQHandler(void)
 {
-	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
 }
