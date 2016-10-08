@@ -10,7 +10,7 @@ HAL_StatusTypeDef ESP8266::UART_Init()
 		__USART1_CLK_ENABLE();
 
 	GPIO_InitTypeDef rst;
-	rst.Pin = GPIO_PIN_5;
+	rst.Pin = GPIO_PIN_4;
 	rst.Mode = GPIO_MODE_OUTPUT_PP;
 	rst.Pull = GPIO_PULLUP;;
 	rst.Speed = GPIO_SPEED_HIGH;
@@ -191,8 +191,11 @@ void ESP8266::processData()
 		char *commaPos = strchr(buffer, ',');
 
 		if (strcmp("ready\r\n", buffer) == 0) {
-			if (this->ready)
+			if (this->ready) {
+				printf("%s\n", this->data);
 				printf("restarted\n");
+			}
+				
 
 			this->ready = true;
 		}

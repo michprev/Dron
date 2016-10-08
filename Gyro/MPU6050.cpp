@@ -6,7 +6,7 @@ void MPU6050::IT_Init() {
 
 	GPIO_InitTypeDef exti;
 
-	exti.Pin = GPIO_PIN_4;
+	exti.Pin = GPIO_PIN_5;
 	exti.Mode = GPIO_MODE_IT_RISING;
 	exti.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(GPIOA, &exti);
