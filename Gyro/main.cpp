@@ -43,6 +43,6 @@ int main(void)
 		HAL_IWDG_Refresh(&hiwdg);
 
 		if (mpu.CheckNewData(data, &accuracy))
-			printf("Accuracy: %d, data: %d %d %d\n", accuracy, data[0], data[1], data[2]);
+			printf("data: %d %d %d\n", data[0], data[1], data[2]);
 	}
 }

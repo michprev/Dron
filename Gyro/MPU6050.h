@@ -27,6 +27,11 @@ private:
 		0, 1, 0,
 		0, 0, 1 }
 	};
+	struct platform_data_s compass_pdata = {
+		{ 0, 1, 0,
+		1, 0, 0,
+		0, 0, -1 }
+	};
 	unsigned long next_temp_ms = 0;
 	bool new_temp = false;
 	unsigned long timestamp;

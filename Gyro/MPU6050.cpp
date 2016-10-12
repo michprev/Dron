@@ -18,7 +18,6 @@ void MPU6050::IT_Init() {
 uint8_t MPU6050::Init() {
 	I2cMaster_Init();
 	IT_Init();
-	printf("I2C init OK\n");
 	struct int_param_s int_param;
 	unsigned char accel_fsr, new_temp = 0;
 	unsigned short gyro_rate, gyro_fsr, compass_fsr;
@@ -46,7 +45,7 @@ uint8_t MPU6050::Init() {
 	/* Update gyro biases when temperature changes. */
 	if (inv_enable_gyro_tc())
 		return 6;
-#ifdef COMPASS_ENABLED
+#ifdef HMC5983
 	if (inv_enable_vector_compass_cal())
 		return 7;
 	if (inv_enable_magnetic_disturbance())
@@ -58,7 +57,7 @@ uint8_t MPU6050::Init() {
 
 	if (inv_start_mpl())
 		return 10;
-#ifdef COMPASS_ENABLED
+#ifdef HMC5983
 	if (mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS) || mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL) || mpu_set_sample_rate(20) || mpu_set_compass_sample_rate(10))
 		return 11;
 	/* Read back configuration in case it was set improperly. */
@@ -76,7 +75,7 @@ uint8_t MPU6050::Init() {
 	/* Sample rate expected in microseconds. */
 	inv_set_gyro_sample_rate(1000000L / gyro_rate);
 	inv_set_accel_sample_rate(1000000L / gyro_rate);
-#ifdef COMPASS_ENABLED
+#ifdef HMC5983
 	inv_set_compass_sample_rate(100 * 1000L);
 #endif
 	/* Set chip-to-body orientation matrix.
@@ -88,6 +87,11 @@ uint8_t MPU6050::Init() {
 	inv_set_accel_orientation_and_scale(
 		inv_orientation_matrix_to_scalar(gyro_pdata.orientation),
 		(long)accel_fsr << 15);
+#ifdef HMC5983
+	inv_set_compass_orientation_and_scale(
+		inv_orientation_matrix_to_scalar(compass_pdata.orientation),
+		(long)compass_fsr << 15);
+#endif
 
 	if (dmp_load_motion_driver_firmware())
 		return 13;
@@ -107,9 +111,16 @@ uint8_t MPU6050::Init() {
 
 bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 {
+
+	
+
 	bool new_data = false;
 	unsigned long sensor_timestamp;
 	timestamp = HAL_GetTick();
+
+	short data[3];
+
+	mpu_get_compass_reg(data, &timestamp);
 
 	if (timestamp > next_temp_ms) {
 		next_temp_ms = timestamp + 500;
