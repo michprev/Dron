@@ -23,25 +23,29 @@ private:
 		signed char orientation[9];
 	};
 	struct platform_data_s gyro_pdata = {
-		{ 1, 0, 0,
-		0, 1, 0,
+		{ 0, -1, 0,
+		1, 0, 0,
 		0, 0, 1 }
 	};
 	struct platform_data_s compass_pdata = {
-		{ 0, 1, 0,
+		{ 0, -1, 0,
 		1, 0, 0,
-		0, 0, -1 }
+		0, 0, 1 }
 	};
+	const uint8_t COMPASS_READ_MS = 100;
 	unsigned long next_temp_ms = 0;
+	unsigned long next_compass_ms = 0;
 	bool new_temp = false;
 	unsigned long timestamp;
 
 	void IT_Init();
+	uint32_t DELAY_Init(void);
 
 public:
 	bool dataReady;
 
 	uint8_t Init();
+	void selfTest();
 	bool CheckNewData(long *euler, uint8_t *accur);
 };
 

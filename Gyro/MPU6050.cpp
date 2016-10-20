@@ -15,7 +15,50 @@ void MPU6050::IT_Init() {
 	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
+void MPU6050::selfTest()
+{
+	int result;
+	long gyro[3], accel[3];
+
+	result = mpu_run_self_test(gyro, accel);
+
+	if (result == 0x7) {
+		printf("Passed!\n");
+		printf("accel: %7.4f %7.4f %7.4f\n",
+			accel[0] / 65536.f,
+			accel[1] / 65536.f,
+			accel[2] / 65536.f);
+		printf("gyro: %7.4f %7.4f %7.4f\n",
+			gyro[0] / 65536.f,
+			gyro[1] / 65536.f,
+			gyro[2] / 65536.f);
+
+		unsigned short accel_sens;
+		float gyro_sens;
+
+		mpu_get_accel_sens(&accel_sens);
+		accel[0] *= accel_sens;
+		accel[1] *= accel_sens;
+		accel[2] *= accel_sens;
+		inv_set_accel_bias(accel, 3);
+		mpu_get_gyro_sens(&gyro_sens);
+		gyro[0] = (long)(gyro[0] * gyro_sens);
+		gyro[1] = (long)(gyro[1] * gyro_sens);
+		gyro[2] = (long)(gyro[2] * gyro_sens);
+		inv_set_gyro_bias(gyro, 3);
+	}
+	else {
+		if (!(result & 0x1))
+			printf("Gyro failed.\n");
+		if (!(result & 0x2))
+			printf("Accel failed.\n");
+		if (!(result & 0x4))
+			printf("Compass failed.\n");
+	}
+}
+
 uint8_t MPU6050::Init() {
+	DELAY_Init();
 	I2cMaster_Init();
 	IT_Init();
 	struct int_param_s int_param;
@@ -31,8 +74,11 @@ uint8_t MPU6050::Init() {
 	/* Compute 6-axis and 9-axis quaternions. */
 	if (inv_enable_quaternion())
 		return 3;
-	if (inv_enable_9x_sensor_fusion())
-		return 4;
+	/*if (inv_enable_9x_sensor_fusion())
+		return 4;*/
+
+	//// TODO
+	//inv_9x_fusion_use_timestamps(1);
 
 	/* Update gyro biases when not in motion.
 	* WARNING: These algorithms are mutually exclusive.
@@ -45,11 +91,13 @@ uint8_t MPU6050::Init() {
 	/* Update gyro biases when temperature changes. */
 	if (inv_enable_gyro_tc())
 		return 6;
+
 #ifdef HMC5983
 	if (inv_enable_vector_compass_cal())
 		return 7;
 	if (inv_enable_magnetic_disturbance())
 		return 8;
+
 #endif
 	/* Allows use of the MPL APIs in read_from_mpl. */
 	if (inv_enable_eMPL_outputs())
@@ -105,22 +153,45 @@ uint8_t MPU6050::Init() {
 	if (mpu_set_dmp_state(1))
 		return 17;
 
+	//selfTest();
 
 	return 0;
 }
 
+uint32_t MPU6050::DELAY_Init(void) {
+	CoreDebug->DEMCR &= ~0x01000000;
+	CoreDebug->DEMCR |= 0x01000000;
+
+	DWT->CTRL &= ~0x00000001;
+	DWT->CTRL |= 0x00000001;
+
+	DWT->CYCCNT = 0;
+
+	uint32_t c = DWT->CYCCNT;
+
+	__ASM volatile ("NOP");
+	__ASM volatile ("NOP");
+
+	return (DWT->CYCCNT - c);
+}
+
 bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 {
-
-	
+	uint32_t start = DWT->CYCCNT;
 
 	bool new_data = false;
+	bool new_compass = false;
 	unsigned long sensor_timestamp;
+	
 	timestamp = HAL_GetTick();
 
-	short data[3];
-
-	mpu_get_compass_reg(data, &timestamp);
+#ifdef HMC5983
+	if ((timestamp > this->next_compass_ms) /*&& !hal.lp_accel_mode*/ &&
+		dataReady /*&& (hal.sensors & COMPASS_ON)*/) {
+		this->next_compass_ms = timestamp + COMPASS_READ_MS;
+		new_compass = 1;
+	}
+#endif
 
 	if (timestamp > next_temp_ms) {
 		next_temp_ms = timestamp + 500;
@@ -160,6 +231,32 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 		}
 	}
 
+#ifdef HMC5983
+	if (new_compass) {
+		short compass_short[3];
+		long compass[3];
+		new_compass = 0;
+		/* For any MPU device with an AKM on the auxiliary I2C bus, the raw
+		* magnetometer registers are copied to special gyro registers.
+		*/
+		if (!mpu_get_compass_reg(compass_short, &sensor_timestamp)) {
+			compass[0] = (long)compass_short[0];
+			compass[1] = (long)compass_short[1];
+			compass[2] = (long)compass_short[2];
+
+			//printf("compass %d %d %d\n", compass[0], compass[1], compass[2]);
+
+			/* NOTE: If using a third-party compass calibration library,
+			* pass in the compass data in uT * 2^16 and set the second
+			* parameter to INV_CALIBRATED | acc, where acc is the
+			* accuracy from 0 to 3.
+			*/
+			inv_build_compass(compass, 0, sensor_timestamp);
+		}
+		new_data = 1;
+	}
+#endif
+
 	if (new_data) {
 		inv_execute_on_data();
 
@@ -167,12 +264,22 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 		int8_t accuracy;
 		unsigned long timestamp;
 
+		//if (inv_get_sensor_type_heading(data, &accuracy, (inv_time_t*)&timestamp)){}
+			//printf("heading %d accur %d\n", data[0] / 65536, accuracy);
+
+		/*if (inv_get_sensor_type_compass(data, &accuracy, (inv_time_t*)&timestamp))
+			printf("compass %d %d %d\n", data[0], data[1], data[2]);*/
+
 		if (inv_get_sensor_type_euler(data, &accuracy, (inv_time_t*)&timestamp)) {
 			euler[0] = data[0] / 65536;
 			euler[1] = data[1] / 65536;
 			euler[2] = data[2] / 65536;
 			(*accur) = accuracy;
 		}
+
+		uint32_t end = DWT->CYCCNT;
+
+		printf("time %d us\n", (end - start) * 1000000 / HAL_RCC_GetHCLKFreq());
 
 		return true;
 	}

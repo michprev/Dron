@@ -2021,68 +2021,68 @@ static int gyro_self_test(long *bias_regular, long *bias_st)
 #ifdef HMC5983 // TODO
 static int compass_self_test(void)
 {
-//    unsigned char tmp[6];
-//    unsigned char tries = 10;
-//    int result = 0x07;
-//    short data;
-//
-//    mpu_set_bypass(1);
-//
-//    tmp[0] = HMC_POWER_DOWN;
-//    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_MODE, 1, tmp))
-//        return 0x07;
-//    tmp[0] = HMC_POSITIVE_SELF_TEST;
-//    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_CONF1, 1, tmp))
-//        goto AKM_restore;
-//	tmp[0] = 5 << 5; // TODO choose gain
-//	if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_CONF2, 1, tmp))
-//		goto AKM_restore;
-//    tmp[0] = HMC_CONTINUOUS_MEASUREMENT;
-//    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_MODE, 1, tmp))
-//        goto AKM_restore;
-//
-//    do {
-//        delay_ms(10);
-//        if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_ST1, 1, tmp))
-//            goto AKM_restore;
-//        if (tmp[0] & AKM_DATA_READY)
-//            break;
-//    } while (tries--);
-//    if (!(tmp[0] & AKM_DATA_READY))
-//        goto AKM_restore;
-//
-//    if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_HXL, 6, tmp))
-//        goto AKM_restore;
-//
-//    result = 0;
-//#if defined MPU9150
-//    data = (short)(tmp[1] << 8) | tmp[0];
-//    if ((data > 100) || (data < -100))
-//        result |= 0x01;
-//    data = (short)(tmp[3] << 8) | tmp[2];
-//    if ((data > 100) || (data < -100))
-//        result |= 0x02;
-//    data = (short)(tmp[5] << 8) | tmp[4];
-//    if ((data > -300) || (data < -1000))
-//        result |= 0x04;
-//#elif defined MPU9250
-//    data = (short)(tmp[1] << 8) | tmp[0];
-//    if ((data > 200) || (data < -200))  
-//        result |= 0x01;
-//    data = (short)(tmp[3] << 8) | tmp[2];
-//    if ((data > 200) || (data < -200))  
-//        result |= 0x02;
-//    data = (short)(tmp[5] << 8) | tmp[4];
-//    if ((data > -800) || (data < -3200))  
-//        result |= 0x04;
-//#endif
-//AKM_restore:
-//    tmp[0] = 0 | SUPPORTS_AK89xx_HIGH_SENS;
-//    i2c_write(st.chip_cfg.compass_addr, AKM_REG_ASTC, 1, tmp);
-//    tmp[0] = SUPPORTS_AK89xx_HIGH_SENS;
-//    i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp);
-//    mpu_set_bypass(0);
-//    return result;
+    unsigned char tmp[6];
+    unsigned char tries = 10;
+    int result = 0x07;
+
+    mpu_set_bypass(1);
+
+    tmp[0] = HMC_POWER_DOWN;
+    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_MODE, 1, tmp))
+        return 0x07;
+    tmp[0] = HMC_POSITIVE_SELF_TEST;
+    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_CONF1, 1, tmp))
+        goto HMC_restore;
+	tmp[0] = 5 << 5; // TODO choose gain
+	if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_CONF2, 1, tmp))
+		goto HMC_restore;
+    tmp[0] = HMC_CONTINUOUS_MEASUREMENT;
+    if (i2c_write(st.chip_cfg.compass_addr, HMC_REG_MODE, 1, tmp))
+        goto HMC_restore;
+
+	delay_ms(200);
+
+	if (i2c_read(st.chip_cfg.compass_addr, HMC_REG_DATA, 6, tmp))
+		goto HMC_restore;
+
+	uint16_t data[3];
+	data[0] = (tmp[0] << 8) | tmp[1];
+	data[1] = (tmp[2] << 8) | tmp[3];
+	data[2] = (tmp[4] << 8) | tmp[5];
+
+	printf("self test %d %d %d\n", data[0], data[1], data[2]);
+    
+
+    result = 0;
+#if defined MPU9150
+    data = (short)(tmp[1] << 8) | tmp[0];
+    if ((data > 100) || (data < -100))
+        result |= 0x01;
+    data = (short)(tmp[3] << 8) | tmp[2];
+    if ((data > 100) || (data < -100))
+        result |= 0x02;
+    data = (short)(tmp[5] << 8) | tmp[4];
+    if ((data > -300) || (data < -1000))
+        result |= 0x04;
+#elif defined MPU9250
+    data = (short)(tmp[1] << 8) | tmp[0];
+    if ((data > 200) || (data < -200))  
+        result |= 0x01;
+    data = (short)(tmp[3] << 8) | tmp[2];
+    if ((data > 200) || (data < -200))  
+        result |= 0x02;
+    data = (short)(tmp[5] << 8) | tmp[4];
+    if ((data > -800) || (data < -3200))  
+        result |= 0x04;
+#endif
+HMC_restore:
+	printf("error\n");
+    /*tmp[0] = 0 | SUPPORTS_AK89xx_HIGH_SENS;
+    i2c_write(st.chip_cfg.compass_addr, AKM_REG_ASTC, 1, tmp);
+    tmp[0] = SUPPORTS_AK89xx_HIGH_SENS;
+    i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp);*/
+    mpu_set_bypass(0);
+    return result;
 }
 #endif
 
@@ -2748,7 +2748,7 @@ int mpu_run_self_test(long *gyro, long *accel)
     if (!accel_result)
         result |= 0x02;
 
-#ifdef HMC5983
+#ifdef HMC59834
     compass_result = compass_self_test();
     if (!compass_result)
         result |= 0x04;
