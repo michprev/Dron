@@ -1,4 +1,5 @@
 #include <stm32f4xx_hal.h>
+#include "NEO_M8N.h"
 
 extern "C" void SysTick_Handler(void)
 {
@@ -6,53 +7,41 @@ extern "C" void SysTick_Handler(void)
 	HAL_SYSTICK_IRQHandler();
 }
 
-UART_HandleTypeDef huart;
+NEO_M8N neo = NEO_M8N(2048);
 
-extern "C" void UART4_IRQHandler(void)
+extern "C" void DMA1_Stream1_IRQHandler(void)
 {
-	uint8_t data = huart.Instance->DR & (uint8_t)0x00FF;
+	HAL_DMA_IRQHandler(&neo.hdma_usart3_rx);
+}
+
+extern "C" void HardFault_Handler(void)
+{
+	printf("hard fault\n");
+}
+
+extern "C" void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart) {
+	neo.writePos = 1024;
+}
+
+extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	neo.writePos = 0;
 }
 
 int main(void)
 {
 	HAL_Init();
 
-	if (__GPIOA_IS_CLK_DISABLED())
-		__GPIOA_CLK_ENABLE();
+	neo.Init();
 
-	if (__UART4_IS_CLK_DISABLED())
-		__UART4_CLK_ENABLE();
+	uint8_t tmp[] = { 0xB5, 0x62, 0x06, 0x00, 0x14, 0x00, 0x01, 0x00, 0x00, 0x00, 0xD0, 0x08, 0x00, 0x00/**/, 0x00, 0xC2, 0x01, 0x00,/**/ 0x07, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0xDE, 0xC9 };
+	// 28
 
-	GPIO_InitTypeDef GPIO_InitStruct;
+	//HAL_UART_Transmit(&neo.huart, tmp, 28, HAL_MAX_DELAY);
 
-	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF8_UART4;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-	huart.Instance = UART4;
-	huart.Init.BaudRate = 9600;
-	huart.Init.WordLength = UART_WORDLENGTH_8B;
-	huart.Init.StopBits = UART_STOPBITS_1;
-	huart.Init.Parity = UART_PARITY_NONE;
-	huart.Init.Mode = UART_MODE_TX_RX;
-	huart.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-	huart.Init.OverSampling = UART_OVERSAMPLING_8;
-	HAL_UART_Init(&huart);
-
-	/*__HAL_UART_ENABLE_IT(&huart, UART_IT_RXNE);
-
-	HAL_NVIC_SetPriority(UART4_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(UART4_IRQn);*/
-
-	uint8_t data[50] = { '\0' };
-
-	
+	HAL_UART_Receive_DMA(&neo.huart, neo.data, 2048);
 
 	while (true) {
-		HAL_UART_Receive(&huart, data, 10, HAL_MAX_DELAY);
-		printf("%s\n", data);
+		neo.ParseData();
+		//printf("%c\n", neo.data[0]);
 	}
 }
