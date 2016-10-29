@@ -43,6 +43,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Compass", "Compass\Compass.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GPS", "GPS\GPS.vcxproj", "{A9E6F383-BE0D-4E6D-BC74-C5E0D8B59FE0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PWM", "PWM\PWM.vcxproj", "{D8C6DEAE-4514-4D72-85C7-B2FCEA09AE7C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WiFi_UDP", "WiFi_UDP\WiFi_UDP.vcxproj", "{1FAD26FF-4846-4F84-A701-6BCBD377FD5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -95,6 +99,14 @@ Global
 		{A9E6F383-BE0D-4E6D-BC74-C5E0D8B59FE0}.Debug|x86.Build.0 = Debug|Win32
 		{A9E6F383-BE0D-4E6D-BC74-C5E0D8B59FE0}.Release|x86.ActiveCfg = Release|Win32
 		{A9E6F383-BE0D-4E6D-BC74-C5E0D8B59FE0}.Release|x86.Build.0 = Release|Win32
+		{D8C6DEAE-4514-4D72-85C7-B2FCEA09AE7C}.Debug|x86.ActiveCfg = Debug|Win32
+		{D8C6DEAE-4514-4D72-85C7-B2FCEA09AE7C}.Debug|x86.Build.0 = Debug|Win32
+		{D8C6DEAE-4514-4D72-85C7-B2FCEA09AE7C}.Release|x86.ActiveCfg = Release|Win32
+		{D8C6DEAE-4514-4D72-85C7-B2FCEA09AE7C}.Release|x86.Build.0 = Release|Win32
+		{1FAD26FF-4846-4F84-A701-6BCBD377FD5E}.Debug|x86.ActiveCfg = Debug|Win32
+		{1FAD26FF-4846-4F84-A701-6BCBD377FD5E}.Debug|x86.Build.0 = Debug|Win32
+		{1FAD26FF-4846-4F84-A701-6BCBD377FD5E}.Release|x86.ActiveCfg = Release|Win32
+		{1FAD26FF-4846-4F84-A701-6BCBD377FD5E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
