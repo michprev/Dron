@@ -254,12 +254,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="..\WiFi\http_parser.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\WiFi\ESP8266.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Barometer\MS5611.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -304,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="..\Gyro\invensense\storage_manager.c">
       <Filter>Source files\invensense</Filter>
+    </ClCompile>
+    <ClCompile Include="..\WiFi_UDP\ESP8266_UDP.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -613,16 +610,7 @@
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template\cmsis_os.h">
       <Filter>Header files\Device-specific files\HAL</Filter>
     </ClInclude>
-    <ClInclude Include="Smoothie.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Barometer\MS5611.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WiFi\ESP8266.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\WiFi\http_parser.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="..\Gyro\MPU6050.h">
@@ -732,6 +720,9 @@
     </ClInclude>
     <ClInclude Include="..\Gyro\invensense\library\quaternion_supervisor.h">
       <Filter>Header files\invensense\library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\WiFi_UDP\ESP8266_UDP.h">
+      <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

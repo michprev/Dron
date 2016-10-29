@@ -146,8 +146,7 @@
     <ClCompile Include="..\Gyro\invensense\start_manager.c" />
     <ClCompile Include="..\Gyro\invensense\storage_manager.c" />
     <ClCompile Include="..\Gyro\MPU6050.cpp" />
-    <ClCompile Include="..\WiFi\ESP8266.cpp" />
-    <ClCompile Include="..\WiFi\http_parser.c" />
+    <ClCompile Include="..\WiFi_UDP\ESP8266_UDP.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="system_stm32f4xx.c" />
   </ItemGroup>
@@ -290,9 +289,7 @@
     <ClInclude Include="..\Gyro\invensense\stdint_invensense.h" />
     <ClInclude Include="..\Gyro\invensense\storage_manager.h" />
     <ClInclude Include="..\Gyro\MPU6050.h" />
-    <ClInclude Include="..\WiFi\ESP8266.h" />
-    <ClInclude Include="..\WiFi\http_parser.h" />
-    <ClInclude Include="Smoothie.h" />
+    <ClInclude Include="..\WiFi_UDP\ESP8266_UDP.h" />
     <ClInclude Include="stm32f4xx_hal_conf.h" />
   </ItemGroup>
   <ItemGroup>
