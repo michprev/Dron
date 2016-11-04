@@ -14,7 +14,7 @@ private:
 	char expectedResponse[20] = { '\0' };
 	char clientIP[16] = { '\0' };
 	uint16_t clientPort;
-	char IPD_Data[1024];
+	uint8_t IPD_Data[1024];
 	char sendBuffer[2048] = { '\0' };
 	WaitFlag waitFlag;
 	bool inIPD;
@@ -36,14 +36,13 @@ public:
 	bool ready;
 	bool handshaken;
 	bool output;
-	void(*IPD_Callback)(char *data);
+	void(*IPD_Callback)(uint8_t *data, uint16_t length);
 
 	ESP8266_UDP(uint32_t size);
 	HAL_StatusTypeDef SendUDP(uint8_t *data, uint16_t length);
 	void WriteByte(uint8_t *data);
 	HAL_StatusTypeDef WaitReady(uint16_t delay = 5000);
 	void Init();
-	void ConnectToClient();
 };
 
 #endif

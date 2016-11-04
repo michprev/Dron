@@ -188,14 +188,11 @@ void ESP8266_UDP::processData()
 		buffer[i] = '\0';
 
 
-		char *commaPos = strchr(buffer, ',');
-
 		if (strcmp("ready\r\n", buffer) == 0) {
 			if (this->ready) {
 				printf("%s\n", this->data);
 				printf("restarted\n");
 			}
-
 
 			this->ready = true;
 		}
@@ -288,15 +285,10 @@ void ESP8266_UDP::processData()
 			}
 		}
 
-		if (dataRead != IPD_Length)
-			printf("IPD timed out\n");
-
-		this->IPD_Data[IPD_Pos] = '\0';
-
 		this->inIPD = false;
 
 		if (this->IPD_Callback != NULL) {
-			this->IPD_Callback(this->IPD_Data);
+			this->IPD_Callback(this->IPD_Data, IPD_Length);
 		}
 	}
 }
@@ -395,13 +387,5 @@ void ESP8266_UDP::Init()
 	send("AT+CIPMUX=0\r\n");
 	send("AT+CIPDINFO=1\r\n");
 	send("AT+CIPSTART=\"UDP\",\"0\",0,4789,1\r\n");
-}
-
-void ESP8266_UDP::ConnectToClient()
-{
 	send("AT+CIPDINFO=0\r\n");
-	/*char msg[150] = { '\0' };
-
-	sprintf(msg, "AT+CIPSTART=\"UDP\",\"%s\",%d\r\n", this->clientIP, this->clientPort);
-	send(msg);*/
 }
