@@ -19,19 +19,17 @@ private:
 	WaitFlag waitFlag;
 	bool inIPD;
 	uint32_t readPos;
-	uint32_t writePos;
-	uint8_t *data;
 	uint32_t size;
+	uint8_t *data;
 
 	HAL_StatusTypeDef UART_Init();
-	uint32_t getFreeSize();
-	uint32_t getFullSize();
 	uint32_t findString(char *str);
-	uint8_t readData(char *data, uint8_t count);
+	uint8_t readByte(uint8_t *data, bool checkNull = false);
 	void processData();
 	HAL_StatusTypeDef send(char *);
 
 public:
+	DMA_HandleTypeDef hdma_usart1_rx;
 	UART_HandleTypeDef huart;
 	bool ready;
 	bool handshaken;
@@ -40,7 +38,6 @@ public:
 
 	ESP8266_UDP(uint32_t size);
 	HAL_StatusTypeDef SendUDP(uint8_t *data, uint16_t length);
-	void WriteByte(uint8_t *data);
 	HAL_StatusTypeDef WaitReady(uint16_t delay = 5000);
 	void Init();
 };

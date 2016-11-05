@@ -9,6 +9,9 @@ HAL_StatusTypeDef ESP8266_UDP::UART_Init()
 	if (__USART1_IS_CLK_DISABLED())
 		__USART1_CLK_ENABLE();
 
+	if (__DMA2_IS_CLK_DISABLED())
+		__DMA2_CLK_ENABLE();
+
 	GPIO_InitTypeDef rst;
 	rst.Pin = GPIO_PIN_4;
 	rst.Mode = GPIO_MODE_OUTPUT_PP;
@@ -25,6 +28,20 @@ HAL_StatusTypeDef ESP8266_UDP::UART_Init()
 	GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+	hdma_usart1_rx.Instance = DMA2_Stream2;
+	hdma_usart1_rx.Init.Channel = DMA_CHANNEL_4;
+	hdma_usart1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdma_usart1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdma_usart1_rx.Init.MemInc = DMA_MINC_ENABLE;
+	hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	hdma_usart1_rx.Init.Mode = DMA_CIRCULAR;
+	hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+	hdma_usart1_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	HAL_DMA_Init(&hdma_usart1_rx);
+
+	__HAL_LINKDMA(&huart, hdmarx, hdma_usart1_rx);
+
 	this->huart.Instance = USART1;
 	this->huart.Init.BaudRate = 115200;
 	this->huart.Init.WordLength = UART_WORDLENGTH_8B;
@@ -35,54 +52,17 @@ HAL_StatusTypeDef ESP8266_UDP::UART_Init()
 	this->huart.Init.OverSampling = UART_OVERSAMPLING_8;
 	HAL_UART_Init(&this->huart);
 
-	__HAL_UART_ENABLE_IT(&this->huart, UART_IT_RXNE);
-
-	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(USART1_IRQn);
-}
-
-// free to write
-uint32_t ESP8266_UDP::getFreeSize()
-{
-	uint32_t read = this->readPos;
-	uint32_t write = this->writePos;
-
-	if (read == write)
-		return 0;
-
-	if (read > write)
-		return (read - write);
-
-	if (write > read)
-		return (this->size - write + read);
-}
-
-uint32_t ESP8266_UDP::getFullSize()
-{
-	uint32_t read = this->readPos;
-	uint32_t write = this->writePos;
-
-	if (read == write)
-		return 0;
-
-	if (write > read)
-		return (write - read);
-
-	if (read > write)
-		return (this->size - read + write);
+	HAL_UART_Receive_DMA(&this->huart, this->data, this->size);
 }
 
 uint32_t ESP8266_UDP::findString(char * str)
 {
 	uint32_t length = strlen(str);
-	uint32_t size = getFullSize();
 	uint32_t retval = 0;
 	uint32_t read = this->readPos;
+	bool stop = false;
 
-	if (size < length)
-		return -1;
-
-	while (size >(length - 1)) {
+	do {
 		bool found = true;
 		uint32_t tmpRead = read;
 
@@ -92,6 +72,22 @@ uint32_t ESP8266_UDP::findString(char * str)
 		for (uint32_t i = 0; i < length; i++) {
 			if (tmpRead >= this->size)
 				tmpRead = 0;
+
+			if (this->data[tmpRead + i] == '\0') {
+				bool skip = false;
+				for (uint8_t j = 0; j < 5; j++) {
+					if (this->data[tmpRead + i + j] != '\0') {
+						skip = true;
+						break;
+					}
+				}
+
+				if (!skip) {
+					stop = true;
+					found = false;
+					break;
+				}
+			}
 
 			if (this->data[tmpRead + i] != str[i]) {
 				found = false;
@@ -104,59 +100,36 @@ uint32_t ESP8266_UDP::findString(char * str)
 
 		read++;
 		retval++;
-		size--;
-	}
+	} while (!stop);
 
 	return -1;
 }
 
-uint8_t ESP8266_UDP::readData(char *data, uint8_t count)
-{
-	uint32_t fullSize = getFullSize();
-
-	if (fullSize == 0)
+uint8_t ESP8266_UDP::readByte(uint8_t *data, bool checkNull) {
+	if (checkNull && this->data[this->readPos] == '\0')
 		return 0;
-	if (fullSize < count)
-		count = fullSize;
+	
+	if (data != NULL)
+		*data = this->data[this->readPos];
+	this->data[this->readPos] = '\0';
+	this->readPos++;
 
-	if (count < this->size - this->readPos) {
-		if (data != NULL)
-			memcpy(data, &this->data[this->readPos], count);
-		this->readPos += count;
+	if (this->readPos == this->size)
+		this->readPos = 0;
 
-		if (this->readPos == this->size)
-			this->readPos = 0;
-
-		return count;
-	}
-	else {
-		uint8_t toCopy = count < this->size - count ? count : this->size - count;
-
-		if (data != NULL) {
-			memcpy(data, &this->data[this->readPos], toCopy);
-			memcpy(&data[toCopy], this->data, count - toCopy);
-		}
-		this->readPos = count - toCopy;
-
-		return count;
-	}
+	return 1;
 }
 
 void ESP8266_UDP::processData()
 {
 	char buffer[256];
 
-	uint32_t fullSize = getFullSize();
-	uint32_t freeSize = getFreeSize();
-
-	if (fullSize == 0)	// buffer empty
-		return;
-
 	if (findString("+IPD") == 0) {
 		this->inIPD = true;
 	}
 	else if (findString("> ") == 0) {
-		readData(NULL, 2);
+		readByte(NULL);
+		readByte(NULL);
 		this->waitFlag = WAIT_OK;
 		return;
 	}
@@ -171,13 +144,14 @@ void ESP8266_UDP::processData()
 			break;
 		}
 		else if (findString("> ") == 0) {
-			readData(NULL, 2);
+			readByte(NULL);
+			readByte(NULL);
 			this->waitFlag = WAIT_OK;
 			return;
 		}
 
 		do {
-			count = readData(&c, 1);
+			count = readByte((uint8_t*)&c);
 
 			if (count == 1) {
 				buffer[i] = c;
@@ -219,7 +193,7 @@ void ESP8266_UDP::processData()
 			this->handshaken = false;
 		}
 		else if (strcmp("\r\n", buffer) == 0) {
-			// do nothing
+
 		}
 		else if (strcmp("ATE0\r\r\n", buffer) == 0) {
 
@@ -245,7 +219,7 @@ void ESP8266_UDP::processData()
 		char port[20] = { '\0' };
 
 		do {
-			readCount = readData(&c, 1);
+			readCount = readByte((uint8_t*)&c, true);
 
 			if (readCount == 1) {
 				if (commaCount == 1 && c != ',') {
@@ -276,7 +250,7 @@ void ESP8266_UDP::processData()
 		int IPD_Pos = 0;
 
 		while (dataRead != IPD_Length) {
-			readCount = readData(&c, 1);
+			readCount = readByte((uint8_t*)&c, true);
 
 			if (readCount == 1) {
 				this->IPD_Data[IPD_Pos] = c;
@@ -304,6 +278,8 @@ HAL_StatusTypeDef ESP8266_UDP::send(char *str)
 
 	if (status == HAL_ERROR)
 		printf("error\n");
+	if (status == HAL_TIMEOUT)
+		printf("timed out\n");
 
 	return status;
 }
@@ -334,10 +310,7 @@ HAL_StatusTypeDef ESP8266_UDP::SendUDP(uint8_t *data, uint16_t length)
 
 ESP8266_UDP::ESP8266_UDP(uint32_t size)
 {
-	UART_Init();
-
 	this->readPos = 0;
-	this->writePos = 0;
 	this->size = size;
 	this->data = (uint8_t*)calloc(size, sizeof(uint8_t));
 	this->output = false;
@@ -346,22 +319,24 @@ ESP8266_UDP::ESP8266_UDP(uint32_t size)
 	this->huart = huart;
 	this->IPD_Callback = NULL;
 	this->handshaken = false;
-}
 
-void ESP8266_UDP::WriteByte(uint8_t * data)
-{
-	if (*data != '\0') {
-		this->data[writePos] = *data;
-		this->writePos++;
-
-		if (this->writePos == this->size)
-			this->writePos = 0;
-	}
+	UART_Init();
 }
 
 HAL_StatusTypeDef ESP8266_UDP::WaitReady(uint16_t delay)
 {
 	this->waitFlag = WAIT_AT;
+
+	if (delay == 0) {
+		processData();
+
+		if (this->waitFlag == WAIT_AT)
+			return HAL_TIMEOUT;
+		if (this->waitFlag == WAIT_ERROR)
+			return HAL_ERROR;
+		return HAL_OK;
+	}
+
 	uint32_t tick = HAL_GetTick();
 
 	while (this->waitFlag == WAIT_AT) {
@@ -374,6 +349,8 @@ HAL_StatusTypeDef ESP8266_UDP::WaitReady(uint16_t delay)
 
 	if (this->waitFlag == WAIT_ERROR)
 		return HAL_ERROR;
+	else if (this->waitFlag == WAIT_AT)
+		return HAL_TIMEOUT;
 
 	return HAL_OK;
 }
@@ -387,5 +364,5 @@ void ESP8266_UDP::Init()
 	send("AT+CIPMUX=0\r\n");
 	send("AT+CIPDINFO=1\r\n");
 	send("AT+CIPSTART=\"UDP\",\"0\",0,4789,1\r\n");
-	send("AT+CIPDINFO=0\r\n");
+	send("AT+CIPDINFO=1\r\n");
 }
