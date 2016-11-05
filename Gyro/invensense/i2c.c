@@ -103,7 +103,8 @@ int Sensors_I2C_WriteRegister(unsigned char slave_addr,
 tryWriteAgain:
 	ret = 0;
 	
-	ret = HAL_I2C_Mem_Write(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, HAL_MAX_DELAY);
+	ret = HAL_I2C_Mem_Write(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, 1000);
+
 	if (ret)
 		I2C_Reset();
 
@@ -135,7 +136,8 @@ tryReadAgain:
 		len == 2) {
 
 	}*/
-	ret = HAL_I2C_Mem_Read(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, HAL_MAX_DELAY);
+	ret = HAL_I2C_Mem_Read(&MPU6050_Handle, slave_addr << 1, reg_addr, I2C_MEMADD_SIZE_8BIT, data_ptr, len, 1000);
+
 	if (ret)
 		I2C_Reset();
 

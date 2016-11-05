@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <NMakeIncludeSearchPath>.;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\Legacy;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include\t;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\RTOS\Template;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\arm-eabi\thumb\fpu\cortex_m4;c:\sysgcc\arm-eabi\arm-eabi\include\c++\5.3.0\backward;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\5.3.0\include-fixed;c:\sysgcc\arm-eabi\arm-eabi\sys-include;c:\sysgcc\arm-eabi\arm-eabi\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <NMakeIncludeSearchPath>.;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_HAL_Driver\Inc\Legacy;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Device\ST\STM32F4xx\Include\t;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_HAL\Include;c:\sysgcc\arm-eabi\arm-eabi\include\c++\6.2.0;c:\sysgcc\arm-eabi\arm-eabi\include\c++\6.2.0\arm-eabi\thumb\fpu\cortex_m4;c:\sysgcc\arm-eabi\arm-eabi\include\c++\6.2.0\backward;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\6.2.0\include;c:\sysgcc\arm-eabi\lib\gcc\arm-eabi\6.2.0\include-fixed;c:\sysgcc\arm-eabi\arm-eabi\sys-include;c:\sysgcc\arm-eabi\arm-eabi\include;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
     <NMakeForcedIncludes>$(ProjectDir)\gcc_Debug.h;$(VISUALGDB_DIR)\gcc_compat.h;$(LOCALAPPDATA)\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\stm32_compat.h;$(NMakeForcedIncludes)</NMakeForcedIncludes>
     <NMakeBuildCommandLine>"$(VISUALGDB_DIR)\VisualGDB.exe" /build "$(ProjectPath)" "/solution:$(SolutionPath)" "/config:$(Configuration)" "/platform:$(Platform)"</NMakeBuildCommandLine>
     <NMakeCleanCommandLine>"$(VISUALGDB_DIR)\VisualGDB.exe" /clean "$(ProjectPath)" "/solution:$(SolutionPath)" "/config:$(Configuration)" "/platform:$(Platform)"</NMakeCleanCommandLine>
@@ -145,6 +145,7 @@
     <ClCompile Include="invensense\storage_manager.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MPU6050.cpp" />
+    <ClCompile Include="MPU9250.cpp" />
     <ClCompile Include="system_stm32f4xx.c" />
   </ItemGroup>
   <ItemGroup>
@@ -272,6 +273,7 @@
     <ClInclude Include="invensense\stdint_invensense.h" />
     <ClInclude Include="invensense\storage_manager.h" />
     <ClInclude Include="MPU6050.h" />
+    <ClInclude Include="MPU9250.h" />
     <ClInclude Include="stm32f4xx_hal_conf.h" />
   </ItemGroup>
   <ItemGroup>

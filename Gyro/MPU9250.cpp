@@ -1,6 +1,6 @@
-#include "MPU6050.h"
+#include "MPU9250.h"
 
-void MPU6050::IT_Init() {
+void MPU9250::IT_Init() {
 	if (__GPIOA_IS_CLK_DISABLED())
 		__GPIOA_CLK_ENABLE();
 
@@ -16,7 +16,7 @@ void MPU6050::IT_Init() {
 	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 }
 
-void MPU6050::selfTest()
+void MPU9250::selfTest()
 {
 	int result;
 	long gyro[3], accel[3];
@@ -58,8 +58,7 @@ void MPU6050::selfTest()
 	}
 }
 
-uint8_t MPU6050::Init() {
-	DELAY_Init();
+uint8_t MPU9250::Init() {
 	I2cMaster_Init();
 	IT_Init();
 	struct int_param_s int_param;
@@ -75,11 +74,8 @@ uint8_t MPU6050::Init() {
 	/* Compute 6-axis and 9-axis quaternions. */
 	if (inv_enable_quaternion())
 		return 3;
-	/*if (inv_enable_9x_sensor_fusion())
-		return 4;*/
-
-	//// TODO
-	//inv_9x_fusion_use_timestamps(1);
+	if (inv_enable_9x_sensor_fusion())
+		return 4;
 
 	/* Update gyro biases when not in motion.
 	* WARNING: These algorithms are mutually exclusive.
@@ -93,40 +89,31 @@ uint8_t MPU6050::Init() {
 	if (inv_enable_gyro_tc())
 		return 6;
 
-#ifdef HMC5983
 	if (inv_enable_vector_compass_cal())
 		return 7;
 	if (inv_enable_magnetic_disturbance())
 		return 8;
 
-#endif
 	/* Allows use of the MPL APIs in read_from_mpl. */
 	if (inv_enable_eMPL_outputs())
 		return 9;
 
 	if (inv_start_mpl())
 		return 10;
-#ifdef HMC5983
+
 	if (mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL | INV_XYZ_COMPASS) || mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL) || mpu_set_sample_rate(this->GYRO_SAMPLE_RATE) || mpu_set_compass_sample_rate(10))
 		return 11;
 	/* Read back configuration in case it was set improperly. */
 	if (mpu_get_sample_rate(&gyro_rate) || mpu_get_gyro_fsr(&gyro_fsr) || mpu_get_accel_fsr(&accel_fsr) || mpu_get_compass_fsr(&compass_fsr))
 		return 12;
-#else
-	if (mpu_set_sensors(INV_XYZ_GYRO | INV_XYZ_ACCEL) || mpu_configure_fifo(INV_XYZ_GYRO | INV_XYZ_ACCEL) || mpu_set_sample_rate(this->GYRO_SAMPLE_RATE))
-		return 11;
-	/* Read back configuration in case it was set improperly. */
-	if (mpu_get_sample_rate(&gyro_rate) || mpu_get_gyro_fsr(&gyro_fsr) || mpu_get_accel_fsr(&accel_fsr))
-		return 12;
-#endif
 
 	/* Sync driver configuration with MPL. */
 	/* Sample rate expected in microseconds. */
 	inv_set_gyro_sample_rate(1000000L / gyro_rate);
 	inv_set_accel_sample_rate(1000000L / gyro_rate);
-#ifdef HMC5983
+
 	inv_set_compass_sample_rate(100 * 1000L);
-#endif
+
 	/* Set chip-to-body orientation matrix.
 	* Set hardware units to dps/g's/degrees scaling factor.
 	*/
@@ -136,11 +123,10 @@ uint8_t MPU6050::Init() {
 	inv_set_accel_orientation_and_scale(
 		inv_orientation_matrix_to_scalar(gyro_pdata.orientation),
 		(long)accel_fsr << 15);
-#ifdef HMC5983
+
 	inv_set_compass_orientation_and_scale(
 		inv_orientation_matrix_to_scalar(compass_pdata.orientation),
 		(long)compass_fsr << 15);
-#endif
 
 	if (dmp_load_motion_driver_firmware())
 		return 13;
@@ -159,40 +145,19 @@ uint8_t MPU6050::Init() {
 	return 0;
 }
 
-uint32_t MPU6050::DELAY_Init(void) {
-	CoreDebug->DEMCR &= ~0x01000000;
-	CoreDebug->DEMCR |= 0x01000000;
-
-	DWT->CTRL &= ~0x00000001;
-	DWT->CTRL |= 0x00000001;
-
-	DWT->CYCCNT = 0;
-
-	uint32_t c = DWT->CYCCNT;
-
-	__ASM volatile ("NOP");
-	__ASM volatile ("NOP");
-
-	return (DWT->CYCCNT - c);
-}
-
-bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
+bool MPU9250::CheckNewData(long *euler, uint8_t *accur)
 {
-	uint32_t start = DWT->CYCCNT;
-
 	bool new_data = false;
 	bool new_compass = false;
 	unsigned long sensor_timestamp;
-	
+
 	timestamp = HAL_GetTick();
 
-#ifdef HMC5983
 	if ((timestamp > this->next_compass_ms) /*&& !hal.lp_accel_mode*/ &&
 		dataReady /*&& (hal.sensors & COMPASS_ON)*/) {
 		this->next_compass_ms = timestamp + COMPASS_READ_MS;
 		new_compass = 1;
 	}
-#endif
 
 	if (timestamp > next_temp_ms) {
 		next_temp_ms = timestamp + 500;
@@ -232,7 +197,6 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 		}
 	}
 
-#ifdef HMC5983
 	if (new_compass) {
 		short compass_short[3];
 		long compass[3];
@@ -256,7 +220,6 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 		}
 		new_data = 1;
 	}
-#endif
 
 	if (new_data) {
 		inv_execute_on_data();
@@ -266,10 +229,10 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 		unsigned long timestamp;
 
 		//if (inv_get_sensor_type_heading(data, &accuracy, (inv_time_t*)&timestamp)){}
-			//printf("heading %d accur %d\n", data[0] / 65536, accuracy);
+		//printf("heading %d accur %d\n", data[0] / 65536, accuracy);
 
 		/*if (inv_get_sensor_type_compass(data, &accuracy, (inv_time_t*)&timestamp))
-			printf("compass %d %d %d\n", data[0], data[1], data[2]);*/
+		printf("compass %d %d %d\n", data[0], data[1], data[2]);*/
 
 		if (inv_get_sensor_type_euler(data, &accuracy, (inv_time_t*)&timestamp)) {
 			euler[0] = data[0] / 65536;
@@ -278,19 +241,15 @@ bool MPU6050::CheckNewData(long *euler, uint8_t *accur)
 			(*accur) = accuracy;
 		}
 
-		uint32_t end = DWT->CYCCNT;
-
-		//printf("time %d us\n", (end - start) * 1000000 / HAL_RCC_GetHCLKFreq());
-
 		return true;
 	}
 
 	return false;
 }
 
-#ifdef MPU6050
+#ifdef MPU9250
 extern "C" void EXTI9_5_IRQHandler(void)
 {
 	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
 }
-#endif // MPU6050
+#endif // MPU9250

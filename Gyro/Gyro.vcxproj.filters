@@ -293,6 +293,9 @@
     <ClCompile Include="MPU6050.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="MPU9250.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="invensense\library\accel_auto_cal.h">
@@ -668,6 +671,9 @@
       <Filter>Header files\Device-specific files\HAL</Filter>
     </ClInclude>
     <ClInclude Include="MPU6050.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="MPU9250.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

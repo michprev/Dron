@@ -200,7 +200,7 @@ struct gyro_reg_s {
     unsigned char bank_sel;
     unsigned char mem_start_addr;
     unsigned char prgm_start_h;
-#if defined HMC5983
+#if defined HMC5983 || defined AK89xx_SECONDARY
     unsigned char s0_addr;
     unsigned char s0_reg;
     unsigned char s0_ctrl;
@@ -225,7 +225,7 @@ struct hw_s {
     unsigned short temp_sens;
     short temp_offset;
     unsigned short bank_size;
-#if defined HMC5983
+#if defined HMC5983 || defined AK89xx_SECONDARY
     unsigned short compass_fsr;
 #endif
 };
@@ -289,6 +289,11 @@ struct chip_cfg_s {
     /* Compass sample rate. */
     unsigned short compass_sample_rate;
     unsigned char compass_addr;
+#elif defined AK89xx_SECONDARY
+	/* Compass sample rate. */
+	unsigned short compass_sample_rate;
+	unsigned char compass_addr;
+	short mag_sens_adj[3];
 #endif
 };
 
@@ -353,6 +358,7 @@ enum accel_fsr_e {
     NUM_ACCEL_FSR
 };
 
+#ifdef HMC5983
 enum compass_fsr_e {
 	HMC_FSR_GAIN0 = 0,
 	HMC_FSR_GAIN1,
@@ -363,6 +369,7 @@ enum compass_fsr_e {
 	HMC_FSR_GAIN6,
 	HMC_FSR_GAIN7
 };
+#endif // HMC5983
 
 /* Clock sources. */
 enum clock_sel_e {
@@ -437,31 +444,43 @@ enum lp_accel_rate_e {
 #define BIT_STBY_XYZG       (BIT_STBY_XG | BIT_STBY_YG | BIT_STBY_ZG)
 
 #if defined AK8975_SECONDARY
-#define SUPPORTS_AK89xx_HIGH_SENS   (0x00) // +- 4095
-#define AK89xx_FSR                  (9830) // +- 1229 uT
+#define SUPPORTS_AK89xx_HIGH_SENS   (0x00)
+#define AK89xx_FSR                  (9830)
 #elif defined AK8963_SECONDARY
-#define SUPPORTS_AK89xx_HIGH_SENS   (0x10) // +- 8190
-#define AK89xx_FSR                  (4915) // +- 4912 uT
+#define SUPPORTS_AK89xx_HIGH_SENS   (0x10)
+#define AK89xx_FSR                  (4915)
 #endif
 
-#ifdef HMC5983
+#ifdef AK89xx_SECONDARY
+#define AKM_REG_WHOAMI      (0x00)
+
 #define AKM_REG_ST1         (0x02)
 #define AKM_REG_HXL         (0x03)
 #define AKM_REG_ST2         (0x09)
 
-#define HMC_REG_CONF1       (0x00)
-#define HMC_REG_CONF2       (0x01)
-#define HMC_REG_MODE        (0x02)
-#define HMC_REG_DATA        (0x03)
-
+#define AKM_REG_CNTL        (0x0A)
+#define AKM_REG_ASTC        (0x0C)
 #define AKM_REG_ASAX        (0x10)
 #define AKM_REG_ASAY        (0x11)
 #define AKM_REG_ASAZ        (0x12)
 
-#define HMC_DATA_READY      (0x01)
+#define AKM_DATA_READY      (0x01)
 #define AKM_DATA_OVERRUN    (0x02)
 #define AKM_OVERFLOW        (0x80)
 #define AKM_DATA_ERROR      (0x40)
+
+#define AKM_BIT_SELF_TEST   (0x40)
+
+#define AKM_POWER_DOWN          (0x00 | SUPPORTS_AK89xx_HIGH_SENS)
+#define AKM_SINGLE_MEASUREMENT  (0x01 | SUPPORTS_AK89xx_HIGH_SENS)
+#define AKM_FUSE_ROM_ACCESS     (0x0F | SUPPORTS_AK89xx_HIGH_SENS)
+#define AKM_MODE_SELF_TEST      (0x08 | SUPPORTS_AK89xx_HIGH_SENS)
+
+#define AKM_WHOAMI      (0x48)
+#endif
+
+#ifdef HMC5983
+#define HMC_DATA_READY      (0x01)
 
 #define HMC_POSITIVE_SELF_TEST   (0xF1)
 
@@ -499,7 +518,7 @@ const struct gyro_reg_s reg = {
     .bank_sel       = 0x6D,
     .mem_start_addr = 0x6E,
     .prgm_start_h   = 0x70
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     ,.raw_compass   = 0x49,
     .yg_offs_tc     = 0x01,
     .s0_addr        = 0x25,
@@ -523,6 +542,8 @@ const struct hw_s hw = {
     .bank_size      = 256
 #if defined HMC5983
     ,.compass_fsr    = HMC_FSR_GAIN1
+#elif defined AK89xx_SECONDARY
+	,.compass_fsr = AK89xx_FSR
 #endif
 };
 
@@ -580,7 +601,7 @@ const struct gyro_reg_s reg = {
     .bank_sel       = 0x6D,
     .mem_start_addr = 0x6E,
     .prgm_start_h   = 0x70
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     ,.raw_compass   = 0x49,
     .s0_addr        = 0x25,
     .s0_reg         = 0x26,
@@ -602,7 +623,9 @@ const struct hw_s hw = {
     .temp_offset    = 0,
     .bank_size      = 256
 #if defined HMC5983
-    ,.compass_fsr    = AK89xx_FSR
+    ,.compass_fsr    = AK89xx_FSR // TODO ?
+#elif defined AK89xx_SECONDARY
+	,.compass_fsr = AK89xx_FSR
 #endif
 };
 
@@ -637,7 +660,7 @@ static struct gyro_state_s st = {
 #define HWST_MAX_PACKET_LENGTH (512)
 #endif
 
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
 static int setup_compass(void);
 #define MAX_COMPASS_SAMPLE_RATE (100)
 #endif
@@ -759,7 +782,7 @@ int mpu_init(struct int_param_s *int_param)
     st.chip_cfg.sample_rate = 0xFFFF;
     st.chip_cfg.fifo_enable = 0xFF;
     st.chip_cfg.bypass_mode = 0xFF;
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     st.chip_cfg.compass_sample_rate = 0xFFFF;
 #endif
     /* mpu_set_sensors always preserves this setting. */
@@ -790,7 +813,7 @@ int mpu_init(struct int_param_s *int_param)
         reg_int_cb(int_param);
 #endif
 
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     setup_compass();
     if (mpu_set_compass_sample_rate(10))
         return -1;
@@ -1442,7 +1465,7 @@ int mpu_set_sample_rate(unsigned short rate)
 
         st.chip_cfg.sample_rate = 1000 / (1 + data);
 
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
         mpu_set_compass_sample_rate(min(st.chip_cfg.compass_sample_rate, MAX_COMPASS_SAMPLE_RATE));
 #endif
 
@@ -1459,7 +1482,7 @@ int mpu_set_sample_rate(unsigned short rate)
  */
 int mpu_get_compass_sample_rate(unsigned short *rate)
 {
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     rate[0] = st.chip_cfg.compass_sample_rate;
     return 0;
 #else
@@ -1481,7 +1504,7 @@ int mpu_get_compass_sample_rate(unsigned short *rate)
  */
 int mpu_set_compass_sample_rate(unsigned short rate)
 {
-#ifdef HMC5983 // probably OK
+#if defined(HMC5983) || defined(AK89xx_SECONDARY) // probably OK for HMC5983
     unsigned char div;
     if (!rate || rate > st.chip_cfg.sample_rate || rate > MAX_COMPASS_SAMPLE_RATE)
         return -1;
@@ -1638,7 +1661,7 @@ int mpu_get_power_state(unsigned char *power_on)
 int mpu_set_sensors(unsigned char sensors)
 {
     unsigned char data;
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     unsigned char user_ctrl;
 #endif
 
@@ -1672,7 +1695,7 @@ int mpu_set_sensors(unsigned char sensors)
         /* Latched interrupts only used in LP accel mode. */
         mpu_set_int_latched(0);
 
-#ifdef HMC5983 // should be OK
+#if defined(HMC5983) || defined(AK89xx_SECONDARY) // should be OK for HMC5983
 #ifdef AK89xx_BYPASS
     if (sensors & INV_XYZ_COMPASS)
         mpu_set_bypass(1);
@@ -1681,12 +1704,22 @@ int mpu_set_sensors(unsigned char sensors)
 #else
     if (i2c_read(st.hw->addr, st.reg->user_ctrl, 1, &user_ctrl))
         return -1;
-    /* Handle HMC power management. */
+    /* Handle power management. */
     if (sensors & INV_XYZ_COMPASS) {
-        data = HMC_SINGLE_MEASUREMENT;
+#ifdef HMC5983
+		data = HMC_SINGLE_MEASUREMENT;
+#endif
+#ifdef AK89xx_SECONDARY
+		data = AKM_SINGLE_MEASUREMENT;
+#endif
         user_ctrl |= BIT_AUX_IF_EN;
     } else {
-        data = HMC_POWER_DOWN;
+#ifdef HMC5983
+		data = HMC_POWER_DOWN;
+#endif
+#ifdef AK89xx_SECONDARY
+		data = AKM_POWER_DOWN;
+#endif
         user_ctrl &= ~BIT_AUX_IF_EN;
     }
     if (st.chip_cfg.dmp_on)
@@ -2018,6 +2051,72 @@ static int gyro_self_test(long *bias_regular, long *bias_st)
 }
 
 #endif 
+
+#ifdef AK89xx_SECONDARY
+static int compass_self_test(void)
+{
+	unsigned char tmp[6];
+	unsigned char tries = 10;
+	int result = 0x07;
+	short data;
+
+	mpu_set_bypass(1);
+
+	tmp[0] = AKM_POWER_DOWN;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp))
+		return 0x07;
+	tmp[0] = AKM_BIT_SELF_TEST;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_ASTC, 1, tmp))
+		goto AKM_restore;
+	tmp[0] = AKM_MODE_SELF_TEST;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp))
+		goto AKM_restore;
+
+	do {
+		delay_ms(10);
+		if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_ST1, 1, tmp))
+			goto AKM_restore;
+		if (tmp[0] & AKM_DATA_READY)
+			break;
+	} while (tries--);
+	if (!(tmp[0] & AKM_DATA_READY))
+		goto AKM_restore;
+
+	if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_HXL, 6, tmp))
+		goto AKM_restore;
+
+	result = 0;
+#if defined MPU9150
+	data = (short)(tmp[1] << 8) | tmp[0];
+	if ((data > 100) || (data < -100))
+		result |= 0x01;
+	data = (short)(tmp[3] << 8) | tmp[2];
+	if ((data > 100) || (data < -100))
+		result |= 0x02;
+	data = (short)(tmp[5] << 8) | tmp[4];
+	if ((data > -300) || (data < -1000))
+		result |= 0x04;
+#elif defined MPU9250
+	data = (short)(tmp[1] << 8) | tmp[0];
+	if ((data > 200) || (data < -200))
+		result |= 0x01;
+	data = (short)(tmp[3] << 8) | tmp[2];
+	if ((data > 200) || (data < -200))
+		result |= 0x02;
+	data = (short)(tmp[5] << 8) | tmp[4];
+	if ((data > -800) || (data < -3200))
+		result |= 0x04;
+#endif
+AKM_restore:
+	tmp[0] = 0 | SUPPORTS_AK89xx_HIGH_SENS;
+	i2c_write(st.chip_cfg.compass_addr, AKM_REG_ASTC, 1, tmp);
+	tmp[0] = SUPPORTS_AK89xx_HIGH_SENS;
+	i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp);
+	mpu_set_bypass(0);
+	return result;
+}
+#endif
+
 #ifdef HMC5983 // TODO
 static int compass_self_test(void)
 {
@@ -2573,7 +2672,7 @@ int mpu_run_6500_self_test(long *gyro, long *accel, unsigned char debug)
     const unsigned char tries = 2;
     long gyro_st[3], accel_st[3];
     unsigned char accel_result, gyro_result;
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     unsigned char compass_result;
 #endif
     int ii;
@@ -2649,7 +2748,7 @@ int mpu_run_6500_self_test(long *gyro, long *accel, unsigned char debug)
     if (!accel_result)
         result |= 0x02;
 
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     compass_result = compass_self_test();
     if(debug)
     	log_i("Compass Self Test Results: %d\n", compass_result);
@@ -2695,7 +2794,7 @@ int mpu_run_self_test(long *gyro, long *accel)
     const unsigned char tries = 2;
     long gyro_st[3], accel_st[3];
     unsigned char accel_result, gyro_result;
-#ifdef HMC5983
+#if defined(HMC5983) || defined(AK89xx_SECONDARY)
     unsigned char compass_result;
 #endif
     int ii;
@@ -2748,7 +2847,7 @@ int mpu_run_self_test(long *gyro, long *accel)
     if (!accel_result)
         result |= 0x02;
 
-#ifdef HMC59834
+#if defined(HMC59834) || defined(AK89xx_SECONDARY)
     compass_result = compass_self_test();
     if (!compass_result)
         result |= 0x04;
@@ -2944,6 +3043,110 @@ int mpu_get_dmp_state(unsigned char *enabled)
     return 0;
 }
 
+#ifdef AK89xx_SECONDARY
+/* This initialization is similar to the one in ak8975.c. */
+static int setup_compass(void)
+{
+	unsigned char data[4], akm_addr;
+
+	mpu_set_bypass(1);
+
+	/* Find compass. Possible addresses range from 0x0C to 0x0F. */
+	for (akm_addr = 0x0C; akm_addr <= 0x0F; akm_addr++) {
+		int result;
+		result = i2c_read(akm_addr, AKM_REG_WHOAMI, 1, data);
+		if (!result && (data[0] == AKM_WHOAMI))
+			break;
+	}
+
+	if (akm_addr > 0x0F) {
+		/* TODO: Handle this case in all compass-related functions. */
+		printf("Compass not found.\n");
+		return -1;
+	}
+
+	st.chip_cfg.compass_addr = akm_addr;
+
+	data[0] = AKM_POWER_DOWN;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, data))
+		return -1;
+	delay_ms(1);
+
+	data[0] = AKM_FUSE_ROM_ACCESS;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, data))
+		return -1;
+	delay_ms(1);
+
+	/* Get sensitivity adjustment data from fuse ROM. */
+	if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_ASAX, 3, data))
+		return -1;
+	st.chip_cfg.mag_sens_adj[0] = (long)data[0] + 128;
+	st.chip_cfg.mag_sens_adj[1] = (long)data[1] + 128;
+	st.chip_cfg.mag_sens_adj[2] = (long)data[2] + 128;
+
+	data[0] = AKM_POWER_DOWN;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, data))
+		return -1;
+	delay_ms(1);
+
+	mpu_set_bypass(0);
+
+	/* Set up master mode, master clock, and ES bit. */
+	data[0] = 0x40;
+	if (i2c_write(st.hw->addr, st.reg->i2c_mst, 1, data))
+		return -1;
+
+	/* Slave 0 reads from AKM data registers. */
+	data[0] = BIT_I2C_READ | st.chip_cfg.compass_addr;
+	if (i2c_write(st.hw->addr, st.reg->s0_addr, 1, data))
+		return -1;
+
+	/* Compass reads start at this register. */
+	data[0] = AKM_REG_ST1;
+	if (i2c_write(st.hw->addr, st.reg->s0_reg, 1, data))
+		return -1;
+
+	/* Enable slave 0, 8-byte reads. */
+	data[0] = BIT_SLAVE_EN | 8;
+	if (i2c_write(st.hw->addr, st.reg->s0_ctrl, 1, data))
+		return -1;
+
+	/* Slave 1 changes AKM measurement mode. */
+	data[0] = st.chip_cfg.compass_addr;
+	if (i2c_write(st.hw->addr, st.reg->s1_addr, 1, data))
+		return -1;
+
+	/* AKM measurement mode register. */
+	data[0] = AKM_REG_CNTL;
+	if (i2c_write(st.hw->addr, st.reg->s1_reg, 1, data))
+		return -1;
+
+	/* Enable slave 1, 1-byte writes. */
+	data[0] = BIT_SLAVE_EN | 1;
+	if (i2c_write(st.hw->addr, st.reg->s1_ctrl, 1, data))
+		return -1;
+
+	/* Set slave 1 data. */
+	data[0] = AKM_SINGLE_MEASUREMENT;
+	if (i2c_write(st.hw->addr, st.reg->s1_do, 1, data))
+		return -1;
+
+	/* Trigger slave 0 and slave 1 actions at each sample. */
+	data[0] = 0x03;
+	if (i2c_write(st.hw->addr, st.reg->i2c_delay_ctrl, 1, data))
+		return -1;
+
+#ifdef MPU9150
+	/* For the MPU9150, the auxiliary I2C bus needs to be set to VDD. */
+	data[0] = BIT_I2C_MST_VDDIO;
+	if (i2c_write(st.hw->addr, st.reg->yg_offs_tc, 1, data))
+		return -1;
+#endif
+
+	return 0;
+}
+#endif
+
 #ifdef HMC5983
 /* This initialization is similar to the one in ak8975.c. */
 static int setup_compass(void)
@@ -3079,6 +3282,47 @@ int mpu_get_compass_reg(short *data, unsigned long *timestamp)
     if (timestamp)
         get_ms(timestamp);
     return 0;
+#elif defined AK89xx_SECONDARY
+	unsigned char tmp[9];
+
+	if (!(st.chip_cfg.sensors & INV_XYZ_COMPASS))
+		return -1;
+
+#ifdef AK89xx_BYPASS
+	if (i2c_read(st.chip_cfg.compass_addr, AKM_REG_ST1, 8, tmp))
+		return -1;
+	tmp[8] = AKM_SINGLE_MEASUREMENT;
+	if (i2c_write(st.chip_cfg.compass_addr, AKM_REG_CNTL, 1, tmp + 8))
+		return -1;
+#else
+	if (i2c_read(st.hw->addr, st.reg->raw_compass, 8, tmp))
+		return -1;
+#endif
+
+#if defined AK8975_SECONDARY
+	/* AK8975 doesn't have the overrun error bit. */
+	if (!(tmp[0] & AKM_DATA_READY))
+		return -2;
+	if ((tmp[7] & AKM_OVERFLOW) || (tmp[7] & AKM_DATA_ERROR))
+		return -3;
+#elif defined AK8963_SECONDARY
+	/* AK8963 doesn't have the data read error bit. */
+	if (!(tmp[0] & AKM_DATA_READY) || (tmp[0] & AKM_DATA_OVERRUN))
+		return -2;
+	if (tmp[7] & AKM_OVERFLOW)
+		return -3;
+#endif
+	data[0] = (tmp[2] << 8) | tmp[1];
+	data[1] = (tmp[4] << 8) | tmp[3];
+	data[2] = (tmp[6] << 8) | tmp[5];
+
+	data[0] = ((long)data[0] * st.chip_cfg.mag_sens_adj[0]) >> 8;
+	data[1] = ((long)data[1] * st.chip_cfg.mag_sens_adj[1]) >> 8;
+	data[2] = ((long)data[2] * st.chip_cfg.mag_sens_adj[2]) >> 8;
+
+	if (timestamp)
+		get_ms(timestamp);
+	return 0;
 #else
     return -1;
 #endif
@@ -3121,6 +3365,8 @@ int mpu_get_compass_fsr(unsigned short *fsr)
 	}
     
     return 0;
+#elif defined AK89xx_SECONDARY
+	fsr[0] = st.hw->compass_fsr;
 #else
     return -1;
 #endif

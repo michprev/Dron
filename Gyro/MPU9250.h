@@ -1,5 +1,5 @@
-#ifndef __MPU6050_H
-#define __MPU6050_H
+#ifndef __MPU9250_H
+#define __MPU9250_H
 
 
 #include <stm32f4xx_hal.h>
@@ -17,20 +17,20 @@ extern "C" {
 
 }
 
-class MPU6050 {
+class MPU9250 {
 private:
 	struct platform_data_s {
 		signed char orientation[9];
 	};
 	struct platform_data_s gyro_pdata = {
-		{ 0, -1, 0,
-		1, 0, 0,
+		{ 1, 0, 0,
+		0, 1, 0,
 		0, 0, 1 }
 	};
 	struct platform_data_s compass_pdata = {
-		{ 0, -1, 0,
+		{ 0, 1, 0,
 		1, 0, 0,
-		0, 0, 1 }
+		0, 0, -1 }
 	};
 	const uint8_t COMPASS_READ_MS = 100;
 	unsigned long next_temp_ms = 0;
@@ -40,7 +40,6 @@ private:
 	const uint16_t GYRO_SAMPLE_RATE = 20; // Hz
 
 	void IT_Init();
-	uint32_t DELAY_Init(void);
 
 public:
 	bool dataReady;
