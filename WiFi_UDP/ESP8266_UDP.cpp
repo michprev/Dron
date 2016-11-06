@@ -73,13 +73,18 @@ uint32_t ESP8266_UDP::findString(char * str)
 			if (tmpRead >= this->size)
 				tmpRead = 0;
 
-			if (this->data[tmpRead + i] == '\0') {
+			if (this->data[tmpRead] == '\0') {
 				bool skip = false;
+				uint32_t nullCheckPos = tmpRead;
 				for (uint8_t j = 0; j < 5; j++) {
-					if (this->data[tmpRead + i + j] != '\0') {
+					if (nullCheckPos >= this->size)
+						nullCheckPos = 0;
+
+					if (this->data[nullCheckPos] != '\0') {
 						skip = true;
 						break;
 					}
+					nullCheckPos++;
 				}
 
 				if (!skip) {
@@ -89,10 +94,11 @@ uint32_t ESP8266_UDP::findString(char * str)
 				}
 			}
 
-			if (this->data[tmpRead + i] != str[i]) {
+			if (this->data[tmpRead] != str[i]) {
 				found = false;
 				break;
 			}
+			tmpRead++;
 		}
 
 		if (found)
