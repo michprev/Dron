@@ -20,7 +20,7 @@ private:
 	void processMessage(char *msg, uint8_t len);
 public:
 	UART_HandleTypeDef huart;
-	DMA_HandleTypeDef hdma_usart3_rx;
+	DMA_HandleTypeDef hdma_usart1_rx;
 	uint8_t *data;
 	uint32_t writePos;
 

@@ -3,41 +3,41 @@
 
 HAL_StatusTypeDef NEO_M8N::UART_Init()
 {
-	if (__GPIOC_IS_CLK_DISABLED())
-		__GPIOC_CLK_ENABLE();
+	if (__GPIOA_IS_CLK_DISABLED())
+		__GPIOA_CLK_ENABLE();
 
-	if (__USART3_IS_CLK_DISABLED())
-		__USART3_CLK_ENABLE();
+	if (__USART1_IS_CLK_DISABLED())
+		__USART1_CLK_ENABLE();
 
-	if (__DMA1_IS_CLK_DISABLED())
-		__DMA1_CLK_ENABLE();
+	if (__DMA2_IS_CLK_DISABLED())
+		__DMA2_CLK_ENABLE();
 
-	/**USART3 GPIO Configuration
-	PC10     ------> USART3_TX
-	PC11     ------> USART3_RX
+	/*USART1 GPIO Configuration
+	PA9      ------> USART1_TX
+	PA10     ------> USART1_RX
 	*/
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	GPIO_InitStruct.Pin = GPIO_PIN_10 | GPIO_PIN_11;
+	GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
-	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+	GPIO_InitStruct.Alternate = GPIO_AF7_USART1;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	this->hdma_usart3_rx.Instance = DMA1_Stream1;
-	this->hdma_usart3_rx.Init.Channel = DMA_CHANNEL_4;
-	this->hdma_usart3_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-	this->hdma_usart3_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-	this->hdma_usart3_rx.Init.MemInc = DMA_MINC_ENABLE;
-	this->hdma_usart3_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-	this->hdma_usart3_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-	this->hdma_usart3_rx.Init.Mode = DMA_CIRCULAR;
-	this->hdma_usart3_rx.Init.Priority = DMA_PRIORITY_LOW;
-	this->hdma_usart3_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-	HAL_DMA_Init(&this->hdma_usart3_rx);
+	this->hdma_usart1_rx.Instance = DMA2_Stream2;
+	this->hdma_usart1_rx.Init.Channel = DMA_CHANNEL_4;
+	this->hdma_usart1_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	this->hdma_usart1_rx.Init.PeriphInc = DMA_PINC_DISABLE;
+	this->hdma_usart1_rx.Init.MemInc = DMA_MINC_ENABLE;
+	this->hdma_usart1_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	this->hdma_usart1_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	this->hdma_usart1_rx.Init.Mode = DMA_CIRCULAR;
+	this->hdma_usart1_rx.Init.Priority = DMA_PRIORITY_LOW;
+	this->hdma_usart1_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+	HAL_DMA_Init(&this->hdma_usart1_rx);
 
-	this->huart.Instance = USART3;
+	this->huart.Instance = USART1;
 	this->huart.Init.BaudRate = 9600;
 	this->huart.Init.WordLength = UART_WORDLENGTH_8B;
 	this->huart.Init.StopBits = UART_STOPBITS_1;
@@ -47,10 +47,10 @@ HAL_StatusTypeDef NEO_M8N::UART_Init()
 	this->huart.Init.OverSampling = UART_OVERSAMPLING_16;
 	HAL_UART_Init(&this->huart);
 
-	__HAL_LINKDMA(&huart, hdmarx, this->hdma_usart3_rx);
+	__HAL_LINKDMA(&huart, hdmarx, this->hdma_usart1_rx);
 
-	HAL_NVIC_SetPriority(DMA1_Stream1_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(DMA1_Stream1_IRQn);
+	HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
 
 	//__HAL_UART_ENABLE_IT(&this->huart, UART_IT_RXNE);
 

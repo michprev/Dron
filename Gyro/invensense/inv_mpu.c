@@ -3367,6 +3367,7 @@ int mpu_get_compass_fsr(unsigned short *fsr)
     return 0;
 #elif defined AK89xx_SECONDARY
 	fsr[0] = st.hw->compass_fsr;
+	return 0;
 #else
     return -1;
 #endif

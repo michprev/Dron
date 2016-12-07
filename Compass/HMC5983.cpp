@@ -7,28 +7,18 @@ HAL_StatusTypeDef HMC5983::I2C_Init()
 	if (__GPIOB_IS_CLK_DISABLED())
 		__GPIOB_CLK_ENABLE();
 
-	if (__GPIOC_IS_CLK_DISABLED())
-		__GPIOC_CLK_ENABLE();
-
-	if (__I2C2_IS_CLK_DISABLED())
-		__I2C2_CLK_ENABLE();
+	if (__I2C1_IS_CLK_DISABLED())
+		__I2C1_CLK_ENABLE();
 
 	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitStruct.Pin = GPIO_PIN_10;
+	GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF4_I2C2;
+	GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	GPIO_InitStruct.Pin = GPIO_PIN_12;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF4_I2C2;
-	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-	this->hi2c.Instance = I2C2;
+	this->hi2c.Instance = I2C1;
 	this->hi2c.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
 	this->hi2c.Init.ClockSpeed = 100000;
 	this->hi2c.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;

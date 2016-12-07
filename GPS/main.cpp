@@ -9,9 +9,9 @@ extern "C" void SysTick_Handler(void)
 
 NEO_M8N neo = NEO_M8N(2048);
 
-extern "C" void DMA1_Stream1_IRQHandler(void)
+extern "C" void DMA2_Stream2_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&neo.hdma_usart3_rx);
+	//HAL_DMA_IRQHandler(&neo.hdma_usart1_rx);
 }
 
 extern "C" void HardFault_Handler(void)
@@ -33,15 +33,13 @@ int main(void)
 
 	neo.Init();
 
-	uint8_t tmp[] = { 0xB5, 0x62, 0x06, 0x00, 0x14, 0x00, 0x01, 0x00, 0x00, 0x00, 0xD0, 0x08, 0x00, 0x00/**/, 0x00, 0xC2, 0x01, 0x00,/**/ 0x07, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0xDE, 0xC9 };
-	// 28
-
 	//HAL_UART_Transmit(&neo.huart, tmp, 28, HAL_MAX_DELAY);
 
 	HAL_UART_Receive_DMA(&neo.huart, neo.data, 2048);
 
 	while (true) {
-		neo.ParseData();
+		HAL_Delay(1000);
+		//neo.ParseData();
 		//printf("%c\n", neo.data[0]);
 	}
 }

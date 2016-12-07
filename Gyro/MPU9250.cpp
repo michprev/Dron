@@ -1,19 +1,19 @@
 #include "MPU9250.h"
 
 void MPU9250::IT_Init() {
-	if (__GPIOA_IS_CLK_DISABLED())
-		__GPIOA_CLK_ENABLE();
+	if (__GPIOB_IS_CLK_DISABLED())
+		__GPIOB_CLK_ENABLE();
 
 	GPIO_InitTypeDef exti;
 
-	exti.Pin = GPIO_PIN_5;
+	exti.Pin = GPIO_PIN_1;
 	exti.Mode = GPIO_MODE_IT_RISING;
 	exti.Pull = GPIO_NOPULL;
 	exti.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	HAL_GPIO_Init(GPIOA, &exti);
+	HAL_GPIO_Init(GPIOB, &exti);
 
-	HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 }
 
 void MPU9250::selfTest()
@@ -248,8 +248,8 @@ bool MPU9250::CheckNewData(long *euler, uint8_t *accur)
 }
 
 #ifdef MPU9250
-extern "C" void EXTI9_5_IRQHandler(void)
+extern "C" void EXTI1_IRQHandler(void)
 {
-	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
+	HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
 }
 #endif // MPU9250

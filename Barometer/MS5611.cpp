@@ -1,7 +1,5 @@
 #include "MS5611.h"
 
-
-
 HAL_StatusTypeDef MS5611::Reset()
 {
 	uint8_t reset = 0x1E;
@@ -102,7 +100,7 @@ HAL_StatusTypeDef MS5611::I2C_Init()
 	GPIO_InitTypeDef gpio;
 	gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
 	gpio.Mode = GPIO_MODE_AF_OD;
-	gpio.Speed = GPIO_SPEED_MEDIUM;
+	gpio.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
 	gpio.Pull = GPIO_PULLUP;
 	gpio.Alternate = GPIO_AF4_I2C1;
 

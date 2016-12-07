@@ -16,15 +16,14 @@ extern "C" void HardFault_Handler(void)
 	printf("hard fault\n");
 }
 
-extern "C" void DMA2_Stream2_IRQHandler(void)
+extern "C" void DMA1_Stream1_IRQHandler(void)
 {
-	HAL_DMA_IRQHandler(&esp8266.hdma_usart1_rx);
+	HAL_DMA_IRQHandler(&esp8266.hdma_usart3_rx);
 }
 
 uint32_t count = 0;
 
 void IPD_Callback(uint8_t *data, uint16_t length) {
-	count++;
 	//printf("IPD: %s\n", data);
 }
 
@@ -52,9 +51,9 @@ int main(void)
 	}
 
 	// reset module
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
 	HAL_Delay(250);
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
 
 	while (!esp8266.ready)
 		esp8266.WaitReady();
