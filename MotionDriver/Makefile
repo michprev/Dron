@@ -35,7 +35,7 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f407xx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/misc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cec.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dsi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash_ramfunc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmpi2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_i2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_lptim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_ltdc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_qspi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spdifrx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c board-st_discovery.c data_builder.c eMPL_outputs.c gpio.c hal_outputs.c i2c.c inv_mpu.c inv_mpu_dmp_motion_driver.c log_stm32.c main.c message_layer.c mlmath.c ml_math_func.c mpl.c results_holder.c start_manager.c storage_manager.c system_stm32f4xx.c uart.c
+SOURCEFILES := $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f446xx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/misc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cec.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dfsdm.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dsi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash_ramfunc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmpi2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_i2c.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_lptim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_ltdc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spdifrx.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c board-st_discovery.c data_builder.c eMPL_outputs.c gpio.c hal_outputs.c i2c.c inv_mpu.c inv_mpu_dmp_motion_driver.c log_stm32.c main.c message_layer.c mlmath.c ml_math_func.c mpl.c results_holder.c start_manager.c storage_manager.c system_stm32f4xx.c uart.c
 EXTERNAL_LIBS := 
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
@@ -181,7 +181,7 @@ $(BINARYDIR)/%.o : %.cxx $(all_make_files) |$(BINARYDIR)
 #VisualGDB: GeneratedRules				#<--- All lines below are auto-generated
 
 
-$(BINARYDIR)/startup_stm32f407xx.o : $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f407xx.c $(all_make_files) |$(BINARYDIR)
+$(BINARYDIR)/startup_stm32f446xx.o : $(BSP_ROOT)/STM32F4xxxx/StartupFiles/startup_stm32f446xx.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 
@@ -233,6 +233,10 @@ $(BINARYDIR)/stm32f4xx_dcmi.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driv
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 
+$(BINARYDIR)/stm32f4xx_dfsdm.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dfsdm.c $(all_make_files) |$(BINARYDIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
+
+
 $(BINARYDIR)/stm32f4xx_dma.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
@@ -258,10 +262,6 @@ $(BINARYDIR)/stm32f4xx_flash_ramfunc.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPe
 
 
 $(BINARYDIR)/stm32f4xx_fmpi2c.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmpi2c.c $(all_make_files) |$(BINARYDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
-
-
-$(BINARYDIR)/stm32f4xx_fsmc.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 
@@ -298,10 +298,6 @@ $(BINARYDIR)/stm32f4xx_ltdc.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driv
 
 
 $(BINARYDIR)/stm32f4xx_pwr.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c $(all_make_files) |$(BINARYDIR)
-	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
-
-
-$(BINARYDIR)/stm32f4xx_qspi.o : $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_qspi.c $(all_make_files) |$(BINARYDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ -MD -MF $(@:.o=.dep)
 
 

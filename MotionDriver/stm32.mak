@@ -16,10 +16,10 @@ AR := $(TOOLCHAIN_ROOT)/bin/arm-eabi-ar.exe
 OBJCOPY := $(TOOLCHAIN_ROOT)/bin/arm-eabi-objcopy.exe
 
 #Additional flags
-PREPROCESSOR_MACROS += ARM_MATH_CM4 STM32F407VG stm32_flash_layout STM32F40_41xxx
+PREPROCESSOR_MACROS += ARM_MATH_CM4 STM32F446RE stm32_flash_layout STM32F446xx
 INCLUDE_DIRS += . $(BSP_ROOT)/STM32F4xxxx/STM32F4xx_StdPeriph_Driver/inc $(BSP_ROOT)/STM32F4xxxx/CMSIS_StdPeriph/Device/ST/STM32F4xx/Include $(BSP_ROOT)/STM32F4xxxx/CMSIS_StdPeriph/Include $(BSP_ROOT)/STM32F4xxxx/CMSIS_StdPeriph/RTOS/Template
 LIBRARY_DIRS += 
-LIBRARY_NAMES += compactcpp
+LIBRARY_NAMES += 
 ADDITIONAL_LINKER_INPUTS += 
 MACOS_FRAMEWORKS += 
 LINUX_PACKAGES += 
@@ -29,5 +29,5 @@ CXXFLAGS +=
 ASFLAGS += -mfpu=fpv4-sp-d16
 LDFLAGS +=  
 COMMONFLAGS += -mcpu=cortex-m4 -mthumb -mfloat-abi=soft
-LINKER_SCRIPT := $(BSP_ROOT)/STM32F4xxxx/LinkerScripts/STM32F407VG_flash.lds
+LINKER_SCRIPT := $(BSP_ROOT)/STM32F4xxxx/LinkerScripts/STM32F446RE_flash.lds
 

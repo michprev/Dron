@@ -12,25 +12,25 @@
 
 
 //////////////////  USART2
-#define USARTx                           USART2
-#define USARTx_CLK                       RCC_APB1Periph_USART2
+#define USARTx                           USART3
+#define USARTx_CLK                       RCC_APB1Periph_USART3
 #define USARTx_CLK_INIT                  RCC_APB1PeriphClockCmd
-#define USARTx_IRQn                      USART2_IRQn
-#define USARTx_IRQHandler                USART2_IRQHandler
+#define USARTx_IRQn                      USART3_IRQn
+#define USARTx_IRQHandler                USART3_IRQHandler
 
-#define USARTx_TX_PIN                    GPIO_Pin_2
-#define USARTx_TX_GPIO_PORT              GPIOA
-#define USARTx_TX_GPIO_CLK               RCC_AHB1Periph_GPIOA
-#define USARTx_TX_SOURCE                 GPIO_PinSource2
-#define USARTx_TX_AF                     GPIO_AF_USART2
+#define USARTx_TX_PIN                    GPIO_Pin_10
+#define USARTx_TX_GPIO_PORT              GPIOC
+#define USARTx_TX_GPIO_CLK               RCC_AHB1Periph_GPIOC
+#define USARTx_TX_SOURCE                 GPIO_PinSource10
+#define USARTx_TX_AF                     GPIO_AF_USART3
 
-#define USARTx_RX_PIN                    GPIO_Pin_3
-#define USARTx_RX_GPIO_PORT              GPIOA
-#define USARTx_RX_GPIO_CLK               RCC_AHB1Periph_GPIOA
-#define USARTx_RX_SOURCE                 GPIO_PinSource3
-#define USARTx_RX_AF                     GPIO_AF_USART2
+#define USARTx_RX_PIN                    GPIO_Pin_11
+#define USARTx_RX_GPIO_PORT              GPIOC
+#define USARTx_RX_GPIO_CLK               RCC_AHB1Periph_GPIOC
+#define USARTx_RX_SOURCE                 GPIO_PinSource11
+#define USARTx_RX_AF                     GPIO_AF_USART3
 
-#define USARTx_DMAx_CLK                  RCC_AHBPeriph_DMA1
+//#define USARTx_DMAx_CLK                  RCC_AHBPeriph_DMA1
 
 /********************************* Globals ************************************/
 /********************************* Prototypes *********************************/
@@ -60,7 +60,7 @@ void USART_Config(void)
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 
 	GPIO_InitStructure.GPIO_Pin = USARTx_TX_PIN | USARTx_RX_PIN;
-	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
 	//GPIO_InitStructure.GPIO_Pin = USARTx_TX_PIN;
 	//GPIO_Init(USARTx_TX_GPIO_PORT, &GPIO_InitStructure);

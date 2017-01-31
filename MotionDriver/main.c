@@ -16,6 +16,7 @@
 #include "gpio.h"
 #include "main.h"
 #include "board-st_discovery.h"
+#include "stm32f4xx_exti.h"
 
 #include "inv_mpu.h"
 #include "inv_mpu_dmp_motion_driver.h"
@@ -399,7 +400,7 @@ static inline void run_self_test(void)
 static void handle_input(void)
 {
 
-	char c = USART_ReceiveData(USART2);
+	char c = USART_ReceiveData(USART3);
 
 	switch (c) {
 		/* These commands turn off individual sensors. */
@@ -661,7 +662,6 @@ void gyro_data_ready_cb(void)
 
 int main(void)
 {
-
 	inv_error_t result;
 	unsigned char accel_fsr, new_temp = 0;
 	unsigned short gyro_rate, gyro_fsr;
@@ -866,14 +866,13 @@ int main(void)
 	hal.dmp_on = 1;
 
 	while (1) {
-
 		unsigned long sensor_timestamp;
 		int new_data = 0;
-		if (USART_GetITStatus(USART2, USART_IT_RXNE)) {
+		if (USART_GetITStatus(USART3, USART_IT_RXNE)) {
 			/* A byte has been received via USART. See handle_input for a list of
 			* valid commands.
 			*/
-			USART_ClearITPendingBit(USART2, USART_IT_RXNE);
+			USART_ClearITPendingBit(USART3, USART_IT_RXNE);
 			handle_input();
 		}
 		get_tick_count(&timestamp);
@@ -1037,4 +1036,11 @@ int main(void)
 			read_from_mpl();
 		}
 	}
+}
+
+void EXTI1_IRQHandler(void)
+{
+	/* Handle new gyro*/
+	gyro_data_ready_cb();
+	EXTI_ClearITPendingBit(EXTI_Line1);
 }

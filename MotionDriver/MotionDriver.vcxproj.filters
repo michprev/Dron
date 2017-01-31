@@ -131,7 +131,7 @@
     <ClCompile Include="log_stm32.c">
       <Filter>Source files\Core\Driver</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\StartupFiles\startup_stm32f407xx.c">
+    <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\StartupFiles\startup_stm32f446xx.c">
       <Filter>Source files\Device-specific files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\misc.c">
@@ -170,6 +170,9 @@
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dcmi.c">
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dfsdm.c">
+      <Filter>Source files\Device-specific files\StdPeriph</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_dma.c">
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
@@ -189,9 +192,6 @@
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmpi2c.c">
-      <Filter>Source files\Device-specific files\StdPeriph</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fsmc.c">
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c">
@@ -219,9 +219,6 @@
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.c">
-      <Filter>Source files\Device-specific files\StdPeriph</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_qspi.c">
       <Filter>Source files\Device-specific files\StdPeriph</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_rcc.c">
@@ -397,54 +394,6 @@
     <ClInclude Include="discover_board.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Device\ST\STM32F4xx\Include\stm32f4xx.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Device\ST\STM32F4xx\Include\system_stm32f4xx.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_common_tables.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_const_structs.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_math.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm0.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm0plus.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm3.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm4.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm7.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmFunc.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmInstr.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmSimd.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_sc000.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_sc300.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\RTOS\Template\cmsis_os.h">
-      <Filter>Header files\Device-specific files\StdPeriph</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\inc\misc.h">
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
@@ -470,6 +419,9 @@
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dfsdm.h">
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma.h">
@@ -554,6 +506,54 @@
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_wwdg.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Device\ST\STM32F4xx\Include\stm32f4xx.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Device\ST\STM32F4xx\Include\system_stm32f4xx.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_common_tables.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_const_structs.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\arm_math.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm0.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm0plus.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm3.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm4.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cm7.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmFunc.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmInstr.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_cmSimd.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_sc000.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\Include\core_sc300.h">
+      <Filter>Header files\Device-specific files\StdPeriph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\AppData\Local\VisualGDB\EmbeddedBSPs\arm-eabi\com.sysprogs.arm.stm32\STM32F4xxxx\CMSIS_StdPeriph\RTOS\Template\cmsis_os.h">
       <Filter>Header files\Device-specific files\StdPeriph</Filter>
     </ClInclude>
   </ItemGroup>

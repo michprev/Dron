@@ -16,9 +16,9 @@ Purpose :
 //changed PIN A0 to PIN A1 back, to match low power modes 
 
 #define INVEN_INT_PIN                         GPIO_Pin_1
-#define INVEN_INT_GPIO_PORT                   GPIOA
-#define INVEN_INT_GPIO_CLK                    RCC_AHB1Periph_GPIOA
-#define INVEN_INT_EXTI_PORT                   EXTI_PortSourceGPIOA
+#define INVEN_INT_GPIO_PORT                   GPIOB
+#define INVEN_INT_GPIO_CLK                    RCC_AHB1Periph_GPIOB
+#define INVEN_INT_EXTI_PORT                   EXTI_PortSourceGPIOB
 #define INVEN_INT_EXTI_PIN                    EXTI_PinSource1
 #define INVEN_INT_EXTI_LINE                   EXTI_Line1
 #define INVEN_INT_EXTI_IRQ                    EXTI1_IRQn

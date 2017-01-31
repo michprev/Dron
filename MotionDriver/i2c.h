@@ -6,7 +6,7 @@ Purpose :
 #define __I2C_H__
 /****************************** Includes *****************************/
 /****************************** Defines *******************************/
-#define SENSORS_I2C               I2C2
+#define SENSORS_I2C               I2C1
 
 #define I2C_SPEED                 400000
 #define I2C_OWN_ADDRESS           0x00
